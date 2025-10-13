@@ -1,160 +1,246 @@
 ﻿using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Interactions;
-
-//This script handles moving the character on the X axis, both on the ground and in the air.
 
 public class characterMovement : MonoBehaviour
 {
+    [Header("Horizontal Movement (Ground)")]
+    [SerializeField] private float maxSpeed = 10f;              
+    [SerializeField] private float acceleration = 50f;          
+    [SerializeField] private float deceleration = 70f;          
+    [SerializeField] private float turnSpeed = 60f;            
 
-    [Header("Components")]
-    private Rigidbody2D body;
-    characterGround ground;
+    [Header("Horizontal Movement (Air)")]
+    [SerializeField] private float airAcceleration = 30f;       
+    [SerializeField] private float airDeceleration = 40f;       
+    [SerializeField] private float airTurnSpeed = 25f;          
 
-    [Header("Movement Stats")]
-    [SerializeField, Range(0f, 20f)][Tooltip("Maximum movement speed")] public float maxSpeed = 10f;
-    [SerializeField, Range(0f, 100f)][Tooltip("How fast to reach max speed")] public float maxAcceleration = 52f;
-    [SerializeField, Range(0f, 100f)][Tooltip("How fast to stop after letting go")] public float maxDecceleration = 52f;
-    [SerializeField, Range(0f, 100f)][Tooltip("How fast to stop when changing direction")] public float maxTurnSpeed = 80f;
-    [SerializeField, Range(0f, 100f)][Tooltip("How fast to reach max speed when in mid-air")] public float maxAirAcceleration;
-    [SerializeField, Range(0f, 100f)][Tooltip("How fast to stop in mid-air when no direction is used")] public float maxAirDeceleration;
-    [SerializeField, Range(0f, 100f)][Tooltip("How fast to stop when changing direction when in mid-air")] public float maxAirTurnSpeed = 80f;
-    [SerializeField][Tooltip("Friction to apply against movement on stick")] private float friction;
+    [Header("Vertical Jump Settings")]
+    [SerializeField] private float jumpHeight = 4f;             
+    [SerializeField] private float timeToApex = 0.4f;           
+    [SerializeField] private int maxAirJumps = 1;               
+    [SerializeField] private float upwardMovementMultiplier = 1f; 
+    [SerializeField] private float downwardMovementMultiplier = 1f; 
+    [SerializeField] private bool variableJumpHeight = true;    
+    [SerializeField] private float maxJumpHoldTime = 0.3f;      
+    [SerializeField] private float jumpCutoffMultiplier = 2f;   
+    [SerializeField] private float coyoteTime = 0.1f;           
+    [SerializeField] private float speedYLimit = 20f;           
+    [SerializeField] private float jumpBufferTime = 0.1f;       
 
-    [Header("Options")]
-    [Tooltip("When false, the charcter will skip acceleration and deceleration and instantly move and stop")] public bool useAcceleration;
-    public bool itsTheIntro = true;
+    [Header("Ground Check")]
+    [SerializeField] private Transform groundCheck;             
+    [SerializeField] private float groundCheckRadius = 0.2f;    
+    [SerializeField] private LayerMask groundLayer = 1;        
 
-    [Header("Calculations")]
-    public float directionX;
-    private Vector2 desiredVelocity;
-    public Vector2 velocity;
-    private float maxSpeedChange;
-    private float acceleration;
-    private float deceleration;
-    private float turnSpeed;
-    private float initialScaleX;
+    [Header("Horizontal Debug")]
+    [SerializeField] private float currentHorizontalVelocity;   
 
-    [Header("Current State")]
-    public bool onGround;
-    public bool pressingKey;
+    [Header("Vertical Calculations (Debug)")]
+    [SerializeField] public float jumpSpeed;                    
+    [SerializeField] private float defaultGravityScale;        
+    [SerializeField] public float gravMultiplier;               
 
-    private void Awake()
+    [Header("Vertical Current State (Debug)")]
+    [SerializeField] public bool canJumpAgain = false;         
+    [SerializeField] private bool desiredJump;                  
+    [SerializeField] private float jumpBufferCounter;           
+    [SerializeField] private float coyoteTimeCounter = 0f;      
+    [SerializeField] private bool pressingJump;                 
+    [SerializeField] public bool onGround;                      
+    [SerializeField] private bool currentlyJumping;             
+    [SerializeField] private int airJumpsUsed = 0;              
+    [SerializeField] private float jumpHoldTime = 0f;           
+
+    private Rigidbody2D rb;
+    private float horizontalInput;
+    private float originalJumpSpeed;                            
+
+    void Start()
     {
-        //Find the character's Rigidbody and ground detection script
-        body = GetComponent<Rigidbody2D>();
-        ground = GetComponent<characterGround>();
-        initialScaleX = transform.localScale.x;
-
-    }
-
-    public void OnMovement(InputAction.CallbackContext context)
-    {
-        float dir = context.ReadValue<float>();
-        Debug.Log($"OnMovement chamado! directionX = {dir}");
-        directionX = dir;
-    }
-
-
-    private void Update()
-    {
-        //Used to stop movement when the character is playing her death animation
-        if (!itsTheIntro)
+        rb = GetComponent<Rigidbody2D>();
+        if (rb == null)
         {
-            directionX = 0;
+            Debug.LogError("PlayerMovement2D requer um Rigidbody2D no GameObject!");
+            enabled = false;
+            return;
         }
 
-        //Used to flip the character's sprite when she changes direction
-        //Also tells us that we are currently pressing a direction button
-        if (directionX != 0)
-        {
-            float sign = Mathf.Sign(directionX);
-            transform.localScale = new Vector3(initialScaleX * sign, transform.localScale.y, transform.localScale.z);
+        
+        defaultGravityScale = rb.gravityScale;
+        CalculateJumpVariables();
 
-            pressingKey = true;
+        if (groundCheck == null)
+        {
+            GameObject gc = new GameObject("GroundCheck");
+            gc.transform.SetParent(transform);
+            gc.transform.localPosition = new Vector3(0, -0.5f, 0);
+            groundCheck = gc.transform;
+        }
+
+        coyoteTimeCounter = coyoteTime;
+        jumpBufferCounter = 0f;
+    }
+
+    void Update()
+    {
+        horizontalInput = Input.GetAxisRaw("Horizontal");
+
+        if (Input.GetButtonDown("Jump"))
+        {
+            desiredJump = true;
+            jumpBufferCounter = jumpBufferTime;
+            pressingJump = true;
+            jumpHoldTime = 0f;
+        }
+
+        if (Input.GetButtonUp("Jump"))
+        {
+            pressingJump = false;
+            currentlyJumping = false;
+        }
+
+        if (pressingJump && variableJumpHeight)
+        {
+            jumpHoldTime += Time.deltaTime;
+            jumpHoldTime = Mathf.Clamp(jumpHoldTime, 0f, maxJumpHoldTime);
+        }
+
+        
+        onGround = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+
+        
+        if (onGround)
+        {
+            coyoteTimeCounter = coyoteTime;
+            airJumpsUsed = 0;
         }
         else
         {
-            pressingKey = false;
+            coyoteTimeCounter -= Time.deltaTime;
         }
+        bool canCoyoteJump = coyoteTimeCounter > 0f;
+        bool canAirJump = airJumpsUsed < maxAirJumps;
+        canJumpAgain = onGround || canCoyoteJump || canAirJump;
 
-        //Calculate's the character's desired velocity - which is the direction you are facing, multiplied by the character's maximum speed
-        //Friction is not used in this game
-        desiredVelocity = new Vector2(directionX, 0f) * Mathf.Max(maxSpeed - friction, 0f);
-
-    }
-
-    private void FixedUpdate()
-    {
-        //Fixed update runs in sync with Unity's physics engine
-
-        //Get Kit's current ground status from her ground script
-        onGround = ground.GetOnGround();
-
-        //Get the Rigidbody's current velocity
-        velocity = body.linearVelocity;
-
-        //Calculate movement, depending on whether "Instant Movement" has been checked
-        if (useAcceleration)
+        if (jumpBufferCounter > 0f)
         {
-            runWithAcceleration();
-        }
-        else
-        {
-            if (onGround)
+            jumpBufferCounter -= Time.deltaTime;
+            if (canJumpAgain && desiredJump)
             {
-                runWithoutAcceleration();
+                Jump();
+                desiredJump = false;
+                jumpBufferCounter = 0f;
+            }
+        }
+    }
+
+    void FixedUpdate()
+    {
+        if (rb == null) return;
+
+        float currentVelocityX = rb.linearVelocity.x;
+        float currentVelocityY = rb.linearVelocity.y;
+
+        // ========== MOVIMENTO HORIZONTAL ==========
+        float accelRate = onGround ? acceleration : airAcceleration;
+        float decelRate = onGround ? deceleration : airDeceleration;
+        float turnRate = onGround ? turnSpeed : airTurnSpeed;
+
+        float targetSpeed = horizontalInput * maxSpeed;
+
+        float speedDifference = targetSpeed - currentVelocityX;
+        float horizontalMovement = 0f;
+
+        if (Mathf.Abs(speedDifference) > 0.01f)
+        {
+            if (speedDifference > 0)
+            {
+                horizontalMovement = Mathf.Min(accelRate * Time.fixedDeltaTime, speedDifference);
             }
             else
             {
-                runWithAcceleration();
+                if (horizontalInput == 0)
+                {
+                    horizontalMovement = Mathf.Max(-decelRate * Time.fixedDeltaTime, speedDifference);
+                }
+                else
+                {
+                    horizontalMovement = Mathf.Max(-turnRate * Time.fixedDeltaTime, speedDifference);
+                }
             }
         }
-    }
 
-    private void runWithAcceleration()
-    {
-        //Set our acceleration, deceleration, and turn speed stats, based on whether we're on the ground on in the air
+        float newVelocityX = currentVelocityX + horizontalMovement;
+        currentHorizontalVelocity = newVelocityX;
 
-        acceleration = onGround ? maxAcceleration : maxAirAcceleration;
-        deceleration = onGround ? maxDecceleration : maxAirDeceleration;
-        turnSpeed = onGround ? maxTurnSpeed : maxAirTurnSpeed;
-
-        if (pressingKey)
+        // ========== MOVIMENTO VERTICAL ==========
+        if (currentVelocityY > 0)
         {
-            //If the sign (i.e. positive or negative) of our input direction doesn't match our movement, it means we're turning around and so should use the turn speed stat.
-            if (Mathf.Sign(directionX) != Mathf.Sign(velocity.x))
-            {
-                maxSpeedChange = turnSpeed * Time.deltaTime;
-            }
-            else
-            {
-                //If they match, it means we're simply running along and so should use the acceleration stat
-                maxSpeedChange = acceleration * Time.deltaTime;
-            }
+            currentVelocityY *= upwardMovementMultiplier;
+        }
+        else if (currentVelocityY < 0)
+        {
+            currentVelocityY *= downwardMovementMultiplier;
+        }
+
+        currentVelocityY = Mathf.Clamp(currentVelocityY, -speedYLimit, speedYLimit);
+
+        if (currentlyJumping && !pressingJump && currentVelocityY > 0)
+        {
+            rb.gravityScale = defaultGravityScale * jumpCutoffMultiplier;
         }
         else
         {
-            //And if we're not pressing a direction at all, use the deceleration stat
-            maxSpeedChange = deceleration * Time.deltaTime;
+            rb.gravityScale = defaultGravityScale * gravMultiplier;
         }
 
-        //Move our velocity towards the desired velocity, at the rate of the number calculated above
-        velocity.x = Mathf.MoveTowards(velocity.x, desiredVelocity.x, maxSpeedChange);
+        float newVelocityY = currentVelocityY;
 
-        //Update the Rigidbody with this new velocity
-        body.linearVelocity = velocity;
-
+        // ========== APLICA VELOCIDADE FINAL (UMA VEZ) ==========
+        rb.linearVelocity = new Vector2(newVelocityX, newVelocityY);
     }
 
-    private void runWithoutAcceleration()
+    private void Jump()
     {
-        //If we're not using acceleration and deceleration, just send our desired velocity (direction * max speed) to the Rigidbody
-        velocity.x = desiredVelocity.x;
+        float thisJumpSpeed = originalJumpSpeed;
+        if (variableJumpHeight && pressingJump)
+        {
+            float holdFactor = jumpHoldTime / maxJumpHoldTime;
+            thisJumpSpeed *= (1f + holdFactor * 0.5f);
+        }
 
-        body.linearVelocity = velocity;
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, thisJumpSpeed);
+        currentlyJumping = true;
+
+        if (!onGround && coyoteTimeCounter <= 0f)
+        {
+            airJumpsUsed = Mathf.Min(airJumpsUsed + 1, maxAirJumps);
+        }
+        jumpSpeed = thisJumpSpeed;
     }
 
+    private void CalculateJumpVariables()
+    {
+        originalJumpSpeed = (2f * jumpHeight) / timeToApex;
+        float calculatedGravity = (2f * jumpHeight) / (Mathf.Pow(timeToApex, 2));
+        gravMultiplier = calculatedGravity / Physics2D.gravity.magnitude / defaultGravityScale;
 
+        jumpSpeed = originalJumpSpeed;
+    }
 
+    void OnValidate()
+    {
+        if (rb != null && defaultGravityScale > 0)
+        {
+            CalculateJumpVariables();
+        }
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        if (groundCheck != null)
+        {
+            Gizmos.color = onGround ? Color.green : Color.red;
+            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+        }
+    }
 }
