@@ -24,7 +24,8 @@ public class characterMovement : MonoBehaviour
     [SerializeField] private float jumpCutoffMultiplier = 2f;   
     [SerializeField] private float coyoteTime = 0.1f;           
     [SerializeField] private float speedYLimit = 20f;           
-    [SerializeField] private float jumpBufferTime = 0.1f;       
+    [SerializeField] private float jumpBufferTime = 0.1f;
+    [SerializeField] private float airJumpHeightMultiplier = 1f;
 
     [Header("Ground Check")]
     [SerializeField] private Transform groundCheck;             
@@ -52,7 +53,8 @@ public class characterMovement : MonoBehaviour
 
     private Rigidbody2D rb;
     private float horizontalInput;
-    private float originalJumpSpeed;                            
+    private float originalJumpSpeed;
+    private playerStats stats;
 
     void Start()
     {
@@ -206,6 +208,11 @@ public class characterMovement : MonoBehaviour
         {
             float holdFactor = jumpHoldTime / maxJumpHoldTime;
             thisJumpSpeed *= (1f + holdFactor * 0.5f);
+        }
+
+        if (!onGround && coyoteTimeCounter <= 0f)
+        {
+            thisJumpSpeed *= airJumpHeightMultiplier;
         }
 
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, thisJumpSpeed);
