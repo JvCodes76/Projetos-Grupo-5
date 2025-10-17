@@ -2,15 +2,8 @@ using UnityEngine;
 
 public class playerStats : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public float forca = 1;
+    public float agilidade = 1;
+    public float humanidade = 100;
+    public float reputacao = 0;
 }

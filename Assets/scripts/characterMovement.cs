@@ -58,6 +58,10 @@ public class characterMovement : MonoBehaviour
 
     void Start()
     {
+        acceleration += stats.forca * 1
+        maxSpeed += stats.agilidade * 2
+        jumpHeight += stats.forca * 1
+        timeToApex -= stats.agilidade * 0.01
         rb = GetComponent<Rigidbody2D>();
         if (rb == null)
         {
