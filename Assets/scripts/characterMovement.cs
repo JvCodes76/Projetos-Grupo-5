@@ -54,14 +54,22 @@ public class characterMovement : MonoBehaviour
     private Rigidbody2D rb;
     private float horizontalInput;
     private float originalJumpSpeed;
-    private playerStats stats;
+    public playerStats stats;
 
     void Start()
     {
-        acceleration += stats.forca * 1
-        maxSpeed += stats.agilidade * 2
-        jumpHeight += stats.forca * 1
-        timeToApex -= stats.agilidade * 0.01
+        stats = GetComponent<playerStats>();
+
+        if (stats == null)
+        {
+            Debug.LogError("O componente playerStats não foi encontrado no GameObject!");
+            enabled = false; 
+            return;
+        }
+        acceleration += stats.forca * 1;
+        maxSpeed += stats.agilidade * 2;
+        jumpHeight += stats.forca * 1;
+        timeToApex -= stats.agilidade * 0.01f;
         rb = GetComponent<Rigidbody2D>();
         if (rb == null)
         {

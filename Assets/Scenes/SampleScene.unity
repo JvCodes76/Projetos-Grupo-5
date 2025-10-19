@@ -1238,6 +1238,7 @@ GameObject:
   - component: {fileID: 755333273}
   - component: {fileID: 755333274}
   - component: {fileID: 755333277}
+  - component: {fileID: 755333278}
   m_Layer: 3
   m_Name: Cyborg
   m_TagString: Untagged
@@ -1432,6 +1433,7 @@ MonoBehaviour:
   coyoteTime: 0.1
   speedYLimit: 20
   jumpBufferTime: 0.1
+  airJumpHeightMultiplier: 1
   groundCheck: {fileID: 237458059}
   groundCheckRadius: 0.2
   groundLayer:
@@ -1450,6 +1452,7 @@ MonoBehaviour:
   currentlyJumping: 0
   airJumpsUsed: 0
   jumpHoldTime: 0
+  stats: {fileID: 0}
 --- !u!114 &755333277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1500,6 +1503,22 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &755333278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 755333266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fb6507200e89df4199618e922531007, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forca: 1
+  agilidade: 1
+  humanidade: 100
+  reputacao: 0
 --- !u!1 &1071108998
 GameObject:
   m_ObjectHideFlags: 0
