@@ -1,0 +1,21 @@
+{
+	"identifier": "World_Level_3",
+	"uniqueIdentifer": "e32ee290-ac70-11f0-a9ab-e5d9eaddba3f",
+	"x": 1928,
+	"y": 8,
+	"width": 640,
+	"height": 464,
+	"bgColor": "#474B67",
+	"neighbourLevels": [
+		{
+			"levelIid": "b5a34ae0-ac70-11f0-ae67-d9e2c236f47b",
+			"dir": "w"
+		}
+	],
+	"customFields" : {},
+	"layers": [
+		"IntGrid_layer.png",
+		"Especiais.png"
+	],
+	"entities" : {}
+}

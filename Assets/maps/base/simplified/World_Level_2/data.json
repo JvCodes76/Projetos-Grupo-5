@@ -1,0 +1,25 @@
+{
+	"identifier": "World_Level_2",
+	"uniqueIdentifer": "b5a34ae0-ac70-11f0-ae67-d9e2c236f47b",
+	"x": 1288,
+	"y": 8,
+	"width": 640,
+	"height": 464,
+	"bgColor": "#474B67",
+	"neighbourLevels": [
+		{
+			"levelIid": "608175c0-8560-11f0-af53-a5e231d6acf6",
+			"dir": "w"
+		},
+		{
+			"levelIid": "e32ee290-ac70-11f0-a9ab-e5d9eaddba3f",
+			"dir": "e"
+		}
+	],
+	"customFields" : {},
+	"layers": [
+		"IntGrid_layer.png",
+		"Especiais.png"
+	],
+	"entities" : {}
+}
