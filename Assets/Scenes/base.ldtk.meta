@@ -9,7 +9,7 @@ ScriptedImporter:
   assetBundleVariant: 
   script: {fileID: 11500000, guid: aaa16bfc62c086f4fb45da87b6acf9b1, type: 3}
   _reimportOnDependencyChange: 1
-  _jsonFile: {instanceID: 0}
+  _jsonFile: {fileID: -164016180542632921, guid: c79779be034f97959b0254427326a46a, type: 3}
   _pixelsPerUnit: 8
   _customLevelPrefab: {instanceID: 0}
   _intGridValueColorsVisible: 0
@@ -19,7 +19,13 @@ ScriptedImporter:
   _createLevelBoundsTrigger: 0
   _useParallax: 1
   _scaleEntities: 1
-  _intGridValues: []
+  _intGridValues:
+  - _key: Especiais_1
+    _asset: {fileID: 11400000, guid: d0ed8074909b5554581f31474af3e1b4, type: 2}
+  - _key: Especiais_2
+    _asset: {fileID: 11400000, guid: 734773cd8759abc43b2e836b70f15013, type: 2}
+  - _key: IntGrid_layer_1
+    _asset: {fileID: 11400000, guid: 734773cd8759abc43b2e836b70f15013, type: 2}
   _entities: []
   _enumGenerate: 0
   _enumPath: 

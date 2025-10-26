@@ -33,7 +33,8 @@ public class characterMovement : MonoBehaviour
     [SerializeField] private LayerMask groundLayer = 1;        
 
     [Header("Horizontal Debug")]
-    [SerializeField] private float currentHorizontalVelocity;   
+    [SerializeField] private float currentHorizontalVelocity;
+    [SerializeField] private float horizontalInput;
 
     [Header("Vertical Calculations (Debug)")]
     [SerializeField] public float jumpSpeed;                    
@@ -52,7 +53,6 @@ public class characterMovement : MonoBehaviour
     [SerializeField] private float jumpHoldTime = 0f;           
 
     private Rigidbody2D rb;
-    private float horizontalInput;
     private float originalJumpSpeed;
     public playerStats stats;
 
@@ -96,6 +96,11 @@ public class characterMovement : MonoBehaviour
 
     void Update()
     {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.right, 10f, groundLayer);
+        if (hit.collider != null)
+        {
+            Debug.Log($"Objeto invisível detectado: {hit.collider.name} em {hit.point}");
+        }
         horizontalInput = Input.GetAxisRaw("Horizontal");
 
         if (Input.GetButtonDown("Jump"))
