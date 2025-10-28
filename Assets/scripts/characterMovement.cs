@@ -28,9 +28,9 @@ public class characterMovement : MonoBehaviour
     [SerializeField] private float airJumpHeightMultiplier = 1f;
 
     [Header("Wall Jump Settings")]
-    [SerializeField] private float wallCheckDistance = 0.6f;
+    [SerializeField] private float wallCheckDistance = 0.1f;
     [SerializeField] private float wallSlideSpeed = 2f;
-    [SerializeField] private Vector2 wallJumpForce = new Vector2(10f, 18f);
+    [SerializeField] private Vector2 wallJumpForce = new Vector2(5f, 9f);
     [SerializeField] private float wallJumpTime = 0.2f; // Duração do bloqueio de input pós-pulo
     [SerializeField] private LayerMask wallLayer;
 
@@ -222,47 +222,67 @@ public class characterMovement : MonoBehaviour
         float turnRate = onGround ? turnSpeed : airTurnSpeed;
 
         float targetSpeed = horizontalInput * maxSpeed;
-
         float speedDifference = targetSpeed - currentVelocityX;
+        
         float horizontalMovement = 0f;
 
-        if (!isWallJumping)
+        // [NOVO] Início da lógica de movimento horizontal simétrica
+        float selectedRate;
+
+        if (horizontalInput == 0)
         {
-            if (Mathf.Abs(speedDifference) > 0.01f)
-            {
-                if (speedDifference > 0)
-                {
-                    horizontalMovement = Mathf.Min(accelRate * Time.fixedDeltaTime, speedDifference);
-                }
-                else
-                {
-                    if (horizontalInput == 0)
-                    {
-                        horizontalMovement = Mathf.Max(-decelRate * Time.fixedDeltaTime, speedDifference);
-                    }
-                    else
-                    {
-                        horizontalMovement = Mathf.Max(-turnRate * Time.fixedDeltaTime, speedDifference);
-                    }
-                }
-            }
+            // Se o input é 0, usamos a desaceleração
+            selectedRate = decelRate; 
         }
+        else if (Mathf.Sign(horizontalInput) != Mathf.Sign(currentVelocityX) && currentVelocityX != 0)
+        {
+            // Se o input é oposto à velocidade (virando), usamos a taxa de virada
+            selectedRate = turnRate; 
+        }
+        else
+        {
+            // Caso contrário (acelerando na mesma direção), usamos a aceleração
+            selectedRate = accelRate; 
+        }
+
+        // [NOVO] Aplica a taxa selecionada ('selectedRate')
+        // 'movement' é a mudança máxima de velocidade que podemos aplicar neste frame
+        float movement = selectedRate * Time.fixedDeltaTime;
+        
+        if (speedDifference > 0)
+        {
+            // Queremos ir mais rápido para a direita
+            // Aplicamos força positiva, limitando ao máximo 'movement' e à 'speedDifference'
+            horizontalMovement = Mathf.Min(movement, speedDifference);
+        }
+        else if (speedDifference < 0)
+        {
+            // Queremos ir mais rápido para a esquerda
+            // Aplicamos força negativa, limitando ao máximo 'movement' e à 'speedDifference'
+            horizontalMovement = Mathf.Max(-movement, speedDifference);
+        }
+
+        // [NOVO] O bloqueio do pulo na parede (isWallJumping) deve sobrescrever qualquer movimento
+        if (isWallJumping)
+        {
+            horizontalMovement = 0f;
+        }
+        // [NOVO] Fim da lógica de movimento horizontal simétrica
+
 
         float newVelocityX = currentVelocityX + horizontalMovement;
         currentHorizontalVelocity = newVelocityX;
 
         // ========== MOVIMENTO VERTICAL ==========
 
-        // Lógica de velocidade do Wall Slide
         if (isWallSliding)
         {
-            // Limita a velocidade de queda
             if (currentVelocityY < -wallSlideSpeed)
             {
                 currentVelocityY = -wallSlideSpeed;
             }
         }
-
+        
         if (currentVelocityY > 0)
         {
             currentVelocityY *= upwardMovementMultiplier;
