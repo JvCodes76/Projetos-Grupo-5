@@ -27,6 +27,13 @@ public class characterMovement : MonoBehaviour
     [SerializeField] private float jumpBufferTime = 0.1f;
     [SerializeField] private float airJumpHeightMultiplier = 1f;
 
+    [Header("Wall Jump Settings")]
+    [SerializeField] private float wallCheckDistance = 0.6f;
+    [SerializeField] private float wallSlideSpeed = 2f;
+    [SerializeField] private Vector2 wallJumpForce = new Vector2(10f, 18f);
+    [SerializeField] private float wallJumpTime = 0.2f; // Duração do bloqueio de input pós-pulo
+    [SerializeField] private LayerMask wallLayer;
+
     [Header("Ground Check")]
     [SerializeField] private Transform groundCheck;             
     [SerializeField] private float groundCheckRadius = 0.2f;    
@@ -49,12 +56,20 @@ public class characterMovement : MonoBehaviour
     [SerializeField] private bool pressingJump;                 
     [SerializeField] public bool onGround;                      
     [SerializeField] private bool currentlyJumping;             
-    [SerializeField] private int airJumpsUsed = 0;              
-    [SerializeField] private float jumpHoldTime = 0f;           
+    [SerializeField] private int airJumpsUsed = 0;
+    [SerializeField] private float jumpHoldTime = 0f;       
 
+    [Header("Wall Jump State (Debug)")]
+    [SerializeField] private bool isTouchingRightWall;
+    [SerializeField] private bool isTouchingLeftWall;
+    [SerializeField] private bool isWallSliding;
+
+    private bool isWallJumping;
+    private float wallJumpingCounter;
     private Rigidbody2D rb;
     private float originalJumpSpeed;
     public playerStats stats;
+    private Collider2D playerCollider;
 
     void Start()
     {
@@ -78,6 +93,13 @@ public class characterMovement : MonoBehaviour
             return;
         }
 
+        playerCollider = GetComponent<Collider2D>();
+        if (playerCollider == null)
+        {
+            Debug.LogError("PlayerMovement2D requer um Collider2D no GameObject para o Wall Jump!");
+            enabled = false;
+            return;
+        }
         
         defaultGravityScale = rb.gravityScale;
         CalculateJumpVariables();
@@ -92,6 +114,11 @@ public class characterMovement : MonoBehaviour
 
         coyoteTimeCounter = coyoteTime;
         jumpBufferCounter = 0f;
+
+        if (wallLayer.value == 0)
+        {
+            wallLayer = groundLayer;
+        }
     }
 
     void Update()
@@ -126,16 +153,29 @@ public class characterMovement : MonoBehaviour
         
         onGround = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
 
-        
+        CheckWalls();
+
         if (onGround)
         {
             coyoteTimeCounter = coyoteTime;
             airJumpsUsed = 0;
+            isWallJumping = false;
+            wallJumpingCounter = 0f;
         }
         else
         {
             coyoteTimeCounter -= Time.deltaTime;
         }
+
+        if ((isTouchingLeftWall || isTouchingRightWall) && !onGround && rb.linearVelocity.y < 0)
+        {
+            isWallSliding = true;
+        }
+        else
+        {
+            isWallSliding = false;
+        }
+
         bool canCoyoteJump = coyoteTimeCounter > 0f;
         bool canAirJump = airJumpsUsed < maxAirJumps;
         canJumpAgain = onGround || canCoyoteJump || canAirJump;
@@ -143,11 +183,28 @@ public class characterMovement : MonoBehaviour
         if (jumpBufferCounter > 0f)
         {
             jumpBufferCounter -= Time.deltaTime;
-            if (canJumpAgain && desiredJump)
+            if (desiredJump) // Se o jogador quer pular
             {
-                Jump();
-                desiredJump = false;
-                jumpBufferCounter = 0f;
+                if (isWallSliding) // Prioridade 1: Pular da Parede
+                {
+                    WallJump();
+                    desiredJump = false;
+                    jumpBufferCounter = 0f;
+                }
+                else if (canJumpAgain) // Prioridade 2: Pulo Padrão (Chão, Coyote, Ar)
+                {
+                    Jump();
+                    desiredJump = false;
+                    jumpBufferCounter = 0f;
+                }
+            }
+        }
+        if (isWallJumping)
+        {
+            wallJumpingCounter -= Time.deltaTime;
+            if (wallJumpingCounter <= 0f)
+            {
+                isWallJumping = false;
             }
         }
     }
@@ -169,21 +226,24 @@ public class characterMovement : MonoBehaviour
         float speedDifference = targetSpeed - currentVelocityX;
         float horizontalMovement = 0f;
 
-        if (Mathf.Abs(speedDifference) > 0.01f)
+        if (!isWallJumping)
         {
-            if (speedDifference > 0)
+            if (Mathf.Abs(speedDifference) > 0.01f)
             {
-                horizontalMovement = Mathf.Min(accelRate * Time.fixedDeltaTime, speedDifference);
-            }
-            else
-            {
-                if (horizontalInput == 0)
+                if (speedDifference > 0)
                 {
-                    horizontalMovement = Mathf.Max(-decelRate * Time.fixedDeltaTime, speedDifference);
+                    horizontalMovement = Mathf.Min(accelRate * Time.fixedDeltaTime, speedDifference);
                 }
                 else
                 {
-                    horizontalMovement = Mathf.Max(-turnRate * Time.fixedDeltaTime, speedDifference);
+                    if (horizontalInput == 0)
+                    {
+                        horizontalMovement = Mathf.Max(-decelRate * Time.fixedDeltaTime, speedDifference);
+                    }
+                    else
+                    {
+                        horizontalMovement = Mathf.Max(-turnRate * Time.fixedDeltaTime, speedDifference);
+                    }
                 }
             }
         }
@@ -192,6 +252,17 @@ public class characterMovement : MonoBehaviour
         currentHorizontalVelocity = newVelocityX;
 
         // ========== MOVIMENTO VERTICAL ==========
+
+        // Lógica de velocidade do Wall Slide
+        if (isWallSliding)
+        {
+            // Limita a velocidade de queda
+            if (currentVelocityY < -wallSlideSpeed)
+            {
+                currentVelocityY = -wallSlideSpeed;
+            }
+        }
+
         if (currentVelocityY > 0)
         {
             currentVelocityY *= upwardMovementMultiplier;
@@ -217,7 +288,50 @@ public class characterMovement : MonoBehaviour
         // ========== APLICA VELOCIDADE FINAL (UMA VEZ) ==========
         rb.linearVelocity = new Vector2(newVelocityX, newVelocityY);
     }
+    
+    // Método para checar as paredes
+    private void CheckWalls()
+    {
+        if (playerCollider == null) return; 
 
+        // Pega o centro e a "metade da largura" (extents) do colisor
+        Vector2 center = playerCollider.bounds.center;
+        float halfWidth = playerCollider.bounds.extents.x;
+        
+        // Define os pontos de origem dos raios NAS BORDAS do colisor
+        // (Usando o centro vertical 'center.y' do colisor)
+        Vector2 rightOrigin = new Vector2(center.x + halfWidth, center.y);
+        Vector2 leftOrigin = new Vector2(center.x - halfWidth, center.y);
+
+        // Lança os raios a partir das BORDAS.
+        // Agora 'wallCheckDistance' é a distância a partir da borda, corrigindo a assimetria.
+        isTouchingRightWall = Physics2D.Raycast(rightOrigin, Vector2.right, wallCheckDistance, wallLayer);
+        isTouchingLeftWall = Physics2D.Raycast(leftOrigin, Vector2.left, wallCheckDistance, wallLayer);
+
+        // Desenha raios no editor para debug (opcional)
+        Debug.DrawRay(rightOrigin, Vector2.right * wallCheckDistance, isTouchingRightWall ? Color.green : Color.red);
+        Debug.DrawRay(leftOrigin, Vector2.left * wallCheckDistance, isTouchingLeftWall ? Color.green : Color.red);
+    }
+
+    // Método para executar o pulo da parede
+    private void WallJump()
+    {
+        isWallSliding = false;
+        isWallJumping = true;
+        wallJumpingCounter = wallJumpTime; // Inicia o timer de bloqueio
+        airJumpsUsed = 0; // Pulo na parede reseta os pulos aéreos
+        currentlyJumping = true; // Ativa a lógica de 'jump cut-off' se o botão for solto
+
+        // Determina a direção do pulo (oposta à parede)
+        float jumpDirectionX = isTouchingRightWall ? -1f : 1f;
+
+        // Aplica a força do pulo (define a velocidade diretamente)
+        rb.linearVelocity = new Vector2(jumpDirectionX * wallJumpForce.x, wallJumpForce.y);
+
+        // Atualiza a variável de debug 'jumpSpeed'
+        jumpSpeed = wallJumpForce.y;
+    }
+    
     private void Jump()
     {
         float thisJumpSpeed = originalJumpSpeed;
