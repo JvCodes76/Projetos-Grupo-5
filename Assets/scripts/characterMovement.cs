@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class characterMovement : MonoBehaviour
+public class CharacterMovement : MonoBehaviour
 {
     [Header("Horizontal Movement (Ground)")]
     [SerializeField] private float maxSpeed = 10f;              
@@ -40,8 +40,8 @@ public class characterMovement : MonoBehaviour
     [SerializeField] private LayerMask groundLayer = 1;        
 
     [Header("Horizontal Debug")]
-    [SerializeField] private float currentHorizontalVelocity;
-    [SerializeField] private float horizontalInput;
+    [SerializeField] public float currentHorizontalVelocity;
+    [SerializeField] public float horizontalInput;
 
     [Header("Vertical Calculations (Debug)")]
     [SerializeField] public float jumpSpeed;                    
@@ -54,7 +54,7 @@ public class characterMovement : MonoBehaviour
     [SerializeField] private float jumpBufferCounter;           
     [SerializeField] private float coyoteTimeCounter = 0f;      
     [SerializeField] private bool pressingJump;                 
-    [SerializeField] public bool onGround;                      
+    [SerializeField] public bool onGround;                    
     [SerializeField] private bool currentlyJumping;             
     [SerializeField] private int airJumpsUsed = 0;
     [SerializeField] private float jumpHoldTime = 0f;       
@@ -62,11 +62,10 @@ public class characterMovement : MonoBehaviour
     [Header("Wall Jump State (Debug)")]
     [SerializeField] private bool isTouchingRightWall;
     [SerializeField] private bool isTouchingLeftWall;
-    [SerializeField] private bool isWallSliding;
-
-    private bool isWallJumping;
+    [SerializeField] public bool isWallSliding;
+    public bool isWallJumping;
     private float wallJumpingCounter;
-    private Rigidbody2D rb;
+    public Rigidbody2D rb;
     private float originalJumpSpeed;
     public playerStats stats;
     private Collider2D playerCollider;

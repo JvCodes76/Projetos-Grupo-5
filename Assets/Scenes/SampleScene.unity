@@ -2177,6 +2177,7 @@ GameObject:
   - component: {fileID: 755333277}
   - component: {fileID: 755333278}
   - component: {fileID: 755333279}
+  - component: {fileID: 755333280}
   m_Layer: 3
   m_Name: Cyborg
   m_TagString: Untagged
@@ -2255,7 +2256,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7565942534821263967, guid: 385d307fa54bdf241ab90662f6388821, type: 3}
+  m_Sprite: {fileID: 5074806556455747457, guid: 385d307fa54bdf241ab90662f6388821, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2364,6 +2365,8 @@ MonoBehaviour:
   isTouchingRightWall: 0
   isTouchingLeftWall: 0
   isWallSliding: 0
+  isWallJumping: 0
+  rb: {fileID: 0}
   stats: {fileID: 0}
 --- !u!114 &755333277
 MonoBehaviour:
@@ -2469,7 +2472,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.64, y: 0.64}
+    oldSize: {x: 1, y: 1}
     newSize: {x: 0.64, y: 0.64}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -2477,6 +2480,18 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.2686603, y: 0.4712091}
   m_EdgeRadius: 0
+--- !u!114 &755333280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 755333266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32ef9bcc0b2b4e14dbdb8ab738b83d7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1071108998
 GameObject:
   m_ObjectHideFlags: 0
