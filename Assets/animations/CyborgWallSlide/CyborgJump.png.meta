@@ -121,20 +121,20 @@ TextureImporter:
       name: CyborgWallSlide0
       rect:
         serializedVersion: 2
-        x: 320
+        x: 64
         y: 0
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a1d7da55ea3dd64418060c41920622ba
-      internalID: 286254912
+      spriteID: 50c29d3a9bdd59e4294566cc45454fec
+      internalID: -620709110
       vertices: []
       indices: 
       edges: []
@@ -156,12 +156,12 @@ TextureImporter:
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       CyborgJump_0: -24619687
-      CyborgJump_1: -620709110
       CyborgJump_2: 1719374364
       CyborgJump_3: -1049794187
       CyborgJump_4: 764823168
+      CyborgJump_5: 1970167123
       CyborgJump_6: 1688543111
-      CyborgWallSlide0: -1189239744
+      CyborgWallSlide0: -620709110
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
