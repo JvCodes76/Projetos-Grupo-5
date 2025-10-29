@@ -42,6 +42,7 @@ public class characterMovement : MonoBehaviour
     [Header("Horizontal Debug")]
     [SerializeField] public float currentHorizontalVelocity;
     [SerializeField] public float horizontalInput;
+    public Animator playerAnimator; 
 
     [Header("Vertical Calculations (Debug)")]
     [SerializeField] public float jumpSpeed;                    
@@ -91,6 +92,11 @@ public class characterMovement : MonoBehaviour
             enabled = false;
             return;
         }
+
+        if (playerAnimator == null) 
+    {
+        Debug.LogWarning("Animator não encontrado no CharacterMovement");
+    }
 
         playerCollider = GetComponent<Collider2D>();
         if (playerCollider == null)
@@ -363,6 +369,11 @@ public class characterMovement : MonoBehaviour
 
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, thisJumpSpeed);
         currentlyJumping = true;
+
+        if (playerAnimator != null) 
+    {
+        playerAnimator.SetTrigger("JumpTrigger");
+    }
 
         if (!onGround && coyoteTimeCounter <= 0f)
         {
