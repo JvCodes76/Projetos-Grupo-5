@@ -28,11 +28,11 @@ public class characterMovement : MonoBehaviour
     [SerializeField] private float airJumpHeightMultiplier = 1f;
 
     [Header("Wall Jump Settings")]
-    [SerializeField] private float wallCheckDistance = 0.1f;
-    [SerializeField] private float wallSlideSpeed = 2f;
-    [SerializeField] private Vector2 wallJumpForce = new Vector2(5f, 9f);
+    [SerializeField] private float wallCheckDistance = 0.1f; // O tamanho do Raycast
+    [SerializeField] private float wallSlideSpeed = 2f; // Velocidade na descida do slide
+    [SerializeField] private Vector2 wallJumpForce = new Vector2(5f, 9f); // Vetores de força de empurrão
     [SerializeField] private float wallJumpTime = 0.2f; // Duração do bloqueio de input pós-pulo
-    [SerializeField] private LayerMask wallLayer;
+    [SerializeField] private LayerMask wallLayer; // Qual camada ele detecta que é onde pode fazer o walljump
 
     [Header("Ground Check")]
     [SerializeField] private Transform groundCheck;             
@@ -60,7 +60,7 @@ public class characterMovement : MonoBehaviour
     [SerializeField] private int airJumpsUsed = 0;
     [SerializeField] private float jumpHoldTime = 0f;       
 
-    [Header("Wall Jump State (Debug)")]
+    [Header("Wall Jump State (Debug)")] // Variaveis de verificação do walljump
     [SerializeField] private bool isTouchingRightWall;
     [SerializeField] private bool isTouchingLeftWall;
     [SerializeField] public bool isWallSliding;
@@ -228,7 +228,7 @@ public class characterMovement : MonoBehaviour
         
         float horizontalMovement = 0f;
 
-        // [NOVO] Início da lógica de movimento horizontal simétrica
+        // Início da lógica de movimento horizontal simétrica
         float selectedRate;
 
         if (horizontalInput == 0)
@@ -247,7 +247,7 @@ public class characterMovement : MonoBehaviour
             selectedRate = accelRate; 
         }
 
-        // [NOVO] Aplica a taxa selecionada ('selectedRate')
+        // Aplica a taxa selecionada ('selectedRate')
         // 'movement' é a mudança máxima de velocidade que podemos aplicar neste frame
         float movement = selectedRate * Time.fixedDeltaTime;
         
