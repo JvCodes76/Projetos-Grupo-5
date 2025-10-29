@@ -1,11 +1,13 @@
 using UnityEngine;
 using TMPro;
 using System;
+using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
 {
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI timerText;   // arraste o Text (TMP) aqui
+    [SerializeField] private GameObject GameOverScreen;
 
     [Header("Config")]
     [SerializeField] private bool autoStart = true;       // começa sozinho ao dar Play
@@ -43,6 +45,8 @@ public class Timer : MonoBehaviour
             {
                 currentTime = 0f;
                 timerActive = false;
+                timerText.color = Color.red;
+                GameOverScreen.SetActive(true);
                 Debug.Log("Timer finished!");
             }
         }
