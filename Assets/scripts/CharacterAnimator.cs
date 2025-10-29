@@ -1,12 +1,12 @@
 using UnityEngine;
 public class CharacterAnimator : MonoBehaviour
 {
-    private CharacterMovement characterMovement;
+    private characterMovement characterMovement;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
     void Start()
     {
-        characterMovement = GetComponent<CharacterMovement>();
+        characterMovement = GetComponent<characterMovement>();
         if (characterMovement == null)
         {
             Debug.LogError("faltando o CharacterMovement no player");

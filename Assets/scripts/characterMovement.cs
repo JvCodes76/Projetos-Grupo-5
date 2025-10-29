@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class CharacterMovement : MonoBehaviour
+public class characterMovement : MonoBehaviour
 {
     [Header("Horizontal Movement (Ground)")]
     [SerializeField] private float maxSpeed = 10f;              
@@ -123,10 +123,6 @@ public class CharacterMovement : MonoBehaviour
     void Update()
     {
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.right, 10f, groundLayer);
-        if (hit.collider != null)
-        {
-            Debug.Log($"Objeto invisível detectado: {hit.collider.name} em {hit.point}");
-        }
         horizontalInput = Input.GetAxisRaw("Horizontal");
 
         if (Input.GetButtonDown("Jump"))
