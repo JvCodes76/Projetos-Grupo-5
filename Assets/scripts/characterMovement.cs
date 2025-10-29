@@ -93,17 +93,18 @@ public class characterMovement : MonoBehaviour
             return;
         }
 
-        if (playerAnimator == null) 
-    {
-        Debug.LogWarning("Animator não encontrado no CharacterMovement");
-    }
-
         playerCollider = GetComponent<Collider2D>();
         if (playerCollider == null)
         {
             Debug.LogError("PlayerMovement2D requer um Collider2D no GameObject para o Wall Jump!");
             enabled = false;
             return;
+        }
+
+        playerAnimator = GetComponent<Animator>();
+        if (playerAnimator == null)
+        {
+            Debug.LogWarning("Animator não encontrado no CharacterMovement");
         }
         
         defaultGravityScale = rb.gravityScale;
