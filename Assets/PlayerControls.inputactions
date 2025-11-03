@@ -16,7 +16,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Movement1",
+                    "name": "Jump",
                     "type": "Value",
                     "id": "2d0b6a4b-250e-4a4a-af46-d8e86e0263d6",
                     "expectedControlType": "Axis",
@@ -62,11 +62,11 @@
                 {
                     "name": "",
                     "id": "122944c8-ca03-4c02-a6d2-d12a7a8c03b8",
-                    "path": "",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Movement1",
+                    "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

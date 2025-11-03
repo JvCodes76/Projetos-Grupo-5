@@ -1,90 +1,122 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class characterMovement : MonoBehaviour
 {
     [Header("Horizontal Movement (Ground)")]
-    [SerializeField] private float maxSpeed = 10f;              
-    [SerializeField] private float acceleration = 50f;          
-    [SerializeField] private float deceleration = 70f;          
-    [SerializeField] private float turnSpeed = 60f;            
+    [SerializeField] private float maxSpeed = 10f;
+    [SerializeField] private float acceleration = 50f;
+    [SerializeField] private float deceleration = 70f;
+    [SerializeField] private float turnSpeed = 60f;
 
     [Header("Horizontal Movement (Air)")]
-    [SerializeField] private float airAcceleration = 30f;       
-    [SerializeField] private float airDeceleration = 40f;       
-    [SerializeField] private float airTurnSpeed = 25f;          
+    [SerializeField] private float airAcceleration = 30f;
+    [SerializeField] private float airDeceleration = 40f;
+    [SerializeField] private float airTurnSpeed = 25f;
 
     [Header("Vertical Jump Settings")]
-    [SerializeField] private float jumpHeight = 4f;             
-    [SerializeField] private float timeToApex = 0.4f;           
-    [SerializeField] private int maxAirJumps = 1;               
-    [SerializeField] private float upwardMovementMultiplier = 1f; 
-    [SerializeField] private float downwardMovementMultiplier = 1f; 
-    [SerializeField] private bool variableJumpHeight = true;    
-    [SerializeField] private float maxJumpHoldTime = 0.3f;      
-    [SerializeField] private float jumpCutoffMultiplier = 2f;   
-    [SerializeField] private float coyoteTime = 0.1f;           
-    [SerializeField] private float speedYLimit = 20f;           
+    [SerializeField] private float jumpHeight = 4f;
+    [SerializeField] private float timeToApex = 0.4f;
+    [SerializeField] private int maxAirJumps = 1;
+    [SerializeField] private float upwardMovementMultiplier = 1f;
+    [SerializeField] private float downwardMovementMultiplier = 1f;
+    [SerializeField] private bool variableJumpHeight = true;
+    [SerializeField] private float maxJumpHoldTime = 0.3f;
+    [SerializeField] private float jumpCutoffMultiplier = 2f;
+    [SerializeField] private float coyoteTime = 0.1f;
+    [SerializeField] private float speedYLimit = 20f;
     [SerializeField] private float jumpBufferTime = 0.1f;
     [SerializeField] private float airJumpHeightMultiplier = 1f;
+    [SerializeField] private float hangTime = 0.2f; // Tempo parado no ápice
 
     [Header("Wall Jump Settings")]
-    [SerializeField] private float wallCheckDistance = 0.1f; // O tamanho do Raycast
-    [SerializeField] private float wallSlideSpeed = 2f; // Velocidade na descida do slide
-    [SerializeField] private Vector2 wallJumpForce = new Vector2(5f, 9f); // Vetores de força de empurrão
-    [SerializeField] private float wallJumpTime = 0.2f; // Duração do bloqueio de input pós-pulo
-    [SerializeField] private LayerMask wallLayer; // Qual camada ele detecta que é onde pode fazer o walljump
+    [SerializeField] private float wallCheckDistance = 0.1f;
+    [SerializeField] private float wallSlideSpeed = 2f;
+    [SerializeField] private Vector2 wallJumpForce = new Vector2(5f, 9f);
+    [SerializeField] private float wallJumpTime = 0.2f;
+    [SerializeField] private LayerMask wallLayer;
+    [SerializeField] private bool enableWallJump = true;
 
     [Header("Ground Check")]
-    [SerializeField] private Transform groundCheck;             
-    [SerializeField] private float groundCheckRadius = 0.2f;    
-    [SerializeField] private LayerMask groundLayer = 1;        
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private float groundCheckRadius = 0.2f;
+    [SerializeField] private LayerMask groundLayer = 1;
 
-    [Header("Horizontal Debug")]
+    [Header("Debug")]
     [SerializeField] public float currentHorizontalVelocity;
     [SerializeField] public float horizontalInput;
-    public Animator playerAnimator; 
+    public Animator playerAnimator;
 
-    [Header("Vertical Calculations (Debug)")]
-    [SerializeField] public float jumpSpeed;                    
-    [SerializeField] private float defaultGravityScale;        
-    [SerializeField] public float gravMultiplier;               
+    [SerializeField] public float jumpSpeed;
+    [SerializeField] private float defaultGravityScale;
+    [SerializeField] public float gravMultiplier;
 
-    [Header("Vertical Current State (Debug)")]
-    [SerializeField] public bool canJumpAgain = false;         
-    [SerializeField] private bool desiredJump;                  
-    [SerializeField] private float jumpBufferCounter;           
-    [SerializeField] private float coyoteTimeCounter = 0f;      
-    [SerializeField] private bool pressingJump;                 
-    [SerializeField] public bool onGround;                    
-    [SerializeField] private bool currentlyJumping;             
+    [SerializeField] public bool canJumpAgain = false;
+    [SerializeField] private bool desiredJump;
+    [SerializeField] private float jumpBufferCounter;
+    [SerializeField] private float coyoteTimeCounter = 0f;
+    [SerializeField] private bool pressingJump;
+    [SerializeField] public bool onGround;
+    [SerializeField] private bool currentlyJumping;
     [SerializeField] private int airJumpsUsed = 0;
-    [SerializeField] private float jumpHoldTime = 0f;       
+    [SerializeField] private float jumpHoldTime = 0f;
+    [SerializeField] private float jumpStartTime; // Nova variável para registrar o tempo de início do hold
 
-    [Header("Wall Jump State (Debug)")] // Variaveis de verificação do walljump
     [SerializeField] private bool isTouchingRightWall;
     [SerializeField] private bool isTouchingLeftWall;
     [SerializeField] public bool isWallSliding;
     public bool isWallJumping;
     private float wallJumpingCounter;
+
     public Rigidbody2D rb;
     private float originalJumpSpeed;
-    public playerStats stats;
     private Collider2D playerCollider;
+
+    // Variável para registrar a posição Y inicial do pulo (para limitar altura)
+    private float initialJumpY;
+    // Flag para distinguir ground jump de air jump
+    private bool isGroundJump;
+    // Timer para hang time no ápice
+    private float hangTimer = 0f;
+    // Para detectar o ápice (mudança de velocidade positiva para zero)
+    private float previousVelocityY;
+
+    private PlayerInput playerInput;
+    private InputAction moveAction;
+    private InputAction jumpAction;
+
+    void Awake()
+    {
+        playerInput = GetComponent<PlayerInput>();
+
+        if (playerInput == null)
+        {
+            Debug.LogError("PlayerInput component não encontrado! Adicione um no GameObject.");
+            enabled = false;
+            return;
+        }
+
+        var actionMap = playerInput.actions.FindActionMap("Player");
+        if (actionMap == null)
+        {
+            Debug.LogError("Action Map 'Player' não encontrado no Input Actions!");
+            enabled = false;
+            return;
+        }
+
+        moveAction = actionMap.FindAction("Movement");
+        jumpAction = actionMap.FindAction("Jump");
+
+        if (moveAction == null || jumpAction == null)
+        {
+            Debug.LogError("Actions 'Movement' e/ou 'Jump' não encontradas no Action Map 'Player'!");
+            enabled = false;
+            return;
+        }
+    }
 
     void Start()
     {
-        stats = GetComponent<playerStats>();
-
-        if (stats == null)
-        {
-            Debug.LogError("O componente playerStats não foi encontrado no GameObject!");
-            enabled = false; 
-            return;
-        }
-        acceleration += stats.forca * 1;
-        maxSpeed += stats.agilidade * 2;
-        jumpHeight += stats.forca * 1;
-        timeToApex -= stats.agilidade * 0.01f;
         rb = GetComponent<Rigidbody2D>();
         if (rb == null)
         {
@@ -102,11 +134,6 @@ public class characterMovement : MonoBehaviour
         }
 
         playerAnimator = GetComponent<Animator>();
-        if (playerAnimator == null)
-        {
-            Debug.LogWarning("Animator não encontrado no CharacterMovement");
-        }
-        
         defaultGravityScale = rb.gravityScale;
         CalculateJumpVariables();
 
@@ -129,18 +156,20 @@ public class characterMovement : MonoBehaviour
 
     void Update()
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.right, 10f, groundLayer);
-        horizontalInput = Input.GetAxisRaw("Horizontal");
+        // Leitura horizontal via novo input system (1D Axis)
+        horizontalInput = moveAction.ReadValue<float>();
 
-        if (Input.GetButtonDown("Jump"))
+        // Captura o pulo
+        if (jumpAction.WasPressedThisFrame())
         {
             desiredJump = true;
             jumpBufferCounter = jumpBufferTime;
             pressingJump = true;
             jumpHoldTime = 0f;
+            jumpStartTime = Time.time; // Registra o tempo de início do hold
         }
 
-        if (Input.GetButtonUp("Jump"))
+        if (jumpAction.WasReleasedThisFrame())
         {
             pressingJump = false;
             currentlyJumping = false;
@@ -152,7 +181,6 @@ public class characterMovement : MonoBehaviour
             jumpHoldTime = Mathf.Clamp(jumpHoldTime, 0f, maxJumpHoldTime);
         }
 
-        
         onGround = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
 
         CheckWalls();
@@ -185,15 +213,15 @@ public class characterMovement : MonoBehaviour
         if (jumpBufferCounter > 0f)
         {
             jumpBufferCounter -= Time.deltaTime;
-            if (desiredJump) // Se o jogador quer pular
+            if (desiredJump)
             {
-                if (isWallSliding) // Prioridade 1: Pular da Parede
+                if (enableWallJump && isWallSliding)
                 {
                     WallJump();
                     desiredJump = false;
                     jumpBufferCounter = 0f;
                 }
-                else if (canJumpAgain) // Prioridade 2: Pulo Padrão (Chão, Coyote, Ar)
+                else if (canJumpAgain && !(isWallSliding && !enableWallJump))
                 {
                     Jump();
                     desiredJump = false;
@@ -201,6 +229,7 @@ public class characterMovement : MonoBehaviour
                 }
             }
         }
+
         if (isWallJumping)
         {
             wallJumpingCounter -= Time.deltaTime;
@@ -218,65 +247,42 @@ public class characterMovement : MonoBehaviour
         float currentVelocityX = rb.linearVelocity.x;
         float currentVelocityY = rb.linearVelocity.y;
 
-        // ========== MOVIMENTO HORIZONTAL ==========
+        // Salva a velocidade Y anterior para detectar o ápice
+        previousVelocityY = currentVelocityY;
+
+        // Horizontal Movement
         float accelRate = onGround ? acceleration : airAcceleration;
         float decelRate = onGround ? deceleration : airDeceleration;
         float turnRate = onGround ? turnSpeed : airTurnSpeed;
 
         float targetSpeed = horizontalInput * maxSpeed;
         float speedDifference = targetSpeed - currentVelocityX;
-        
+
         float horizontalMovement = 0f;
 
-        // Início da lógica de movimento horizontal simétrica
         float selectedRate;
 
         if (horizontalInput == 0)
-        {
-            // Se o input é 0, usamos a desaceleração
-            selectedRate = decelRate; 
-        }
+            selectedRate = decelRate;
         else if (Mathf.Sign(horizontalInput) != Mathf.Sign(currentVelocityX) && currentVelocityX != 0)
-        {
-            // Se o input é oposto à velocidade (virando), usamos a taxa de virada
-            selectedRate = turnRate; 
-        }
+            selectedRate = turnRate;
         else
-        {
-            // Caso contrário (acelerando na mesma direção), usamos a aceleração
-            selectedRate = accelRate; 
-        }
+            selectedRate = accelRate;
 
-        // Aplica a taxa selecionada ('selectedRate')
-        // 'movement' é a mudança máxima de velocidade que podemos aplicar neste frame
         float movement = selectedRate * Time.fixedDeltaTime;
-        
+
         if (speedDifference > 0)
-        {
-            // Queremos ir mais rápido para a direita
-            // Aplicamos força positiva, limitando ao máximo 'movement' e à 'speedDifference'
             horizontalMovement = Mathf.Min(movement, speedDifference);
-        }
         else if (speedDifference < 0)
-        {
-            // Queremos ir mais rápido para a esquerda
-            // Aplicamos força negativa, limitando ao máximo 'movement' e à 'speedDifference'
             horizontalMovement = Mathf.Max(-movement, speedDifference);
-        }
 
-        // [NOVO] O bloqueio do pulo na parede (isWallJumping) deve sobrescrever qualquer movimento
         if (isWallJumping)
-        {
             horizontalMovement = 0f;
-        }
-        // [NOVO] Fim da lógica de movimento horizontal simétrica
-
 
         float newVelocityX = currentVelocityX + horizontalMovement;
         currentHorizontalVelocity = newVelocityX;
 
-        // ========== MOVIMENTO VERTICAL ==========
-
+        // Vertical Movement
         if (isWallSliding)
         {
             if (currentVelocityY < -wallSlideSpeed)
@@ -284,84 +290,110 @@ public class characterMovement : MonoBehaviour
                 currentVelocityY = -wallSlideSpeed;
             }
         }
-        
-        if (currentVelocityY > 0)
+
+        // Lógica para pulo variável (apenas para ground jumps)
+        if (currentlyJumping && pressingJump && isGroundJump)
         {
-            currentVelocityY *= upwardMovementMultiplier;
+            // Verifica se a altura máxima foi atingida
+            if (transform.position.y >= initialJumpY + jumpHeight)
+            {
+                currentVelocityY = 0;  // Para de subir se atingiu o limite
+                currentlyJumping = false;  // Opcional: encerra o pulo se quiser
+            }
+            else
+            {
+                currentVelocityY = jumpSpeed;  // Mantém subida constante
+                rb.gravityScale = 0;  // Desabilita gravidade temporariamente para subida reta
+            }
         }
-        else if (currentVelocityY < 0)
+        else if (currentlyJumping && !pressingJump && isGroundJump)
         {
-            currentVelocityY *= downwardMovementMultiplier;
+            // Para ground jumps: quando solta o botão, para imediatamente e inicia hang time
+            currentVelocityY = 0;
+            if (hangTimer == 0)
+            {
+                hangTimer = hangTime;
+            }
+        }
+        else
+        {
+            // Aplica multiplicadores de movimento vertical (subida/queda) apenas se NÃO estiver forçando o pulo
+            if (currentVelocityY > 0)
+            {
+                currentVelocityY *= upwardMovementMultiplier;
+            }
+            else if (currentVelocityY < 0)
+            {
+                currentVelocityY *= downwardMovementMultiplier;
+            }
+
+            // Ajusta gravidade baseada no estado
+            rb.gravityScale = defaultGravityScale * gravMultiplier;
+        }
+
+        // Detecta o ápice para air jumps e inicia hang time
+        if (currentlyJumping && !isGroundJump && previousVelocityY > 0 && currentVelocityY <= 0 && hangTimer == 0)
+        {
+            hangTimer = hangTime;
+        }
+
+        // Durante hang time, mantém velocidade zero e gravidade desabilitada
+        if (hangTimer > 0)
+        {
+            hangTimer -= Time.fixedDeltaTime;
+            currentVelocityY = 0;
+            rb.gravityScale = 0;
         }
 
         currentVelocityY = Mathf.Clamp(currentVelocityY, -speedYLimit, speedYLimit);
 
-        if (currentlyJumping && !pressingJump && currentVelocityY > 0)
-        {
-            rb.gravityScale = defaultGravityScale * jumpCutoffMultiplier;
-        }
-        else
-        {
-            rb.gravityScale = defaultGravityScale * gravMultiplier;
-        }
-
         float newVelocityY = currentVelocityY;
 
-        // ========== APLICA VELOCIDADE FINAL (UMA VEZ) ==========
         rb.linearVelocity = new Vector2(newVelocityX, newVelocityY);
     }
-    
-    // Método para checar as paredes
+
     private void CheckWalls()
     {
-        if (playerCollider == null) return; 
+        if (playerCollider == null) return;
 
-        // Pega o centro e a "metade da largura" (extents) do colisor
         Vector2 center = playerCollider.bounds.center;
         float halfWidth = playerCollider.bounds.extents.x;
-        
-        // Define os pontos de origem dos raios NAS BORDAS do colisor
-        // (Usando o centro vertical 'center.y' do colisor)
+
         Vector2 rightOrigin = new Vector2(center.x + halfWidth, center.y);
         Vector2 leftOrigin = new Vector2(center.x - halfWidth, center.y);
 
-        // Lança os raios a partir das BORDAS.
-        // Agora 'wallCheckDistance' é a distância a partir da borda, corrigindo a assimetria.
         isTouchingRightWall = Physics2D.Raycast(rightOrigin, Vector2.right, wallCheckDistance, wallLayer);
         isTouchingLeftWall = Physics2D.Raycast(leftOrigin, Vector2.left, wallCheckDistance, wallLayer);
 
-        // Desenha raios no editor para debug (opcional)
         Debug.DrawRay(rightOrigin, Vector2.right * wallCheckDistance, isTouchingRightWall ? Color.green : Color.red);
         Debug.DrawRay(leftOrigin, Vector2.left * wallCheckDistance, isTouchingLeftWall ? Color.green : Color.red);
     }
 
-    // Método para executar o pulo da parede
     private void WallJump()
     {
         isWallSliding = false;
         isWallJumping = true;
-        wallJumpingCounter = wallJumpTime; // Inicia o timer de bloqueio
-        airJumpsUsed = 0; // Pulo na parede reseta os pulos aéreos
-        currentlyJumping = true; // Ativa a lógica de 'jump cut-off' se o botão for solto
+        wallJumpingCounter = wallJumpTime;
+        airJumpsUsed = 0;
+        currentlyJumping = true;
 
-        // Determina a direção do pulo (oposta à parede)
         float jumpDirectionX = isTouchingRightWall ? -1f : 1f;
 
-        // Aplica a força do pulo (define a velocidade diretamente)
         rb.linearVelocity = new Vector2(jumpDirectionX * wallJumpForce.x, wallJumpForce.y);
 
-        // Atualiza a variável de debug 'jumpSpeed'
         jumpSpeed = wallJumpForce.y;
     }
-    
+
     private void Jump()
     {
+        // Registra a posição Y inicial para limitar a altura (apenas para ground jumps)
+        initialJumpY = transform.position.y;
+
+        // Determina se é ground jump ou air jump
+        isGroundJump = onGround || coyoteTimeCounter > 0f;
+
+        // Calcula a velocidade do pulo
         float thisJumpSpeed = originalJumpSpeed;
-        if (variableJumpHeight && pressingJump)
-        {
-            float holdFactor = jumpHoldTime / maxJumpHoldTime;
-            thisJumpSpeed *= (1f + holdFactor * 0.5f);
-        }
 
         if (!onGround && coyoteTimeCounter <= 0f)
         {
@@ -371,21 +403,25 @@ public class characterMovement : MonoBehaviour
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, thisJumpSpeed);
         currentlyJumping = true;
 
-        if (playerAnimator != null) 
-    {
-        playerAnimator.SetTrigger("JumpTrigger");
-    }
+        if (playerAnimator != null)
+        {
+            playerAnimator.SetTrigger("JumpTrigger");
+        }
 
         if (!onGround && coyoteTimeCounter <= 0f)
         {
             airJumpsUsed = Mathf.Min(airJumpsUsed + 1, maxAirJumps);
         }
+
         jumpSpeed = thisJumpSpeed;
     }
 
     private void CalculateJumpVariables()
     {
-        originalJumpSpeed = (2f * jumpHeight) / timeToApex;
+        // Calcula jumpSpeed para alcançar jumpHeight em timeToApex com velocidade constante (gravidade = 0 durante subida)
+        originalJumpSpeed = jumpHeight / timeToApex;
+
+        // Mantém o cálculo de gravMultiplier para quando a gravidade for restaurada (queda)
         float calculatedGravity = (2f * jumpHeight) / (Mathf.Pow(timeToApex, 2));
         gravMultiplier = calculatedGravity / Physics2D.gravity.magnitude / defaultGravityScale;
 
