@@ -21,7 +21,6 @@ public class characterMovement : MonoBehaviour
     [SerializeField] private float upwardMovementMultiplier = 1f;
     [SerializeField] private float downwardMovementMultiplier = 1f;
     [SerializeField] private bool variableJumpHeight = true;
-    [SerializeField] private float maxJumpHoldTime = 0.3f;
     [SerializeField] private float jumpCutoffMultiplier = 2f;
     [SerializeField] private float coyoteTime = 0.1f;
     [SerializeField] private float speedYLimit = 20f;
@@ -59,7 +58,6 @@ public class characterMovement : MonoBehaviour
     [SerializeField] public bool onGround;
     [SerializeField] private bool currentlyJumping;
     [SerializeField] private int airJumpsUsed = 0;
-    [SerializeField] private float jumpHoldTime = 0f;
     [SerializeField] private float jumpStartTime; // Nova variável para registrar o tempo de início do hold
 
     [SerializeField] private bool isTouchingRightWall;
@@ -165,7 +163,6 @@ public class characterMovement : MonoBehaviour
             desiredJump = true;
             jumpBufferCounter = jumpBufferTime;
             pressingJump = true;
-            jumpHoldTime = 0f;
             jumpStartTime = Time.time; // Registra o tempo de início do hold
         }
 
@@ -175,11 +172,6 @@ public class characterMovement : MonoBehaviour
             currentlyJumping = false;
         }
 
-        if (pressingJump && variableJumpHeight)
-        {
-            jumpHoldTime += Time.deltaTime;
-            jumpHoldTime = Mathf.Clamp(jumpHoldTime, 0f, maxJumpHoldTime);
-        }
 
         onGround = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
 

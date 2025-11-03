@@ -12,6 +12,12 @@ public class CameraFollow : MonoBehaviour
     [Tooltip("Tempo de suavização do movimento")]
     [SerializeField] private float smoothTime = 0.2f;
 
+    [SerializeField] private float minX = 0;
+    [SerializeField] private float maxX = 1000;
+    [SerializeField] private float minY = 0;
+    [SerializeField] private float maxY = 1000;
+
+
     private Vector3 _velocity = Vector3.zero;
 
     private void LateUpdate()
@@ -19,12 +25,17 @@ public class CameraFollow : MonoBehaviour
         if (target == null)
             return;
 
+
         Vector3 desiredPosition = target.position + offset;
         transform.position = Vector3.SmoothDamp(
             transform.position,
             desiredPosition,
             ref _velocity,
             smoothTime
+
         );
+        desiredPosition.x = Mathf.Clamp(desiredPosition.x, minX, maxX);
+        desiredPosition.y = Mathf.Clamp(desiredPosition.y, minY, maxY);
+        transform.position = desiredPosition;
     }
 }
