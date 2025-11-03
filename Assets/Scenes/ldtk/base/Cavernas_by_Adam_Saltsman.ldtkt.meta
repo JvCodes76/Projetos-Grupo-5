@@ -9,7 +9,7 @@ ScriptedImporter:
   assetBundleVariant: 
   script: {fileID: 11500000, guid: f3268c876daf4890b6af6cd462063137, type: 3}
   _reimportOnDependencyChange: 1
-  _pixelsPerUnit: 8
+  _pixelsPerUnit: 32
   _overrideTexture: {instanceID: 0}
   _sprites:
   - name: Cavernas_by_Adam_Saltsman_0
@@ -24,7 +24,7 @@ ScriptedImporter:
       y: 248
       width: 8
       height: 8
-    spriteID: a7d708425eb2c6d41bfdfdae521b2fa2
+    spriteID: a38a118f66cd3eb489a1549d23019fab
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_1
@@ -39,7 +39,7 @@ ScriptedImporter:
       y: 248
       width: 8
       height: 8
-    spriteID: 0d5dd9d2944d56a4b8bb08642092fe5e
+    spriteID: 68b74e063d188cd4d98e1d025d82f9c4
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_2
@@ -54,7 +54,7 @@ ScriptedImporter:
       y: 248
       width: 8
       height: 8
-    spriteID: b4b5c09f25cca4c4ba1e109492e1d013
+    spriteID: 69f9bbc4f82bf284fa8c8e4b8eb3868d
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_3
@@ -69,7 +69,7 @@ ScriptedImporter:
       y: 248
       width: 8
       height: 8
-    spriteID: 049ecd433b4975f4082234a5a6af31f7
+    spriteID: aa5694d672c0ae0448fce25042475d65
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_4
@@ -84,7 +84,7 @@ ScriptedImporter:
       y: 248
       width: 8
       height: 8
-    spriteID: eb7bb5594e402db4bbf9c5f90447e965
+    spriteID: 9169b95dee4b2fc4f847249b4dc96edb
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_5
@@ -99,7 +99,7 @@ ScriptedImporter:
       y: 248
       width: 8
       height: 8
-    spriteID: 107bbbb9abb4c484aaab449c003729c2
+    spriteID: c949e4de97f6a38408cab085932e3e07
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_6
@@ -114,7 +114,7 @@ ScriptedImporter:
       y: 248
       width: 8
       height: 8
-    spriteID: e4412308cd1b3594bb5ad5d66381ed9f
+    spriteID: 8d44a88bd367c814fb0208f4b3992295
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_7
@@ -129,7 +129,7 @@ ScriptedImporter:
       y: 248
       width: 8
       height: 8
-    spriteID: e444e688c2e08ba44a08ed9bd7715b09
+    spriteID: e2dc0e4c332ffaf43b0da48ec375c0d6
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_8
@@ -144,7 +144,7 @@ ScriptedImporter:
       y: 248
       width: 8
       height: 8
-    spriteID: a2e145e24f1fc1e40bf0804313241178
+    spriteID: d5065cafb036322459d15c1f0ce93653
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_9
@@ -159,7 +159,7 @@ ScriptedImporter:
       y: 248
       width: 8
       height: 8
-    spriteID: e16dd4b561e7c1d4a885a0048b321c17
+    spriteID: fa5d2e5f3593991408f689378453b8ba
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_10
@@ -174,7 +174,7 @@ ScriptedImporter:
       y: 248
       width: 8
       height: 8
-    spriteID: 345fda12e8b44494199b51f0200579cd
+    spriteID: b727ddaa835fb51449a131b756a8990c
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_11
@@ -189,7 +189,7 @@ ScriptedImporter:
       y: 248
       width: 8
       height: 8
-    spriteID: 108f80d4af23c654786fc25734a26226
+    spriteID: 09ea440f8ba22e94881faa943f5a09df
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_12
@@ -204,7 +204,7 @@ ScriptedImporter:
       y: 240
       width: 8
       height: 8
-    spriteID: cc3e7f6cc5ac98242a40be3f21407930
+    spriteID: a22c9a49a6f718545bee1c5ce53f038d
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_13
@@ -219,7 +219,7 @@ ScriptedImporter:
       y: 240
       width: 8
       height: 8
-    spriteID: 33cb4bf01c6eb74439b8d067cac31eb2
+    spriteID: 01a0c0f3de1595444ba58f601b1963e7
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_14
@@ -234,7 +234,7 @@ ScriptedImporter:
       y: 240
       width: 8
       height: 8
-    spriteID: d0f31084b3802bc4985ecdeb82b2cfc1
+    spriteID: aaff3dd7f87ba884ba37b3dd80afad3f
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_15
@@ -249,7 +249,7 @@ ScriptedImporter:
       y: 240
       width: 8
       height: 8
-    spriteID: 246fe3b4b3775ed4cbe46cbefc31a5cb
+    spriteID: 5ffaf9c7a45eb6c48a060d82c69cab63
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_16
@@ -264,7 +264,7 @@ ScriptedImporter:
       y: 240
       width: 8
       height: 8
-    spriteID: f40a39d9c17ca074cbe80e4f130c4acf
+    spriteID: ee1ae861e653a55468a394b9fb1fb7e0
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_17
@@ -279,7 +279,7 @@ ScriptedImporter:
       y: 240
       width: 8
       height: 8
-    spriteID: d05dc5b982cd9fa40a10345927aa69a3
+    spriteID: bfc81f86c75477443909b2acecf532d9
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_18
@@ -294,7 +294,7 @@ ScriptedImporter:
       y: 240
       width: 8
       height: 8
-    spriteID: c0e611087b5eacb44845194e3854ed78
+    spriteID: 668e88b1ec1735546a656cb69b30d62e
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_19
@@ -309,7 +309,7 @@ ScriptedImporter:
       y: 240
       width: 8
       height: 8
-    spriteID: 289d279dc68f7654abdbac6285a96c20
+    spriteID: db8b717a9493ba44fa9f268529e6b41c
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_20
@@ -324,7 +324,7 @@ ScriptedImporter:
       y: 240
       width: 8
       height: 8
-    spriteID: 1e2ffa2322b55f44498266f701f265b5
+    spriteID: 6f4350605f0a677478c0b28bebf05a67
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_21
@@ -339,7 +339,7 @@ ScriptedImporter:
       y: 240
       width: 8
       height: 8
-    spriteID: 7a53c9ced818f4c43a7b8be0ca607d0a
+    spriteID: 0e37146a4360840459bec4ec95aea84d
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_22
@@ -354,7 +354,7 @@ ScriptedImporter:
       y: 240
       width: 8
       height: 8
-    spriteID: cb056117280869e4eb72d92a53318e49
+    spriteID: a9ebc08f2f4d4c947a35877b1fda38e9
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_23
@@ -369,7 +369,7 @@ ScriptedImporter:
       y: 240
       width: 8
       height: 8
-    spriteID: afef441f8397bdb409c9754d7b26c091
+    spriteID: 673996734c81605409e9413cbb48367a
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_24
@@ -384,7 +384,7 @@ ScriptedImporter:
       y: 232
       width: 8
       height: 8
-    spriteID: a30efbbfc7f49044ca6b7423e37cd7b0
+    spriteID: 10abbef91dbc28b4e8e83b0681211eac
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_25
@@ -399,7 +399,7 @@ ScriptedImporter:
       y: 232
       width: 8
       height: 8
-    spriteID: f5c8ba9f555f9b440bf28ee0d9f7d8f1
+    spriteID: e9d143e99b746604fb982c8ae1a5d1a4
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_26
@@ -414,7 +414,7 @@ ScriptedImporter:
       y: 232
       width: 8
       height: 8
-    spriteID: 9f001fa3343fb614090be3647664781f
+    spriteID: de0accbaf26ba134d94da8a5e23769d9
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_27
@@ -429,7 +429,7 @@ ScriptedImporter:
       y: 232
       width: 8
       height: 8
-    spriteID: f3d4e57b11424c14eb0144a6e4455009
+    spriteID: c580d9dd1632fb248a006cf73cafea4c
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_28
@@ -444,7 +444,7 @@ ScriptedImporter:
       y: 232
       width: 8
       height: 8
-    spriteID: be73db2d4ecf5ce4fa2096bdca2c84db
+    spriteID: 0ca394b969b3f004b995c6e333353c87
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_29
@@ -459,7 +459,7 @@ ScriptedImporter:
       y: 232
       width: 8
       height: 8
-    spriteID: c3b81a5ac94e3ac4ab0ab755e2382e6c
+    spriteID: 2acd5b20f5548a44caca37ee39e03fcf
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_30
@@ -474,7 +474,7 @@ ScriptedImporter:
       y: 232
       width: 8
       height: 8
-    spriteID: 1eae0729a89aa6e4d8cc6d820a205f6b
+    spriteID: 0dbcea203e1e9a248a1c9ac73c1e903e
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_31
@@ -489,7 +489,7 @@ ScriptedImporter:
       y: 232
       width: 8
       height: 8
-    spriteID: 700fa7321791a03449aa073f8d2b158f
+    spriteID: 94a5718634e60f5488ccb9b4b366f822
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_32
@@ -504,7 +504,7 @@ ScriptedImporter:
       y: 232
       width: 8
       height: 8
-    spriteID: 0003fbb3bf5d0344eba8ac62215c2a82
+    spriteID: 6d7f944032ed3c74ca02c262d853b694
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_33
@@ -519,7 +519,7 @@ ScriptedImporter:
       y: 232
       width: 8
       height: 8
-    spriteID: 8212142f3d569ef41aebe511cfebdb73
+    spriteID: 1859cd1b972ed2444ab88f0ca88eaad4
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_34
@@ -534,7 +534,7 @@ ScriptedImporter:
       y: 232
       width: 8
       height: 8
-    spriteID: dccd5765a088be44fac5109d5bb99cf3
+    spriteID: c7d43582086b43c41aad66cc51b0bd8d
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_35
@@ -549,7 +549,7 @@ ScriptedImporter:
       y: 232
       width: 8
       height: 8
-    spriteID: 97f6d5a0f87bf5544bd56612d8df8c25
+    spriteID: e7f3515b4b6807f4093aa7823f8258c2
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_36
@@ -564,7 +564,7 @@ ScriptedImporter:
       y: 224
       width: 8
       height: 8
-    spriteID: 66b43f7b6254b65439c6ba8800ddf667
+    spriteID: 218d578d7a2997e4fa36393d668a11e4
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_37
@@ -579,7 +579,7 @@ ScriptedImporter:
       y: 224
       width: 8
       height: 8
-    spriteID: 956a0a37715375a49999aaaa73c876c9
+    spriteID: dc1d40c0db0d7d94389d0ad7211a0650
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_38
@@ -594,7 +594,7 @@ ScriptedImporter:
       y: 224
       width: 8
       height: 8
-    spriteID: 6f8397a2ade27364d823d8b89875d0e6
+    spriteID: c2f113b47151b134c9f0011654c03a03
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_39
@@ -609,7 +609,7 @@ ScriptedImporter:
       y: 224
       width: 8
       height: 8
-    spriteID: 25a168aae6d156c4caca23dfe85b2fba
+    spriteID: 8da418d151a171b4fa9667a77ff54b6d
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_40
@@ -624,7 +624,7 @@ ScriptedImporter:
       y: 224
       width: 8
       height: 8
-    spriteID: ba0eb89c7003388439b9c30d335ce281
+    spriteID: 83f796e176688b64fa32b8881ec8fb2a
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_41
@@ -639,7 +639,7 @@ ScriptedImporter:
       y: 224
       width: 8
       height: 8
-    spriteID: 6b4ccd578573fd646aebc6b1eb90e788
+    spriteID: 289adff6d60d7b846bcd475797000b21
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_42
@@ -654,7 +654,7 @@ ScriptedImporter:
       y: 224
       width: 8
       height: 8
-    spriteID: 1253bfb8b24e26e4591fea4e8e39cf07
+    spriteID: ee239c14f29472f4abd998d880317e16
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_43
@@ -669,7 +669,7 @@ ScriptedImporter:
       y: 224
       width: 8
       height: 8
-    spriteID: a672391ce0635c141b9de9f9a7ab9f28
+    spriteID: a970b988dbfdc1b4b880140fafc314f7
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_44
@@ -684,7 +684,7 @@ ScriptedImporter:
       y: 224
       width: 8
       height: 8
-    spriteID: cc90de9f2c554a24b894695953e54a18
+    spriteID: 244f26776d8fb484885b0ace02d563d8
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_45
@@ -699,7 +699,7 @@ ScriptedImporter:
       y: 224
       width: 8
       height: 8
-    spriteID: 823be4d8c942b6d4db9acd5a8526aab6
+    spriteID: eadb1cc8c95b63e4bb22371e61c10d4a
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_46
@@ -714,7 +714,7 @@ ScriptedImporter:
       y: 224
       width: 8
       height: 8
-    spriteID: be9e01c8c1e541d4abc4086338bfcd23
+    spriteID: 28f3add297ffaf54599aa8174836c189
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_47
@@ -729,7 +729,7 @@ ScriptedImporter:
       y: 224
       width: 8
       height: 8
-    spriteID: 3f622841bc0688a4f891ddd89885a3a3
+    spriteID: 1feeb3f27158f7940bd9354bd7e36cfc
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_48
@@ -744,7 +744,7 @@ ScriptedImporter:
       y: 216
       width: 8
       height: 8
-    spriteID: 065e655c3f0f8a340ae4cc701a566403
+    spriteID: 56f15f8234e43544188de70d60713230
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_49
@@ -759,7 +759,7 @@ ScriptedImporter:
       y: 216
       width: 8
       height: 8
-    spriteID: b70bb335e47010b4880750665371e52f
+    spriteID: 08508c7873d714642ab818db5517b18b
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_50
@@ -774,7 +774,7 @@ ScriptedImporter:
       y: 216
       width: 8
       height: 8
-    spriteID: ac3d858840c5a654c9ad657a15ccb336
+    spriteID: e9d8f2b15231b4f4a8a1c32ce2f58f9d
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_51
@@ -789,7 +789,7 @@ ScriptedImporter:
       y: 216
       width: 8
       height: 8
-    spriteID: 714e97c350c009f489c54b16d29598f8
+    spriteID: c808e9837388957428d43da91423ee4c
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_52
@@ -804,7 +804,7 @@ ScriptedImporter:
       y: 216
       width: 8
       height: 8
-    spriteID: 52b5ffa9cd41a7542858eb41def41421
+    spriteID: 2d9a787b316913b4ea0f6969f8fb6ddb
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_53
@@ -819,7 +819,7 @@ ScriptedImporter:
       y: 216
       width: 8
       height: 8
-    spriteID: b4dd2c1ce896d944e96ac240878d02dd
+    spriteID: d4ff60f31a4ef6e41b21e7b21515b2a2
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_54
@@ -834,7 +834,7 @@ ScriptedImporter:
       y: 216
       width: 8
       height: 8
-    spriteID: 61289e8557d0c904885539dc093283f4
+    spriteID: 55cd247a97e816c42be7d889dc67273b
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_55
@@ -849,7 +849,7 @@ ScriptedImporter:
       y: 216
       width: 8
       height: 8
-    spriteID: 3c62dc17e6c8f634db32dd24f7ea9aff
+    spriteID: 1b202dcf9ece1484f91df7d4debd3790
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_56
@@ -864,7 +864,7 @@ ScriptedImporter:
       y: 216
       width: 8
       height: 8
-    spriteID: 73fd65594e8679240a40c8c47961120a
+    spriteID: 6ee4f83ba0704284ca936b841f373e7b
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_57
@@ -879,7 +879,7 @@ ScriptedImporter:
       y: 216
       width: 8
       height: 8
-    spriteID: 82bcb030eb7926c458ba4f342f23defd
+    spriteID: 8a2c490e5ff3fdb4381d2bc472551b02
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_58
@@ -894,7 +894,7 @@ ScriptedImporter:
       y: 216
       width: 8
       height: 8
-    spriteID: a152cc7ccc715c64fb2a81cac7a23bdc
+    spriteID: 463deba9c89b9f446ade43a9a0543d49
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_59
@@ -909,7 +909,7 @@ ScriptedImporter:
       y: 216
       width: 8
       height: 8
-    spriteID: 7c97a52b3c30ee34981ae0958b1ad3d2
+    spriteID: c36eb4897b191704c9a3fc6f8166ee1f
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_60
@@ -924,7 +924,7 @@ ScriptedImporter:
       y: 208
       width: 8
       height: 8
-    spriteID: 83fcc22b5a43c1247abaf1414dd64fec
+    spriteID: e6298800ccc087a4faa7758bf68baa24
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_61
@@ -939,7 +939,7 @@ ScriptedImporter:
       y: 208
       width: 8
       height: 8
-    spriteID: 10fd811357a670a4f9ea650cddbd99f3
+    spriteID: 847f4e2cd28c68644929887b711f58da
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_62
@@ -954,7 +954,7 @@ ScriptedImporter:
       y: 208
       width: 8
       height: 8
-    spriteID: 3069bfa8f9e86fb46a96387947d28288
+    spriteID: 94c07d9a3956c32448d43cd18d9e9c03
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_63
@@ -969,7 +969,7 @@ ScriptedImporter:
       y: 208
       width: 8
       height: 8
-    spriteID: 288adbb3980caf244b36e09ed8ee56f0
+    spriteID: eb025bf1c77b859459cd60aa0266dc22
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_64
@@ -984,7 +984,7 @@ ScriptedImporter:
       y: 208
       width: 8
       height: 8
-    spriteID: 33634d2a8c1c1054291fd58bc69f7b85
+    spriteID: ee1fa3ba3427b664a88f96ae03b0bf27
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_65
@@ -999,7 +999,7 @@ ScriptedImporter:
       y: 208
       width: 8
       height: 8
-    spriteID: c2c902ff3a1d6114aa16cf12fc622eb1
+    spriteID: 171be00cfa859b44c8a3daa9ec18cb14
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_66
@@ -1014,7 +1014,7 @@ ScriptedImporter:
       y: 208
       width: 8
       height: 8
-    spriteID: 42d9cef79559b3346b7201beeb5235eb
+    spriteID: ef7409d51545fbc4db0092e1f8dd9d42
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_67
@@ -1029,7 +1029,7 @@ ScriptedImporter:
       y: 208
       width: 8
       height: 8
-    spriteID: 9cc16ed909e1e9540bdca1a15e5d2edd
+    spriteID: ae84d5f3b4d4828438d61052c7bf7f02
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_68
@@ -1044,7 +1044,7 @@ ScriptedImporter:
       y: 208
       width: 8
       height: 8
-    spriteID: 9c838a7224d4fbf438debfbd588880c1
+    spriteID: e18f8032af358b54d96393b151d3f326
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_69
@@ -1059,7 +1059,7 @@ ScriptedImporter:
       y: 208
       width: 8
       height: 8
-    spriteID: d57a7a550a996c546800be523cd61e1d
+    spriteID: 37d2073035a2db540b5c29917891f3b8
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_70
@@ -1074,7 +1074,7 @@ ScriptedImporter:
       y: 208
       width: 8
       height: 8
-    spriteID: 256ff0221d6167c459233264ac81960d
+    spriteID: fbe64305c8b6e0a4383f2dc4cdec1ff8
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_71
@@ -1089,7 +1089,7 @@ ScriptedImporter:
       y: 208
       width: 8
       height: 8
-    spriteID: 43be5e1bf761ae549a23d786bf859358
+    spriteID: a6247c3bc2301f94e9a5d942062ef807
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_72
@@ -1104,7 +1104,7 @@ ScriptedImporter:
       y: 200
       width: 8
       height: 8
-    spriteID: 47f0604378de3884dbdb6dce716d93b4
+    spriteID: 9cad0845e8a62a7479dad12c89bf3248
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_73
@@ -1119,7 +1119,7 @@ ScriptedImporter:
       y: 200
       width: 8
       height: 8
-    spriteID: e71d67be882eb6140b91e420a4aae4f6
+    spriteID: c377f7c5ee606164a84e8b503c9593f2
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_74
@@ -1134,7 +1134,7 @@ ScriptedImporter:
       y: 200
       width: 8
       height: 8
-    spriteID: 1476fe1f226002040b3b1a49421f1051
+    spriteID: 8b0e0d24adb07a045918b514f247c009
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_75
@@ -1149,7 +1149,7 @@ ScriptedImporter:
       y: 200
       width: 8
       height: 8
-    spriteID: d04c1446e3404e24c9c4c65aa5aa2733
+    spriteID: dafec235688996343a85cb3b0cb3044f
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_76
@@ -1164,7 +1164,7 @@ ScriptedImporter:
       y: 200
       width: 8
       height: 8
-    spriteID: 9f6a09f9a2f83e84183dbd53be96daa2
+    spriteID: 628d255e068076049aeef9a980344739
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_77
@@ -1179,7 +1179,7 @@ ScriptedImporter:
       y: 200
       width: 8
       height: 8
-    spriteID: f010480c9b705664983fbf112e9fb21b
+    spriteID: 74acdb8eb62e0f9499536c01858279ee
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_78
@@ -1194,7 +1194,7 @@ ScriptedImporter:
       y: 200
       width: 8
       height: 8
-    spriteID: 33c66103c8ce6304e8d063057586d51d
+    spriteID: 2a20b2c0bf8c4b1418c9d60240ba0985
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_79
@@ -1209,7 +1209,7 @@ ScriptedImporter:
       y: 200
       width: 8
       height: 8
-    spriteID: a36a78dc8c1fd99418ab4a9703adcfa5
+    spriteID: 113fb5f2e6c62214b8a6bfc71b115df5
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_80
@@ -1224,7 +1224,7 @@ ScriptedImporter:
       y: 200
       width: 8
       height: 8
-    spriteID: 0fbf3bdb99f108d499e255a49756a700
+    spriteID: 44fc7ce60db83b84c9408a3bd8429746
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_81
@@ -1239,7 +1239,7 @@ ScriptedImporter:
       y: 200
       width: 8
       height: 8
-    spriteID: 8c97778c1f9f2c848b8b2c30a91dace3
+    spriteID: 4134eb25dcc9f2d4f8948c402958c8fd
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_82
@@ -1254,7 +1254,7 @@ ScriptedImporter:
       y: 200
       width: 8
       height: 8
-    spriteID: b2caf38c020fd6a46b68305f6965c960
+    spriteID: f0ce6a822f01b494fbbe9df0929732e2
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_83
@@ -1269,7 +1269,7 @@ ScriptedImporter:
       y: 200
       width: 8
       height: 8
-    spriteID: 8c9f6430c0b31694486bde4ffd9886b8
+    spriteID: ba57e614368dde84c987debf8830f4da
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_84
@@ -1284,7 +1284,7 @@ ScriptedImporter:
       y: 192
       width: 8
       height: 8
-    spriteID: f4f5b7fb3d6bd49489dbb538c54f10e7
+    spriteID: aaa94ae6c5ff8444d8734ed894b6256d
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_85
@@ -1299,7 +1299,7 @@ ScriptedImporter:
       y: 192
       width: 8
       height: 8
-    spriteID: 9ece6a06014a02842b3ec70979cf8196
+    spriteID: 38cd4cf64d87a4846a5209fd46fe7fc4
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_86
@@ -1314,7 +1314,7 @@ ScriptedImporter:
       y: 192
       width: 8
       height: 8
-    spriteID: 1216045d658311d489557c9371012e89
+    spriteID: 97f34c42e37ebdd43b135d4cf140613f
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_87
@@ -1329,7 +1329,7 @@ ScriptedImporter:
       y: 192
       width: 8
       height: 8
-    spriteID: 914ec71acfce4b4489a63442404755e2
+    spriteID: 1ca6216753d766e46b87231825017927
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_88
@@ -1344,7 +1344,7 @@ ScriptedImporter:
       y: 192
       width: 8
       height: 8
-    spriteID: 14a07ab772725e74d87be19bc7870f6c
+    spriteID: febdb126b64515b4dad3cceda40466f2
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_89
@@ -1359,7 +1359,7 @@ ScriptedImporter:
       y: 192
       width: 8
       height: 8
-    spriteID: c6a2fc17526d7bd47a9f79065b71fe25
+    spriteID: aff4fba6f41d8ca44be278fb9a98f3be
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_90
@@ -1374,7 +1374,7 @@ ScriptedImporter:
       y: 192
       width: 8
       height: 8
-    spriteID: 5bba3f6e9bd422f4698fad670cd2b43e
+    spriteID: a17a309a74227bd4887b7a0df2fbc529
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_91
@@ -1389,7 +1389,7 @@ ScriptedImporter:
       y: 192
       width: 8
       height: 8
-    spriteID: f1256f72da6a2cc4888a0ea34e570ec5
+    spriteID: 9784f2c2d25538e4082e741ab48f0f09
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_92
@@ -1404,7 +1404,7 @@ ScriptedImporter:
       y: 192
       width: 8
       height: 8
-    spriteID: 04a5dafc096a9db43ad6a574f380316d
+    spriteID: 1e4cfb5ed40e10541bf1a3d1aee86a82
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_93
@@ -1419,7 +1419,7 @@ ScriptedImporter:
       y: 192
       width: 8
       height: 8
-    spriteID: bbce5c9f745616741b1600a66f6891e8
+    spriteID: 497e9f48c72885848975762bb79bac6c
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_94
@@ -1434,7 +1434,7 @@ ScriptedImporter:
       y: 192
       width: 8
       height: 8
-    spriteID: d8b2a68bdde80614d833e875b7ab2619
+    spriteID: b9bf14dc85f246247bd0d11ec8a1ee45
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_95
@@ -1449,7 +1449,7 @@ ScriptedImporter:
       y: 192
       width: 8
       height: 8
-    spriteID: ad3fadfede2d24e4c8ff1f7e27300b65
+    spriteID: 5a8d852ae25edf449970ba14a1b90b53
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_96
@@ -1464,7 +1464,7 @@ ScriptedImporter:
       y: 184
       width: 8
       height: 8
-    spriteID: bf761d1f0f9972e41961b91091b9f189
+    spriteID: 7f1acfff2a56f374e88de6e132a561ec
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_97
@@ -1479,7 +1479,7 @@ ScriptedImporter:
       y: 184
       width: 8
       height: 8
-    spriteID: 1f68aba339c826344948eb7d68bf2fd1
+    spriteID: 52c478860204199469c4bbf264879bba
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_98
@@ -1494,7 +1494,7 @@ ScriptedImporter:
       y: 184
       width: 8
       height: 8
-    spriteID: 2fda1ec984d3cf64fb127c55b2270ca9
+    spriteID: d03f57beb4e409b4e9d4012ea0f56337
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_99
@@ -1509,7 +1509,7 @@ ScriptedImporter:
       y: 184
       width: 8
       height: 8
-    spriteID: 755c3e638757c64418a69f18b0f59cd0
+    spriteID: b702a0ed85cf49343860aff385117c0b
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_100
@@ -1524,7 +1524,7 @@ ScriptedImporter:
       y: 184
       width: 8
       height: 8
-    spriteID: 5e21e3ff4aa6d7540b29824f79212815
+    spriteID: faebee30504935d4082f540aacd357f9
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_101
@@ -1539,7 +1539,7 @@ ScriptedImporter:
       y: 184
       width: 8
       height: 8
-    spriteID: 5e3ad5e965359f345bb07788eab8f82c
+    spriteID: a6b6468ebee3bfc469dfe4fc2c193ee5
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_102
@@ -1554,7 +1554,7 @@ ScriptedImporter:
       y: 184
       width: 8
       height: 8
-    spriteID: dcbfb343f8547274fbd3c54b5429b859
+    spriteID: 8951f38fd83eb6d458d47a1d00509a80
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_103
@@ -1569,7 +1569,7 @@ ScriptedImporter:
       y: 184
       width: 8
       height: 8
-    spriteID: 2073e16d407d2bb4b8a8b8e5f989478e
+    spriteID: d2cdde93b0810164a93d6296391ef432
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_104
@@ -1584,7 +1584,7 @@ ScriptedImporter:
       y: 184
       width: 8
       height: 8
-    spriteID: a23d85cc9706fcd449d16f4f2c086d33
+    spriteID: ec48b603568921a47a257cdd243d9835
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_105
@@ -1599,7 +1599,7 @@ ScriptedImporter:
       y: 184
       width: 8
       height: 8
-    spriteID: eeed2fe1806f16049aeb9c3437a65229
+    spriteID: 7e5c9ff85f35f25428c1cb81896ddab7
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_106
@@ -1614,7 +1614,7 @@ ScriptedImporter:
       y: 184
       width: 8
       height: 8
-    spriteID: af22a42ce4ed5724791693605d4432e7
+    spriteID: 56b3c3df5b0a7644592b0cdf28f1ee3b
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_107
@@ -1629,7 +1629,7 @@ ScriptedImporter:
       y: 184
       width: 8
       height: 8
-    spriteID: 76877c1e02b78a14f828b15ea3886626
+    spriteID: 27721ab0f32da3347a10f28d90e2078b
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_108
@@ -1644,7 +1644,7 @@ ScriptedImporter:
       y: 176
       width: 8
       height: 8
-    spriteID: 06b54dee52a69904182206d324857ccd
+    spriteID: f2e2f3cebfc61d24dbb286a4586fd97d
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_109
@@ -1659,7 +1659,7 @@ ScriptedImporter:
       y: 176
       width: 8
       height: 8
-    spriteID: b64d132f96c26a84abc06694d8847e92
+    spriteID: ffc7310bb186a654892484b25ca9b5f1
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_110
@@ -1674,7 +1674,7 @@ ScriptedImporter:
       y: 176
       width: 8
       height: 8
-    spriteID: 68d69f46c159f0e408282f20e6f114a6
+    spriteID: 420ef7013e0e0a04a9b1b6ac2729e623
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_111
@@ -1689,7 +1689,7 @@ ScriptedImporter:
       y: 176
       width: 8
       height: 8
-    spriteID: 5e11c2771469754419fc338cab11d8d2
+    spriteID: 7758f0538bdd7f24581a58265a6ef568
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_112
@@ -1704,7 +1704,7 @@ ScriptedImporter:
       y: 176
       width: 8
       height: 8
-    spriteID: 6f826c7fdff3e544587cc17df12ba748
+    spriteID: dca97d3e2334e3549ac5f919aca3a39b
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_113
@@ -1719,7 +1719,7 @@ ScriptedImporter:
       y: 176
       width: 8
       height: 8
-    spriteID: c95f10958887e2944bce7199df49dd5c
+    spriteID: 26410035a9288f64787b46dfc5fe14fc
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_114
@@ -1734,7 +1734,7 @@ ScriptedImporter:
       y: 176
       width: 8
       height: 8
-    spriteID: 47a1b47dd561439498a0ae4e9373b339
+    spriteID: 6d3bc7c59e0aa13479c328579d96126a
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_115
@@ -1749,7 +1749,7 @@ ScriptedImporter:
       y: 176
       width: 8
       height: 8
-    spriteID: e15586866409abb4385d3fbe0b31f494
+    spriteID: c8b4419a17e692f48afb44399a3e4fc5
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_116
@@ -1764,7 +1764,7 @@ ScriptedImporter:
       y: 176
       width: 8
       height: 8
-    spriteID: ba894ecf63070cf47b27aa91a9a4bb65
+    spriteID: 8c87926c5665d88428320e65e2de6f4b
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_117
@@ -1779,7 +1779,7 @@ ScriptedImporter:
       y: 176
       width: 8
       height: 8
-    spriteID: d93558885003bbd49b215c4f1310bd37
+    spriteID: 4605dc15925f2a946ab9d65d994396a4
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_118
@@ -1794,7 +1794,7 @@ ScriptedImporter:
       y: 176
       width: 8
       height: 8
-    spriteID: 15da2f2c251978944a1b2f370a2358a8
+    spriteID: 0a028e715af54ff498101b15faa6e731
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_119
@@ -1809,7 +1809,7 @@ ScriptedImporter:
       y: 176
       width: 8
       height: 8
-    spriteID: d395c579330689c4f8966941cf51ccb4
+    spriteID: 2408175eb7ba75744949390cc5f2a08b
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_120
@@ -1824,7 +1824,7 @@ ScriptedImporter:
       y: 168
       width: 8
       height: 8
-    spriteID: 3d8a09a8ceebf6a49963b20413957a8e
+    spriteID: 772f8be125c66e24d84e0442ddf46fab
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_121
@@ -1839,7 +1839,7 @@ ScriptedImporter:
       y: 168
       width: 8
       height: 8
-    spriteID: 2ec524bdf3cdd7a42895cb40628b2c2f
+    spriteID: 3ed92886084711e4b9c20bef9274bb96
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_122
@@ -1854,7 +1854,7 @@ ScriptedImporter:
       y: 168
       width: 8
       height: 8
-    spriteID: 00556054146b187408b5dcdee3b624ec
+    spriteID: 25cee845106e74b489ce899f750a6b9d
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_123
@@ -1869,7 +1869,7 @@ ScriptedImporter:
       y: 168
       width: 8
       height: 8
-    spriteID: 2b1b69b8509cdfe44b1eb9bbf0972062
+    spriteID: 2fdb702e05afa6740a53d498d00be68e
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_124
@@ -1884,7 +1884,7 @@ ScriptedImporter:
       y: 168
       width: 8
       height: 8
-    spriteID: 09f7492989a7eba4da70e15b1454a5c9
+    spriteID: 29e5c8c8bdc75e644bc2feeff93dcd9e
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_125
@@ -1899,7 +1899,7 @@ ScriptedImporter:
       y: 168
       width: 8
       height: 8
-    spriteID: 02e39608850ef6447ba9ef3e5a84cff6
+    spriteID: fd8ee457b5da5434991c9fbfdcfb27d4
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_126
@@ -1914,7 +1914,7 @@ ScriptedImporter:
       y: 168
       width: 8
       height: 8
-    spriteID: 5dd48a40b982d544b80d409a059fe8dd
+    spriteID: 1fcda99f07ec09c4c8fa451dc4010d61
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_127
@@ -1929,7 +1929,7 @@ ScriptedImporter:
       y: 168
       width: 8
       height: 8
-    spriteID: fabe444223225174a8e8477bf5dc1c1d
+    spriteID: 2e2fe49dae91816458b768b1d4b26b3e
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_128
@@ -1944,7 +1944,7 @@ ScriptedImporter:
       y: 168
       width: 8
       height: 8
-    spriteID: dfe343ce593042a45ab41c79cbb0f2f7
+    spriteID: b5b3bbf15f7b60747bedbd9041a23836
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_129
@@ -1959,7 +1959,7 @@ ScriptedImporter:
       y: 168
       width: 8
       height: 8
-    spriteID: d50a3a8676edff942b4e2d3f2e457e60
+    spriteID: a475cfad1c4a1854da6a68b6643a2a00
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_130
@@ -1974,7 +1974,7 @@ ScriptedImporter:
       y: 168
       width: 8
       height: 8
-    spriteID: 3fdcba82fcda34f49977215cbf6c0ac0
+    spriteID: a5b2a58c3a6c1c44788b433209a8a75c
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_131
@@ -1989,7 +1989,7 @@ ScriptedImporter:
       y: 168
       width: 8
       height: 8
-    spriteID: 583fdb1a2ef292a498f5c4e51326cee7
+    spriteID: 8f9a0e94a1a86b04aa07c708ac5f3004
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_132
@@ -2004,7 +2004,7 @@ ScriptedImporter:
       y: 160
       width: 8
       height: 8
-    spriteID: a290579ecb2f1b044854f45d2247b8ad
+    spriteID: b42e6d3a72af7e641b65162ec6c52f0c
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_133
@@ -2019,7 +2019,7 @@ ScriptedImporter:
       y: 160
       width: 8
       height: 8
-    spriteID: 6f49d0d17e61deb43b2780236565648a
+    spriteID: ca32dfc611cccc347868c4f86a1f6a7a
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_134
@@ -2034,7 +2034,7 @@ ScriptedImporter:
       y: 160
       width: 8
       height: 8
-    spriteID: 4d90efb1e82492648ae9df740fba415d
+    spriteID: 79249df8b2b0bf643b36592c67f92294
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_135
@@ -2049,7 +2049,7 @@ ScriptedImporter:
       y: 160
       width: 8
       height: 8
-    spriteID: 182f632deec61a643a4ba04af0529811
+    spriteID: 9a7b4805b96c4b54a890aff3a318a0fd
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_136
@@ -2064,7 +2064,7 @@ ScriptedImporter:
       y: 160
       width: 8
       height: 8
-    spriteID: 89a5f9db27fbfa448a60e9d6517e27ae
+    spriteID: 312ab25136feebf44a8650e0bd25f89d
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_137
@@ -2079,7 +2079,7 @@ ScriptedImporter:
       y: 160
       width: 8
       height: 8
-    spriteID: ec0c40ac9fd3df14f8328797fa314e7e
+    spriteID: 1a99f83c0f8c4a04d84623da1983108d
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_138
@@ -2094,7 +2094,7 @@ ScriptedImporter:
       y: 160
       width: 8
       height: 8
-    spriteID: 1c7d5643b0166364f8816b95edb6f18e
+    spriteID: 1f1655a79b0297649940fbc5421537c2
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_139
@@ -2109,7 +2109,7 @@ ScriptedImporter:
       y: 160
       width: 8
       height: 8
-    spriteID: 44ffd0b7fe808e144be86497f20fc136
+    spriteID: fa492bcf5f179a343bcbf0caa167337a
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_140
@@ -2124,7 +2124,7 @@ ScriptedImporter:
       y: 160
       width: 8
       height: 8
-    spriteID: 2326588963ef1dc499d93ff06109c2aa
+    spriteID: d8521c5b639708b4ab078dfe3c1dd1e1
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_141
@@ -2139,7 +2139,7 @@ ScriptedImporter:
       y: 160
       width: 8
       height: 8
-    spriteID: 877ff73fd190996488d1ab5ec0fd2d38
+    spriteID: 614ba16901f90684e831cde47302fc7c
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_142
@@ -2154,7 +2154,7 @@ ScriptedImporter:
       y: 160
       width: 8
       height: 8
-    spriteID: 727f9d56df3581b4798d723d6a7bf564
+    spriteID: d50530ea94553b7448750eb693d739d1
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_143
@@ -2169,7 +2169,7 @@ ScriptedImporter:
       y: 160
       width: 8
       height: 8
-    spriteID: 58a0ee7cee6cf8c4e8651f945aed2e1e
+    spriteID: 26d6c538a375a064ba81535b3090c355
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_144
@@ -2184,7 +2184,7 @@ ScriptedImporter:
       y: 152
       width: 8
       height: 8
-    spriteID: 2b01d9c43e4a9694985b132fd5a7dfde
+    spriteID: cd60cc9bb6a158e478259fd71acb15ab
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_145
@@ -2199,7 +2199,7 @@ ScriptedImporter:
       y: 152
       width: 8
       height: 8
-    spriteID: fef6e574b3e0f7f49b41ad0fd5b8d1cf
+    spriteID: 99fadf5b68bc5b84999a99ede0c25e0e
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_146
@@ -2214,7 +2214,7 @@ ScriptedImporter:
       y: 152
       width: 8
       height: 8
-    spriteID: d5e2ec1dfd27b3743a260684dbc69196
+    spriteID: 8b86dfd82543e09468fb228cdcf3aecd
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_147
@@ -2229,7 +2229,7 @@ ScriptedImporter:
       y: 152
       width: 8
       height: 8
-    spriteID: 37ec4d9cb1ea4ba4696c4dc6f498fae1
+    spriteID: e04f7a0d69a35ac45962fa69303f60df
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_148
@@ -2244,7 +2244,7 @@ ScriptedImporter:
       y: 152
       width: 8
       height: 8
-    spriteID: 78e7df06ff1118b40a0d4724b3d011e8
+    spriteID: ce728c7a8b29c2043b141d32d673d957
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_149
@@ -2259,7 +2259,7 @@ ScriptedImporter:
       y: 152
       width: 8
       height: 8
-    spriteID: 286493f7e9e4b57479d9d4a739a805c4
+    spriteID: 019a6d04fef0e234590f886debcf5e07
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_150
@@ -2274,7 +2274,7 @@ ScriptedImporter:
       y: 152
       width: 8
       height: 8
-    spriteID: 9ed91fa425aa9d0419b1ea766c6a9fa9
+    spriteID: 22a025da62dd70645ae53939f160ee7f
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_151
@@ -2289,7 +2289,7 @@ ScriptedImporter:
       y: 152
       width: 8
       height: 8
-    spriteID: 65cb08a5aec72b5448523c55abec1aca
+    spriteID: 20cae57d6962e5547945734f2ec3d1bd
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_152
@@ -2304,7 +2304,7 @@ ScriptedImporter:
       y: 152
       width: 8
       height: 8
-    spriteID: c9e0095f7af2a734e8a68ee62ba603a9
+    spriteID: 402af6fd20a2fe94c995320bfd6879ac
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_153
@@ -2319,7 +2319,7 @@ ScriptedImporter:
       y: 152
       width: 8
       height: 8
-    spriteID: fdaa63f44b039124dbad4401a121e0bc
+    spriteID: 8df13994d67070445b8ea02403043d54
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_154
@@ -2334,7 +2334,7 @@ ScriptedImporter:
       y: 152
       width: 8
       height: 8
-    spriteID: 6ab7ca7cff50bd847b57bc398e9a339b
+    spriteID: 8281a0187dd6b2443bb736ec07686b8d
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_155
@@ -2349,7 +2349,7 @@ ScriptedImporter:
       y: 152
       width: 8
       height: 8
-    spriteID: 2ef5e78264096bc4aa17bd22abb0b55a
+    spriteID: 8d923bf353a099148ac2cdba0415ef57
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_156
@@ -2364,7 +2364,7 @@ ScriptedImporter:
       y: 144
       width: 8
       height: 8
-    spriteID: fce78da3c00cf854f865ef94523c5089
+    spriteID: 137e7ac332d3b0a4a82153e2c52b4214
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_157
@@ -2379,7 +2379,7 @@ ScriptedImporter:
       y: 144
       width: 8
       height: 8
-    spriteID: e5a57d005486b424c851952c43aa0ea5
+    spriteID: 6464378f9a8fb3b4fbf65d7b994efc42
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_158
@@ -2394,7 +2394,7 @@ ScriptedImporter:
       y: 144
       width: 8
       height: 8
-    spriteID: c016c5269cff61f4b9f9be0d5f1f8e9f
+    spriteID: 6de6723a5f406cf49b233def1f768719
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_159
@@ -2409,7 +2409,7 @@ ScriptedImporter:
       y: 144
       width: 8
       height: 8
-    spriteID: 6f6090fb3b83a4d49b45c6b20221531c
+    spriteID: 0e29707c12ff5f24ea607f08feb152ec
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_160
@@ -2424,7 +2424,7 @@ ScriptedImporter:
       y: 144
       width: 8
       height: 8
-    spriteID: 6133e91cdfefc414d9dbf92f216ad9b4
+    spriteID: 320dedbf2def0804bbedb4edac2f8861
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_161
@@ -2439,7 +2439,7 @@ ScriptedImporter:
       y: 144
       width: 8
       height: 8
-    spriteID: 9c44a7dde986ecc4db0160065104242f
+    spriteID: 7989237c28aa1fa4ea80eea90021cd93
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_162
@@ -2454,7 +2454,7 @@ ScriptedImporter:
       y: 144
       width: 8
       height: 8
-    spriteID: 2320611c64840134589ae256edc1523d
+    spriteID: a928d6638918f714c8ba6a5b46c8d6b3
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_163
@@ -2469,7 +2469,7 @@ ScriptedImporter:
       y: 144
       width: 8
       height: 8
-    spriteID: 5df31840148529e45ba4f01b4f778e1e
+    spriteID: 201fa7999ac6ea2408f29be8ffca815a
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_164
@@ -2484,7 +2484,7 @@ ScriptedImporter:
       y: 144
       width: 8
       height: 8
-    spriteID: 48b0af3c8cfa28a44848be58a91d94b2
+    spriteID: 1e1e3d77a36b76346aae9ecdc21c0134
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_165
@@ -2499,7 +2499,7 @@ ScriptedImporter:
       y: 144
       width: 8
       height: 8
-    spriteID: aa70dd49f82f5ee4099e739792b311b4
+    spriteID: 907fd291e38589f4e8164c8e4d74bc33
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_166
@@ -2514,7 +2514,7 @@ ScriptedImporter:
       y: 144
       width: 8
       height: 8
-    spriteID: a8ea993658ab2dc4798f9faf2ea181e8
+    spriteID: 2d4bfa480bc5b794ea35ca88ae8c2d91
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_167
@@ -2529,7 +2529,7 @@ ScriptedImporter:
       y: 144
       width: 8
       height: 8
-    spriteID: 66f03cc41cde680439bd918fb7d2661a
+    spriteID: fb6d3af720ffb71419f31875c72958ed
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_168
@@ -2544,7 +2544,7 @@ ScriptedImporter:
       y: 136
       width: 8
       height: 8
-    spriteID: f92f6bdc763536c42861fb838ab5845c
+    spriteID: 53b1816d43b787a4980e0b4b0a987e02
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_169
@@ -2559,7 +2559,7 @@ ScriptedImporter:
       y: 136
       width: 8
       height: 8
-    spriteID: 3704d2dd722c61e499b279d4ac1fca4e
+    spriteID: 873160746b8ac9644a0c92a8ea37f246
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_170
@@ -2574,7 +2574,7 @@ ScriptedImporter:
       y: 136
       width: 8
       height: 8
-    spriteID: a1a8b1bfea5861049a38bd0fdfb634f4
+    spriteID: 67e952e055c66c14f9e9c262417bd818
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_171
@@ -2589,7 +2589,7 @@ ScriptedImporter:
       y: 136
       width: 8
       height: 8
-    spriteID: 4d5daa48f97dd364bb56e15124c0b332
+    spriteID: 462c4a511dd94744a9e6ea8a00a5b22c
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_172
@@ -2604,7 +2604,7 @@ ScriptedImporter:
       y: 136
       width: 8
       height: 8
-    spriteID: e57655b5bd152ab4797121de9edf5a2f
+    spriteID: 7311a845b2ae09e4f8cfa08feec185a1
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_173
@@ -2619,7 +2619,7 @@ ScriptedImporter:
       y: 136
       width: 8
       height: 8
-    spriteID: b9e89925e39b69f40899cf1b98272104
+    spriteID: 609badf08fdb3e24d92cf8ccbcecf99a
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_174
@@ -2634,7 +2634,7 @@ ScriptedImporter:
       y: 136
       width: 8
       height: 8
-    spriteID: 1040fe43b59a96f40a5634319afeb870
+    spriteID: 70f3719e49af7ae44a5e77143b80b6f6
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_175
@@ -2649,7 +2649,7 @@ ScriptedImporter:
       y: 136
       width: 8
       height: 8
-    spriteID: e642fbe44ae7a8442b3c34451d30ec8e
+    spriteID: 02e90c55cb8d664408cae922f843bb3e
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_176
@@ -2664,7 +2664,7 @@ ScriptedImporter:
       y: 136
       width: 8
       height: 8
-    spriteID: c0d249999d7aa1442bb71794f96e0f6b
+    spriteID: 71436db10baa5d445b8e622370ded09a
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_177
@@ -2679,7 +2679,7 @@ ScriptedImporter:
       y: 136
       width: 8
       height: 8
-    spriteID: cbcf79857a736684291b46ead57e12e2
+    spriteID: 7a4214d777dfcf7458ddade6b2563424
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_178
@@ -2694,7 +2694,7 @@ ScriptedImporter:
       y: 136
       width: 8
       height: 8
-    spriteID: cb52e73ca012236499cfbd6c23ed3960
+    spriteID: f589e010c37348c4e8acebb49dbb88ed
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_179
@@ -2709,7 +2709,7 @@ ScriptedImporter:
       y: 136
       width: 8
       height: 8
-    spriteID: ae0d23e51aaa6234ea54e1999e5e58e4
+    spriteID: d8167e5295c2b5348b1e4446fbb1a66d
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_180
@@ -2724,7 +2724,7 @@ ScriptedImporter:
       y: 128
       width: 8
       height: 8
-    spriteID: 1e77f7258da05484e9f1cd2b89229052
+    spriteID: 1b30028c99dc840439e470deed2e3019
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_181
@@ -2739,7 +2739,7 @@ ScriptedImporter:
       y: 128
       width: 8
       height: 8
-    spriteID: cd8ffe83c13a814408ee157757aa24a9
+    spriteID: 2c762e23914d56445b0994d339c8ecaa
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_182
@@ -2754,7 +2754,7 @@ ScriptedImporter:
       y: 128
       width: 8
       height: 8
-    spriteID: 5010020db0741d64393942377e0a9edb
+    spriteID: d3471ca1f900706498ca3c9f16ac483c
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_183
@@ -2769,7 +2769,7 @@ ScriptedImporter:
       y: 128
       width: 8
       height: 8
-    spriteID: 49e115f5160ef8a4dbfe7752efd0559f
+    spriteID: c300bddc43c16ef4cab611df729c1c18
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_184
@@ -2784,7 +2784,7 @@ ScriptedImporter:
       y: 128
       width: 8
       height: 8
-    spriteID: ea1f9fe004fd22b44b5431b5dbf3ce90
+    spriteID: 57b56ec2781f7ca48ba77f0c22b53e14
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_185
@@ -2799,7 +2799,7 @@ ScriptedImporter:
       y: 128
       width: 8
       height: 8
-    spriteID: b385e6353fdc6224ab8f79d1e229f8ab
+    spriteID: 15a6db55ff2b45d4d8ae729c0b9742c3
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_186
@@ -2814,7 +2814,7 @@ ScriptedImporter:
       y: 128
       width: 8
       height: 8
-    spriteID: db857415b7ec2ff43ba9cdc3a1d76896
+    spriteID: f7e27875ef03fff458ae6854309e2406
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_187
@@ -2829,7 +2829,7 @@ ScriptedImporter:
       y: 128
       width: 8
       height: 8
-    spriteID: e320985ac76b76b49b431d5cf45b5d0a
+    spriteID: feb12e3a17178c343aa1c960a7eafab0
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_188
@@ -2844,7 +2844,7 @@ ScriptedImporter:
       y: 128
       width: 8
       height: 8
-    spriteID: d65d563e319f71243a58832de9d8eac3
+    spriteID: eb6b144090f7c7a4e801fab8535abde9
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_189
@@ -2859,7 +2859,7 @@ ScriptedImporter:
       y: 128
       width: 8
       height: 8
-    spriteID: a1bfe91faeb02a94fad7e1b0c2826288
+    spriteID: 1420e497ad49ab447a2098eafd7590fc
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_190
@@ -2874,7 +2874,7 @@ ScriptedImporter:
       y: 128
       width: 8
       height: 8
-    spriteID: a0d98a54efad80c448d46867cbb8087b
+    spriteID: f5c614f267366d44aa8da19553624ca0
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_191
@@ -2889,7 +2889,7 @@ ScriptedImporter:
       y: 128
       width: 8
       height: 8
-    spriteID: 8b8b50381daadbc41b9bedb9d114d193
+    spriteID: fee27253181cf0c40a8475d38d6b0f94
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_192
@@ -2904,7 +2904,7 @@ ScriptedImporter:
       y: 120
       width: 8
       height: 8
-    spriteID: 91313351d8378284b900f885c086b668
+    spriteID: 2db6cdd1fdd140641b585e40cb28edef
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_193
@@ -2919,7 +2919,7 @@ ScriptedImporter:
       y: 120
       width: 8
       height: 8
-    spriteID: 942bd228e11bded44874dd024142018d
+    spriteID: bfbc86fdec332064fb8096d48c29c8ac
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_194
@@ -2934,7 +2934,7 @@ ScriptedImporter:
       y: 120
       width: 8
       height: 8
-    spriteID: e67a97400b21b2e40b9973472f6d3227
+    spriteID: fb7bab1c8ade029489cc1c9f2866f14a
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_195
@@ -2949,7 +2949,7 @@ ScriptedImporter:
       y: 120
       width: 8
       height: 8
-    spriteID: e18dd17ef2b22af4184a5a7b7a1782ec
+    spriteID: 39b4d967352c5af44b600af0f6dec314
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_196
@@ -2964,7 +2964,7 @@ ScriptedImporter:
       y: 120
       width: 8
       height: 8
-    spriteID: 0d0da55cfcaef9e439a013f9ac74b6f9
+    spriteID: 0dd0db84abd172f419fddb42ab97bc17
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_197
@@ -2979,7 +2979,7 @@ ScriptedImporter:
       y: 120
       width: 8
       height: 8
-    spriteID: 911a7ce76651c344bb7c26d2d0ae7be5
+    spriteID: fd332c6bc7855ed4cb3e2a0e175c24e6
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_198
@@ -2994,7 +2994,7 @@ ScriptedImporter:
       y: 120
       width: 8
       height: 8
-    spriteID: ca00a13c51e8b4047aa1c9f6d985a2be
+    spriteID: 088c5b4554242d345a89bc680ac1ca75
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_199
@@ -3009,7 +3009,7 @@ ScriptedImporter:
       y: 120
       width: 8
       height: 8
-    spriteID: 15fb2343539d9994d8556da7156ced72
+    spriteID: bff4132ed75330042875fbdfeb0d146e
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_200
@@ -3024,7 +3024,7 @@ ScriptedImporter:
       y: 120
       width: 8
       height: 8
-    spriteID: 5da6d903c24e3ae4dab4f9e5f06d34e4
+    spriteID: 02fcf582928520c4eaa48ae6f1fd614a
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_201
@@ -3039,7 +3039,7 @@ ScriptedImporter:
       y: 120
       width: 8
       height: 8
-    spriteID: 959a0d41dc30f1b48b69d81031997b37
+    spriteID: c39da2548c49ebc4ab1b4cc4533c60a1
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_202
@@ -3054,7 +3054,7 @@ ScriptedImporter:
       y: 120
       width: 8
       height: 8
-    spriteID: fb1ee4eb32389874ab9b8c826387c008
+    spriteID: 16e4eaab287ab9c4c885590fd1a361d9
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_203
@@ -3069,7 +3069,7 @@ ScriptedImporter:
       y: 120
       width: 8
       height: 8
-    spriteID: 9749f25cc63e71341bcc4b660ac9addd
+    spriteID: f6561d48747801e4c9e2bbb80d93a55f
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_204
@@ -3084,7 +3084,7 @@ ScriptedImporter:
       y: 112
       width: 8
       height: 8
-    spriteID: 812b8010ca90e32409be84a643c49f75
+    spriteID: 024bb4842a863f1449311be4bcc90c11
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_205
@@ -3099,7 +3099,7 @@ ScriptedImporter:
       y: 112
       width: 8
       height: 8
-    spriteID: 18b0c9327c0a20a4ea2c9b772013375b
+    spriteID: 170fbc68275a8574da77dbfc864eeb2d
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_206
@@ -3114,7 +3114,7 @@ ScriptedImporter:
       y: 112
       width: 8
       height: 8
-    spriteID: 0a89ca320999af94a883f30df5c9c59f
+    spriteID: 7517c6f0c4cc9ed46b028d952f156dfe
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_207
@@ -3129,7 +3129,7 @@ ScriptedImporter:
       y: 112
       width: 8
       height: 8
-    spriteID: b59852cfd494ba84dbd05ab88fe2a3ff
+    spriteID: ecd6f5883140479409944a69ebd88425
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_208
@@ -3144,7 +3144,7 @@ ScriptedImporter:
       y: 112
       width: 8
       height: 8
-    spriteID: cf408f392bdf5bf4a8f46ce1e2d9816c
+    spriteID: 57330f115692e4d4e855ce815ef025f8
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_209
@@ -3159,7 +3159,7 @@ ScriptedImporter:
       y: 112
       width: 8
       height: 8
-    spriteID: b1d2ea9db63965d46bacce2094b607eb
+    spriteID: 7b348b66d6624404e84e1ce431dca62f
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_210
@@ -3174,7 +3174,7 @@ ScriptedImporter:
       y: 112
       width: 8
       height: 8
-    spriteID: 79e1381a8c1b66a42aa33b1cebdad84e
+    spriteID: 07efd695d55a7804baf066e906c7b16a
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_211
@@ -3189,7 +3189,7 @@ ScriptedImporter:
       y: 112
       width: 8
       height: 8
-    spriteID: 124a1266242e1b54bb217717125dde23
+    spriteID: 9b34f527ef047c549ad2efbf54a53da9
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_212
@@ -3204,7 +3204,7 @@ ScriptedImporter:
       y: 112
       width: 8
       height: 8
-    spriteID: 4db4702b768f85949b838b1d5942bad3
+    spriteID: acb0707f9ca6aff42b0c2b0834ea0054
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_213
@@ -3219,7 +3219,7 @@ ScriptedImporter:
       y: 112
       width: 8
       height: 8
-    spriteID: 75ae8cddf1876ee4c83aff3eebd33bad
+    spriteID: e020e41a359b5ce4796229239cd9cbe2
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_214
@@ -3234,7 +3234,7 @@ ScriptedImporter:
       y: 112
       width: 8
       height: 8
-    spriteID: 75ec4c4e92d42c24996a6b92f9e0d4f0
+    spriteID: 3678349056fb8a44e825df727ed277de
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_215
@@ -3249,7 +3249,7 @@ ScriptedImporter:
       y: 112
       width: 8
       height: 8
-    spriteID: 5161155008aa69e4587ebe416f8e146f
+    spriteID: cee1afa137d55244b89fff92c9bdba1b
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_216
@@ -3264,7 +3264,7 @@ ScriptedImporter:
       y: 104
       width: 8
       height: 8
-    spriteID: 1857d31615c217647846dfa0a0f55bc3
+    spriteID: c669b2724da82744087740b3e7e4143f
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_217
@@ -3279,7 +3279,7 @@ ScriptedImporter:
       y: 104
       width: 8
       height: 8
-    spriteID: 100e9728144fa4d418b218578358cfac
+    spriteID: 8deb34971d0b67f4491fbe058bec2cbb
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_218
@@ -3294,7 +3294,7 @@ ScriptedImporter:
       y: 104
       width: 8
       height: 8
-    spriteID: 8f6c0ae1715f09d4cb01079ee995d8ff
+    spriteID: 4f45b0c232c3dbb4096802c3d68f6e4c
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_219
@@ -3309,7 +3309,7 @@ ScriptedImporter:
       y: 104
       width: 8
       height: 8
-    spriteID: 09b381cabf52f23459f8146ebb913f31
+    spriteID: a6b0e9cc8299edb4fac7eeb8afaea1c6
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_220
@@ -3324,7 +3324,7 @@ ScriptedImporter:
       y: 104
       width: 8
       height: 8
-    spriteID: f71f39bd417073548b77a67abc5803b6
+    spriteID: 1ec16f23013e21142b4f2484979d7d54
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_221
@@ -3339,7 +3339,7 @@ ScriptedImporter:
       y: 104
       width: 8
       height: 8
-    spriteID: c8b07c490eae4d4498f120705b97170c
+    spriteID: 052ada2180565b44b88917b255f5c2e3
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_222
@@ -3354,7 +3354,7 @@ ScriptedImporter:
       y: 104
       width: 8
       height: 8
-    spriteID: eba09a67e33d9c9429a4802a8447639b
+    spriteID: a0d714d05b54a9c48ae025d2f4217663
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_223
@@ -3369,7 +3369,7 @@ ScriptedImporter:
       y: 104
       width: 8
       height: 8
-    spriteID: b68c7ff53106da04e85b12044e613098
+    spriteID: e3a9f6eecf199a74a9846a0381483524
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_224
@@ -3384,7 +3384,7 @@ ScriptedImporter:
       y: 104
       width: 8
       height: 8
-    spriteID: 48df14a0eadd6344a93d3bf0a427f9b7
+    spriteID: 1ec84de085f5703499d7c402d4eae374
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_225
@@ -3399,7 +3399,7 @@ ScriptedImporter:
       y: 104
       width: 8
       height: 8
-    spriteID: 0f29729baffab1e4795408230368e6a1
+    spriteID: b3d8688054895a5408f9812a09706207
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_226
@@ -3414,7 +3414,7 @@ ScriptedImporter:
       y: 104
       width: 8
       height: 8
-    spriteID: 0e0d35f875b58794f8e2c6b7ae3b14db
+    spriteID: b600096765c5a544a94c619c4af30faf
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_227
@@ -3429,7 +3429,7 @@ ScriptedImporter:
       y: 104
       width: 8
       height: 8
-    spriteID: 6403db4b3a58b5442b377d47ffb1dfb3
+    spriteID: 0913981265f059a4698cfcae4e966366
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_228
@@ -3444,7 +3444,7 @@ ScriptedImporter:
       y: 96
       width: 8
       height: 8
-    spriteID: 49595237ebdc40e41a4d533d4684b753
+    spriteID: fd39e72d67d0d9d4eaf67a9ab2600f09
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_229
@@ -3459,7 +3459,7 @@ ScriptedImporter:
       y: 96
       width: 8
       height: 8
-    spriteID: 04ab98ee1e0cfc64f8d5ab8cc525b2d1
+    spriteID: 441d364b9646c6b42b149bc697bbe0d0
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_230
@@ -3474,7 +3474,7 @@ ScriptedImporter:
       y: 96
       width: 8
       height: 8
-    spriteID: 2bbc7aa50dca7a94a8b6467d1d2c0dcd
+    spriteID: 0666f398bb7f14f4690a5f03d6433e7d
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_231
@@ -3489,7 +3489,7 @@ ScriptedImporter:
       y: 96
       width: 8
       height: 8
-    spriteID: 06a15c76747728848975a8bff49f033e
+    spriteID: c39524080924b74469d912bb3efd4aa5
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_232
@@ -3504,7 +3504,7 @@ ScriptedImporter:
       y: 96
       width: 8
       height: 8
-    spriteID: c70e65d7d42e2fc40aad02204c08184e
+    spriteID: 8d225b3db644f25448907d4cdb82625a
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_233
@@ -3519,7 +3519,7 @@ ScriptedImporter:
       y: 96
       width: 8
       height: 8
-    spriteID: 591bb1b5419e3d148bb437b0f215b5e1
+    spriteID: 730a789a8f953d94ca5a84eaeff1d603
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_234
@@ -3534,7 +3534,7 @@ ScriptedImporter:
       y: 96
       width: 8
       height: 8
-    spriteID: 2313aea2715f2684a9437af3a81dd2a7
+    spriteID: a5530a9842d03dd42a902a1d526f7846
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_235
@@ -3549,7 +3549,7 @@ ScriptedImporter:
       y: 96
       width: 8
       height: 8
-    spriteID: c3310f0df1cdbe848aba09d8dde9ddd4
+    spriteID: 32b84a2549d29494cbaef7e6231ef170
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_236
@@ -3564,7 +3564,7 @@ ScriptedImporter:
       y: 96
       width: 8
       height: 8
-    spriteID: 06947a1c78545854890d67d26aa57385
+    spriteID: 21923a816a2193c4ba171948ca77774e
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_237
@@ -3579,7 +3579,7 @@ ScriptedImporter:
       y: 96
       width: 8
       height: 8
-    spriteID: f17ec1abd5687ed40a23820a3fe6e9d6
+    spriteID: c1a1ea74931f6974ba919989b6689f05
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_238
@@ -3594,7 +3594,7 @@ ScriptedImporter:
       y: 96
       width: 8
       height: 8
-    spriteID: 126155a0ef26c944390c832b3a1b6815
+    spriteID: be07959c3df12994e8d25d78c31ce517
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_239
@@ -3609,7 +3609,7 @@ ScriptedImporter:
       y: 96
       width: 8
       height: 8
-    spriteID: 5ada092ae2613f642b6d54a427784e50
+    spriteID: f98bfc4e033ff0844ad7e62bd16cc1d3
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_240
@@ -3624,7 +3624,7 @@ ScriptedImporter:
       y: 88
       width: 8
       height: 8
-    spriteID: 5691763703b3f8743a1926e36f7e3a14
+    spriteID: 54f90766b77b6204da41fad999018809
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_241
@@ -3639,7 +3639,7 @@ ScriptedImporter:
       y: 88
       width: 8
       height: 8
-    spriteID: f079d88e5f4d7e642a0e29b3f29e8dad
+    spriteID: 2cae366854ea285418f9aee27cfc000f
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_242
@@ -3654,7 +3654,7 @@ ScriptedImporter:
       y: 88
       width: 8
       height: 8
-    spriteID: f626d5e751583f64aa0ff34010675e50
+    spriteID: 41976b00cb839534a9c9cab3baae5ec6
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_243
@@ -3669,7 +3669,7 @@ ScriptedImporter:
       y: 88
       width: 8
       height: 8
-    spriteID: 3f0d60ddbb76c2142a40a97e1126a091
+    spriteID: 4ae66f415074420418f3322f844b45d9
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_244
@@ -3684,7 +3684,7 @@ ScriptedImporter:
       y: 88
       width: 8
       height: 8
-    spriteID: aea8e6fc0a3561048aa021c9ca6f4739
+    spriteID: 3fac3a0e77bc72b4584d24833f18cdb3
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_245
@@ -3699,7 +3699,7 @@ ScriptedImporter:
       y: 88
       width: 8
       height: 8
-    spriteID: 1b5a0aa14f971734f86bccca84c1f0dd
+    spriteID: 292fd69c6ce5780479c3cdc3cefa640c
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_246
@@ -3714,7 +3714,7 @@ ScriptedImporter:
       y: 88
       width: 8
       height: 8
-    spriteID: 079a88a36c20f4346845e0f996edd00b
+    spriteID: f456b4af9d429c1439130e6edd7a8ed0
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_247
@@ -3729,7 +3729,7 @@ ScriptedImporter:
       y: 88
       width: 8
       height: 8
-    spriteID: 488316126abe37042810530286fdffba
+    spriteID: fb5f7e2bb52139b48aed11098be3cba1
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_248
@@ -3744,7 +3744,7 @@ ScriptedImporter:
       y: 88
       width: 8
       height: 8
-    spriteID: 132eaa2f41052474da3c09054aa4e0e7
+    spriteID: 7ddff93f3947eea489814042567f61d1
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_249
@@ -3759,7 +3759,7 @@ ScriptedImporter:
       y: 88
       width: 8
       height: 8
-    spriteID: 3c0089ab8e0c15f4fb71cf36ec4baa30
+    spriteID: 0ec3088f35b802842bee566a321b51f6
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_250
@@ -3774,7 +3774,7 @@ ScriptedImporter:
       y: 88
       width: 8
       height: 8
-    spriteID: 8d8cf6cd285a3644bb35a4e987270a49
+    spriteID: 9d24d1b1b31b20144a7b27ac2fbc8e41
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_251
@@ -3789,7 +3789,7 @@ ScriptedImporter:
       y: 88
       width: 8
       height: 8
-    spriteID: 8e5047334f7010b46ae36f204ad6ee9e
+    spriteID: 88ea4fc31272c7543a0a167eb6bce30d
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_252
@@ -3804,7 +3804,7 @@ ScriptedImporter:
       y: 80
       width: 8
       height: 8
-    spriteID: 71bc916ee405d3f4ca44ace0a1c511ca
+    spriteID: 7949e0f4971c1344daf80946fe889e7d
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_253
@@ -3819,7 +3819,7 @@ ScriptedImporter:
       y: 80
       width: 8
       height: 8
-    spriteID: 9e1e6132cffb6594f8708212fa424d1e
+    spriteID: 1f3f53c591d0b0144b9253d2726cf54c
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_254
@@ -3834,7 +3834,7 @@ ScriptedImporter:
       y: 80
       width: 8
       height: 8
-    spriteID: c8c8685d594a54440935640ef67669b5
+    spriteID: a0508125e32c3314cb230f6ea3f239b1
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_255
@@ -3849,7 +3849,7 @@ ScriptedImporter:
       y: 80
       width: 8
       height: 8
-    spriteID: e5b27727401e45b4ebab524436d24ad6
+    spriteID: 01efad30ca4eeb84d81fc3b0e1ab931f
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_256
@@ -3864,7 +3864,7 @@ ScriptedImporter:
       y: 80
       width: 8
       height: 8
-    spriteID: e0737c6b25f297a4ab0c502da42671ed
+    spriteID: 7d3379062774a3b4bae6adaab3f43a2d
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_257
@@ -3879,7 +3879,7 @@ ScriptedImporter:
       y: 80
       width: 8
       height: 8
-    spriteID: 9007cc98085ce6f4e9e8a1f35168cc47
+    spriteID: 44405b5fb852bef429d5e60dd96d8e85
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_258
@@ -3894,7 +3894,7 @@ ScriptedImporter:
       y: 80
       width: 8
       height: 8
-    spriteID: ade31c17d339098458d018730b4d4acf
+    spriteID: f90329f49d15aa044a2c15cde234cf70
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_259
@@ -3909,7 +3909,7 @@ ScriptedImporter:
       y: 80
       width: 8
       height: 8
-    spriteID: 3e95689cd861da34ca69121d7ff54c8e
+    spriteID: 86f9da4418686144fa024a813350e2e2
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_260
@@ -3924,7 +3924,7 @@ ScriptedImporter:
       y: 80
       width: 8
       height: 8
-    spriteID: 63f2b45a0ed44624c9bc90951d4a30a0
+    spriteID: 7d7997250af9db34a9d7e8af1a31276c
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_261
@@ -3939,7 +3939,7 @@ ScriptedImporter:
       y: 80
       width: 8
       height: 8
-    spriteID: 26ed2cf5cbd2fe64693456e78d474540
+    spriteID: f615b70fdcce8d1479d773d573bd256d
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_262
@@ -3954,7 +3954,7 @@ ScriptedImporter:
       y: 80
       width: 8
       height: 8
-    spriteID: 1dc5eb9d2156b3e429c114efc1d948a9
+    spriteID: 0debf138edc508341a51f64ae939a41f
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_263
@@ -3969,7 +3969,7 @@ ScriptedImporter:
       y: 80
       width: 8
       height: 8
-    spriteID: 23c7bc959b759c146a25d0da774f43cc
+    spriteID: c8ff05409e31df44ea790ad033a9bd12
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_264
@@ -3984,7 +3984,7 @@ ScriptedImporter:
       y: 72
       width: 8
       height: 8
-    spriteID: f01d157257b436a44be94ca7d83657c5
+    spriteID: ce909f7fb041e0e479d436701dfb5a94
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_265
@@ -3999,7 +3999,7 @@ ScriptedImporter:
       y: 72
       width: 8
       height: 8
-    spriteID: f8d1a41bce114134aaa2a0b35997e034
+    spriteID: 649e8b9a2ffe8dc42b54605d95b47eb2
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_266
@@ -4014,7 +4014,7 @@ ScriptedImporter:
       y: 72
       width: 8
       height: 8
-    spriteID: 27fd67e2ff1d1a648aa3ee807c12bb14
+    spriteID: 1f3b21c7c3f4c174d8d06928bdffe3b9
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_267
@@ -4029,7 +4029,7 @@ ScriptedImporter:
       y: 72
       width: 8
       height: 8
-    spriteID: 0acdb4ed7b9e2a849a147ef0750774ee
+    spriteID: 75bae14df73413248a98251ee9bf50fa
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_268
@@ -4044,7 +4044,7 @@ ScriptedImporter:
       y: 72
       width: 8
       height: 8
-    spriteID: eaad802120d917d41b2715c5af3a2318
+    spriteID: 6a75918a402dd3d41968eb16bb7086f0
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_269
@@ -4059,7 +4059,7 @@ ScriptedImporter:
       y: 72
       width: 8
       height: 8
-    spriteID: 6887f154017d69145ad583cadaec2574
+    spriteID: c55eed568615e95429a50d71f27493ec
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_270
@@ -4074,7 +4074,7 @@ ScriptedImporter:
       y: 72
       width: 8
       height: 8
-    spriteID: 20aee885e4c3b5d47b6044708d911b7c
+    spriteID: f803ae46bcce4644482a8c1452b27ee5
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_271
@@ -4089,7 +4089,7 @@ ScriptedImporter:
       y: 72
       width: 8
       height: 8
-    spriteID: 894cc206c9db2d64c9e1557b7a8f0b6e
+    spriteID: 3c8fd4797c78b6f4fb5abb4c7a86a21a
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_272
@@ -4104,7 +4104,7 @@ ScriptedImporter:
       y: 72
       width: 8
       height: 8
-    spriteID: da8eb09e7a2155b43bb2b3df22a302cc
+    spriteID: d91d7db8914d95e43ae9097d03b89069
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_273
@@ -4119,7 +4119,7 @@ ScriptedImporter:
       y: 72
       width: 8
       height: 8
-    spriteID: 08948708164d6294ebbe8f202e5bcd3c
+    spriteID: 733778f5d7f33dc4bb76f9c666491e76
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_274
@@ -4134,7 +4134,7 @@ ScriptedImporter:
       y: 72
       width: 8
       height: 8
-    spriteID: 1cac50cd2f38d764786aeb4687f44938
+    spriteID: edd4b5b5fe07a81449e968e703511940
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_275
@@ -4149,7 +4149,7 @@ ScriptedImporter:
       y: 72
       width: 8
       height: 8
-    spriteID: 0549560c2ab34dc4a9a81e2230d80db2
+    spriteID: aee2f68539be1d74e96a91be461070af
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_276
@@ -4164,7 +4164,7 @@ ScriptedImporter:
       y: 64
       width: 8
       height: 8
-    spriteID: a26524ccd97f9c549964d3b62ee783ab
+    spriteID: ed30340c6064a3d4c89c593f48d7ce60
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_277
@@ -4179,7 +4179,7 @@ ScriptedImporter:
       y: 64
       width: 8
       height: 8
-    spriteID: 26202f6e190bc9d448ec4fa4ca0857e5
+    spriteID: 4daa23251a4d51c49b4dbf75b5e75606
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_278
@@ -4194,7 +4194,7 @@ ScriptedImporter:
       y: 64
       width: 8
       height: 8
-    spriteID: cf3cf90ddeb006346b9d63cc293cbe98
+    spriteID: 9c6a36ec6816f1a46a01dc8d0fba2de8
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_279
@@ -4209,7 +4209,7 @@ ScriptedImporter:
       y: 64
       width: 8
       height: 8
-    spriteID: 6dddfe5b28a7457489b2590d07e9629b
+    spriteID: 549631790fe42874fb38c9d1d27b8545
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_280
@@ -4224,7 +4224,7 @@ ScriptedImporter:
       y: 64
       width: 8
       height: 8
-    spriteID: 9859094a99e7c294cbffcd5b5b31705d
+    spriteID: b4a701799568a8f4bb3adc1ccc706d66
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_281
@@ -4239,7 +4239,7 @@ ScriptedImporter:
       y: 64
       width: 8
       height: 8
-    spriteID: a3019d0c48e3c204f818fe02de08f033
+    spriteID: 0c3d4c96da2adbf4ab7b3cd149aa7579
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_282
@@ -4254,7 +4254,7 @@ ScriptedImporter:
       y: 64
       width: 8
       height: 8
-    spriteID: 75ce61d1a1b9e0040b8740cb89a07f37
+    spriteID: 854519e57fb17ff43abff571c7d07c1f
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_283
@@ -4269,7 +4269,7 @@ ScriptedImporter:
       y: 64
       width: 8
       height: 8
-    spriteID: 902dc93b9075a1e4093e5b8e6ff839ff
+    spriteID: b24d4532311bcee45a1c5331894dade8
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_284
@@ -4284,7 +4284,7 @@ ScriptedImporter:
       y: 64
       width: 8
       height: 8
-    spriteID: a3a6cce20d08bd841aa55fbb96bd58b4
+    spriteID: 4bd940a5726ce5f4dba6c46558a2fcb0
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_285
@@ -4299,7 +4299,7 @@ ScriptedImporter:
       y: 64
       width: 8
       height: 8
-    spriteID: cae0d8a9ea9427246a80b677db3a8053
+    spriteID: 80aeb7eff271fca43a628885c990f829
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_286
@@ -4314,7 +4314,7 @@ ScriptedImporter:
       y: 64
       width: 8
       height: 8
-    spriteID: 57eab947501bc1245abbc27c3f02aafa
+    spriteID: 87f667d36cfd07449b290e556fb6cb21
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_287
@@ -4329,7 +4329,7 @@ ScriptedImporter:
       y: 64
       width: 8
       height: 8
-    spriteID: 50d78d07711e30a4dbca734de0a59ad9
+    spriteID: 4d6d6ea09ec52e2469b5fc6c14f89a95
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_288
@@ -4344,7 +4344,7 @@ ScriptedImporter:
       y: 56
       width: 8
       height: 8
-    spriteID: 2ffca7f74b0a0ea4db5f3b4a24822b52
+    spriteID: 3119286e293d0e14ea5b2731620c29f6
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_289
@@ -4359,7 +4359,7 @@ ScriptedImporter:
       y: 56
       width: 8
       height: 8
-    spriteID: a2d5a1c36f80beb498f12edc4da85f4c
+    spriteID: 2506d7e634b03924e8a5b9a1044095b4
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_290
@@ -4374,7 +4374,7 @@ ScriptedImporter:
       y: 56
       width: 8
       height: 8
-    spriteID: 0a987ffea555463448f936d56c8026d7
+    spriteID: 34536e53f50239d4eae45e9e45b987c2
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_291
@@ -4389,7 +4389,7 @@ ScriptedImporter:
       y: 56
       width: 8
       height: 8
-    spriteID: e6ce130bb596de949b3a3f05fac04171
+    spriteID: 6d34a7234c7e8bd4f8d1360d1a2ca609
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_292
@@ -4404,7 +4404,7 @@ ScriptedImporter:
       y: 56
       width: 8
       height: 8
-    spriteID: b027cdfb13c5f1b45815690d184c830c
+    spriteID: c5beebe46e84dd040a32486ca498664c
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_293
@@ -4419,7 +4419,7 @@ ScriptedImporter:
       y: 56
       width: 8
       height: 8
-    spriteID: 8455ff8ff61ff6743b0f660ae924eaf8
+    spriteID: 844377c1329615a4fac5485fcda5f0a3
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_294
@@ -4434,7 +4434,7 @@ ScriptedImporter:
       y: 56
       width: 8
       height: 8
-    spriteID: 62b10d24a01851f4a8bfa0c07f4cf1da
+    spriteID: b8fbe2c862d150445a840dd55d17ea19
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_295
@@ -4449,7 +4449,7 @@ ScriptedImporter:
       y: 56
       width: 8
       height: 8
-    spriteID: bb9280d7fd2dff34d85edae559a4d90a
+    spriteID: 8ba465f688bdf40449ee60aa858101ef
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_296
@@ -4464,7 +4464,7 @@ ScriptedImporter:
       y: 56
       width: 8
       height: 8
-    spriteID: e4c220f4256a5be459fafeda05e2f0a6
+    spriteID: a3817afad0bc6cd4db42ae4a419ff989
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_297
@@ -4479,7 +4479,7 @@ ScriptedImporter:
       y: 56
       width: 8
       height: 8
-    spriteID: d013f92a933b4044f8dae5ebc195be24
+    spriteID: 83363a58a6c737c4298caf0b094545bb
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_298
@@ -4494,7 +4494,7 @@ ScriptedImporter:
       y: 56
       width: 8
       height: 8
-    spriteID: 2e346a6328934034881b4ed007aef80b
+    spriteID: e09d5e00b76411144afd55ab533e20cc
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_299
@@ -4509,7 +4509,7 @@ ScriptedImporter:
       y: 56
       width: 8
       height: 8
-    spriteID: 99a4d7fe2a027fb4b8887c9bf786c34c
+    spriteID: 063d8ce241222e042912ba9c314115fd
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_300
@@ -4524,7 +4524,7 @@ ScriptedImporter:
       y: 48
       width: 8
       height: 8
-    spriteID: 1eab0ba9b332f3644be4a8414ad45519
+    spriteID: 2a7d82a8a4b1ed0458383aff5e90d955
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_301
@@ -4539,7 +4539,7 @@ ScriptedImporter:
       y: 48
       width: 8
       height: 8
-    spriteID: 88e2853216459104ba9a0d4121ccd22b
+    spriteID: 17033de07eb78ec499f96ffd4170d7ce
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_302
@@ -4554,7 +4554,7 @@ ScriptedImporter:
       y: 48
       width: 8
       height: 8
-    spriteID: 18cc86d96f5918d4bb42af3f86c6510a
+    spriteID: 607cfd2b11f450c4faa2b6c4294ed5bb
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_303
@@ -4569,7 +4569,7 @@ ScriptedImporter:
       y: 48
       width: 8
       height: 8
-    spriteID: a45e42c148958ed458ed83a4c222d7ed
+    spriteID: e9bffc82a3551014a92161b4ec8aea74
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_304
@@ -4584,7 +4584,7 @@ ScriptedImporter:
       y: 48
       width: 8
       height: 8
-    spriteID: bc2681e0b39103e41b5cd6dd9c550419
+    spriteID: 016893d795fa7c44b82ac1133eb8ccae
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_305
@@ -4599,7 +4599,7 @@ ScriptedImporter:
       y: 48
       width: 8
       height: 8
-    spriteID: 8c2dcf3e3105cd144871889ce63570c7
+    spriteID: 8948acde294cbfe4db7763a68e1907a8
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_306
@@ -4614,7 +4614,7 @@ ScriptedImporter:
       y: 48
       width: 8
       height: 8
-    spriteID: 63428b31b83fdf341b21c1bf0ec32f7f
+    spriteID: 459a3ee3d7ee43945b2d7e60a866a6bc
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_307
@@ -4629,7 +4629,7 @@ ScriptedImporter:
       y: 48
       width: 8
       height: 8
-    spriteID: fc6c88375027b3a4bb8e5ba7aa0e2334
+    spriteID: 3659c5d07150294439d0c783826d6e46
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_308
@@ -4644,7 +4644,7 @@ ScriptedImporter:
       y: 48
       width: 8
       height: 8
-    spriteID: f1ef2dbbde1305a44a88abd7e5e4b7bf
+    spriteID: 438375c7cb2a64c47ba515182b3c6f53
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_309
@@ -4659,7 +4659,7 @@ ScriptedImporter:
       y: 48
       width: 8
       height: 8
-    spriteID: 939895b1bd6091b409ec21a46dae4047
+    spriteID: 63126c14139d6c441acb14c96a8ca487
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_310
@@ -4674,7 +4674,7 @@ ScriptedImporter:
       y: 48
       width: 8
       height: 8
-    spriteID: e73805db68dd4a542bdf41618dec375c
+    spriteID: a08aaee372fd87f43b9693cd7e62c6cc
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_311
@@ -4689,7 +4689,7 @@ ScriptedImporter:
       y: 48
       width: 8
       height: 8
-    spriteID: 612713fcddd3d0944a7650199622f4cb
+    spriteID: f9065918d9cbe4e4a913b238a3162859
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_312
@@ -4704,7 +4704,7 @@ ScriptedImporter:
       y: 40
       width: 8
       height: 8
-    spriteID: 801f3cebf3a44fb4783b397eafbf7664
+    spriteID: d4ed9ff5812fec1438ae0297055cf886
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_313
@@ -4719,7 +4719,7 @@ ScriptedImporter:
       y: 40
       width: 8
       height: 8
-    spriteID: 2115faadc742b9040ba12fa5efa5a9dd
+    spriteID: 0384f7bc1eb0f4c45ae24524f0b183b2
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_314
@@ -4734,7 +4734,7 @@ ScriptedImporter:
       y: 40
       width: 8
       height: 8
-    spriteID: b2f8c818faa521544a1dda1e23fb70c7
+    spriteID: 5b33fc9e8408fb549b8844e00dfb0296
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_315
@@ -4749,7 +4749,7 @@ ScriptedImporter:
       y: 40
       width: 8
       height: 8
-    spriteID: 72fc1fee6302e8240b017e9d0cb96bf1
+    spriteID: a8e77d6d4d09baa468f616ac04506ba3
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_316
@@ -4764,7 +4764,7 @@ ScriptedImporter:
       y: 40
       width: 8
       height: 8
-    spriteID: 571cd64821f3d1d4897263e46660d5b0
+    spriteID: d6ea71e8a683e3343b58360d88889b3c
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_317
@@ -4779,7 +4779,7 @@ ScriptedImporter:
       y: 40
       width: 8
       height: 8
-    spriteID: fc7e6597161c3594da040e5ab39bf0ce
+    spriteID: d139c0319556d2343a358117cb2c8e33
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_318
@@ -4794,7 +4794,7 @@ ScriptedImporter:
       y: 40
       width: 8
       height: 8
-    spriteID: 420693e138e5fe14fa11d190a2f86651
+    spriteID: 8f144274f38791c43928df6e5b15780f
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_319
@@ -4809,7 +4809,7 @@ ScriptedImporter:
       y: 40
       width: 8
       height: 8
-    spriteID: aae04b4ccaf014648b7b2235c9774173
+    spriteID: 509dcff379cf73541ad6d40d0d322a52
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_320
@@ -4824,7 +4824,7 @@ ScriptedImporter:
       y: 40
       width: 8
       height: 8
-    spriteID: 1c5e86e548be8884fb3a5c292eb4d444
+    spriteID: ab99d2c4c1b015442be793f7a258e9e1
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_321
@@ -4839,7 +4839,7 @@ ScriptedImporter:
       y: 40
       width: 8
       height: 8
-    spriteID: 5871a863d33725f4d9908403b7bfbc99
+    spriteID: 9debca421a4f9934d9ca5852290078dc
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_322
@@ -4854,7 +4854,7 @@ ScriptedImporter:
       y: 40
       width: 8
       height: 8
-    spriteID: 22c577aa25ff0fb4c9ff9e7767a8ca82
+    spriteID: d6c7505e39581c24cb4c2b50be489f81
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_323
@@ -4869,7 +4869,7 @@ ScriptedImporter:
       y: 40
       width: 8
       height: 8
-    spriteID: 95414231c882adb46a9785710c9100b2
+    spriteID: 1b78791cfae6ae24b8f4bde941e31b4e
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_324
@@ -4884,7 +4884,7 @@ ScriptedImporter:
       y: 32
       width: 8
       height: 8
-    spriteID: 44bfc3bd6d200804eb4e3bf2ff189b10
+    spriteID: ea0a848590d187c4c823f3405650771d
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_325
@@ -4899,7 +4899,7 @@ ScriptedImporter:
       y: 32
       width: 8
       height: 8
-    spriteID: e246f1ace1d1afd45888d64d85bd359a
+    spriteID: 669fcda8440f32a4ebed02145a48f150
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_326
@@ -4914,7 +4914,7 @@ ScriptedImporter:
       y: 32
       width: 8
       height: 8
-    spriteID: aa2c6f74fabe58e4e96ba7138beb45f9
+    spriteID: 77810f7075b6ee544bd2074e3d6ba6c6
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_327
@@ -4929,7 +4929,7 @@ ScriptedImporter:
       y: 32
       width: 8
       height: 8
-    spriteID: 36d61148c7a53524f8b1ec2320984feb
+    spriteID: 9fab6d952a467724ebbabca6e92c5720
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_328
@@ -4944,7 +4944,7 @@ ScriptedImporter:
       y: 32
       width: 8
       height: 8
-    spriteID: 04bf15392b0e9884f9c0eea7abbc4a9c
+    spriteID: d64771108a090244e96e81f782227133
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_329
@@ -4959,7 +4959,7 @@ ScriptedImporter:
       y: 32
       width: 8
       height: 8
-    spriteID: 0d7cab250687d0041811b8bee9c9a870
+    spriteID: 511d9cbde8080924da188210a2c75601
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_330
@@ -4974,7 +4974,7 @@ ScriptedImporter:
       y: 32
       width: 8
       height: 8
-    spriteID: 07db547f00164074d8f808fcd7807ae6
+    spriteID: 546e2b3f950ab724cb4ed51ca6b25e7e
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_331
@@ -4989,7 +4989,7 @@ ScriptedImporter:
       y: 32
       width: 8
       height: 8
-    spriteID: 170e4a9233a58594fb5748e272dafca2
+    spriteID: 17a4d00aefea6944997ded0c83c4947b
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_332
@@ -5004,7 +5004,7 @@ ScriptedImporter:
       y: 32
       width: 8
       height: 8
-    spriteID: 4de6a7b229633d3429182f53ff58353a
+    spriteID: 7d91f126d2759184d8a4c6296e162b5c
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_333
@@ -5019,7 +5019,7 @@ ScriptedImporter:
       y: 32
       width: 8
       height: 8
-    spriteID: 6f7acc02cee790e4fa8e0f7d4c0e1778
+    spriteID: 48164b1139d48f341b8beeef42a18666
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_334
@@ -5034,7 +5034,7 @@ ScriptedImporter:
       y: 32
       width: 8
       height: 8
-    spriteID: a421af8434a62d84db8d9b326b89cc56
+    spriteID: 0157cdf33cad54f4aa6e823b933240bd
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_335
@@ -5049,7 +5049,7 @@ ScriptedImporter:
       y: 32
       width: 8
       height: 8
-    spriteID: 1260addbce24025459d432ddc2608722
+    spriteID: f47b2df378f926043b1a44e4b72fd617
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_336
@@ -5064,7 +5064,7 @@ ScriptedImporter:
       y: 24
       width: 8
       height: 8
-    spriteID: fc99bcb1ba061354faae17a995354ae4
+    spriteID: 836747b94b6887f4897224a563e599c7
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_337
@@ -5079,7 +5079,7 @@ ScriptedImporter:
       y: 24
       width: 8
       height: 8
-    spriteID: fcded128bf6daa14d822eacd1062aa80
+    spriteID: 77a6f338e430b28488bfce4f5463f6d9
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_338
@@ -5094,7 +5094,7 @@ ScriptedImporter:
       y: 24
       width: 8
       height: 8
-    spriteID: 3a6acc4e813ce92409bb52ca1977c2d5
+    spriteID: 7754a878a76bdf84f9c231a936979306
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_339
@@ -5109,7 +5109,7 @@ ScriptedImporter:
       y: 24
       width: 8
       height: 8
-    spriteID: 87e1b222dd34d3f44a8d144aef50926c
+    spriteID: 444a09e3acb7fe24e8ae25386f33fa88
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_340
@@ -5124,7 +5124,7 @@ ScriptedImporter:
       y: 24
       width: 8
       height: 8
-    spriteID: e867868c98104b449aebaf8cedee6558
+    spriteID: 07e699ea94283ef49b07c9811b4c0073
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_341
@@ -5139,7 +5139,7 @@ ScriptedImporter:
       y: 24
       width: 8
       height: 8
-    spriteID: 4e400a0a95b70b24eb537e2d6e80382c
+    spriteID: 048bd63675d043c4380685696e98faa2
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_342
@@ -5154,7 +5154,7 @@ ScriptedImporter:
       y: 24
       width: 8
       height: 8
-    spriteID: d574b6ebb9766a74892d6b34707e75de
+    spriteID: 183de18bcece1c2448e88c856fd61aa3
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_343
@@ -5169,7 +5169,7 @@ ScriptedImporter:
       y: 24
       width: 8
       height: 8
-    spriteID: b925308468c0bed48be17e7e3298e54c
+    spriteID: bc1006792abc4cd4bb008f1cfdabf27e
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_344
@@ -5184,7 +5184,7 @@ ScriptedImporter:
       y: 24
       width: 8
       height: 8
-    spriteID: 4cf64f3086106ae4da9876c29f963b0b
+    spriteID: dd49031a683bcc94aa8cc4856a8fea11
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_345
@@ -5199,7 +5199,7 @@ ScriptedImporter:
       y: 24
       width: 8
       height: 8
-    spriteID: 8eb2e0d7d55c3ff49963f0a641f7097f
+    spriteID: 81b539799b817f241827abba110cd587
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_346
@@ -5214,7 +5214,7 @@ ScriptedImporter:
       y: 24
       width: 8
       height: 8
-    spriteID: ab87758468cf6c541a9b74a218ef3deb
+    spriteID: f11609777283d804087b61dd0391d187
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_347
@@ -5229,7 +5229,7 @@ ScriptedImporter:
       y: 24
       width: 8
       height: 8
-    spriteID: b86ea632e49437742b305e328e70286c
+    spriteID: 352c80b5470a783409cacd3cc6091368
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_348
@@ -5244,7 +5244,7 @@ ScriptedImporter:
       y: 16
       width: 8
       height: 8
-    spriteID: 8b4b1f4e86ff7ad4bb054ea0305aadf0
+    spriteID: b3f494a3b7e33964598c60c58f6aa0e9
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_349
@@ -5259,7 +5259,7 @@ ScriptedImporter:
       y: 16
       width: 8
       height: 8
-    spriteID: 108aff91d40866e4a8cbbded14289f9f
+    spriteID: 2a7a40a9d6cb6d5438e20c057d56674b
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_350
@@ -5274,7 +5274,7 @@ ScriptedImporter:
       y: 16
       width: 8
       height: 8
-    spriteID: 70a2ac2f4bc966941a8e8548205d65fd
+    spriteID: a2fdee83cf1f336419098c990194076b
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_351
@@ -5289,7 +5289,7 @@ ScriptedImporter:
       y: 16
       width: 8
       height: 8
-    spriteID: 48ebec81963b4534ea6830c02e942c64
+    spriteID: 1ab74e919d277f74c88b10c4f7554fb7
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_352
@@ -5304,7 +5304,7 @@ ScriptedImporter:
       y: 16
       width: 8
       height: 8
-    spriteID: f77b7c57887786d44ae7650e598edf3f
+    spriteID: 671e3b1db53cc394086b64047c93f6c6
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_353
@@ -5319,7 +5319,7 @@ ScriptedImporter:
       y: 16
       width: 8
       height: 8
-    spriteID: bd78a3100d4f0a14d9477e4bc21674f8
+    spriteID: ac2621b43707a374fbae452ea5ede612
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_354
@@ -5334,7 +5334,7 @@ ScriptedImporter:
       y: 16
       width: 8
       height: 8
-    spriteID: 8af88c294451f974982347efbe75b10d
+    spriteID: e0bacdd45ca3c6d4097ce2b479a1cdb2
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_355
@@ -5349,7 +5349,7 @@ ScriptedImporter:
       y: 16
       width: 8
       height: 8
-    spriteID: ddf2d9b0fec01cd4090593fc446201d6
+    spriteID: 886c6f8410300d547869b1902b31e1b5
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_356
@@ -5364,7 +5364,7 @@ ScriptedImporter:
       y: 16
       width: 8
       height: 8
-    spriteID: fe0d20731ca659346877f9e0db07a570
+    spriteID: 8b3efbb93149a374d8a119fc8cc07434
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_357
@@ -5379,7 +5379,7 @@ ScriptedImporter:
       y: 16
       width: 8
       height: 8
-    spriteID: e7e8501f7ea2aa547a0a732fd35f1033
+    spriteID: 0b92a9732d82f5f49b01f7e60c8d3388
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_358
@@ -5394,7 +5394,7 @@ ScriptedImporter:
       y: 16
       width: 8
       height: 8
-    spriteID: 4e896020f81d153459c7d5cf4f739ec4
+    spriteID: c2f00f3ecdacd734b9f054a3e9846db8
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_359
@@ -5409,7 +5409,7 @@ ScriptedImporter:
       y: 16
       width: 8
       height: 8
-    spriteID: 8aefa618ae89c744687afca6ae678ffc
+    spriteID: bfc296bf765706a4b98730158b19af32
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_360
@@ -5424,7 +5424,7 @@ ScriptedImporter:
       y: 8
       width: 8
       height: 8
-    spriteID: eeeee265f07cb1b4e92a05716dd83c25
+    spriteID: 4ca1999a442f1fc41b23a6093d9c8992
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_361
@@ -5439,7 +5439,7 @@ ScriptedImporter:
       y: 8
       width: 8
       height: 8
-    spriteID: 6860aa448d36e334ea12618f2348052d
+    spriteID: 579f904c39ef78b4db3e3f2887868ea5
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_362
@@ -5454,7 +5454,7 @@ ScriptedImporter:
       y: 8
       width: 8
       height: 8
-    spriteID: f0941b8b8e2e76f46809c127119bf2d1
+    spriteID: dcdbd1c52d976fd4c923bf33b822b426
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_363
@@ -5469,7 +5469,7 @@ ScriptedImporter:
       y: 8
       width: 8
       height: 8
-    spriteID: 190fe88c5cf76ae439157739859ef8b3
+    spriteID: 600fa354e158160429c6e8d9169f7c65
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_364
@@ -5484,7 +5484,7 @@ ScriptedImporter:
       y: 8
       width: 8
       height: 8
-    spriteID: c2eae011225bd694f895b5c06bf73288
+    spriteID: 7706c645f0497b94ca66b2291b1ea6ff
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_365
@@ -5499,7 +5499,7 @@ ScriptedImporter:
       y: 8
       width: 8
       height: 8
-    spriteID: e96ea788b671a894199cbc251c8fdb65
+    spriteID: cc7c5073225187b40822a332579c32d9
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_366
@@ -5514,7 +5514,7 @@ ScriptedImporter:
       y: 8
       width: 8
       height: 8
-    spriteID: efd572794316d4246b8a8819bc56a69f
+    spriteID: a0a301baa3499ac4db1bfbffe175bd6f
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_367
@@ -5529,7 +5529,7 @@ ScriptedImporter:
       y: 8
       width: 8
       height: 8
-    spriteID: f42f7b8cfa7639244985d0c80660128d
+    spriteID: 167f51c28e4ea054bb3ec0fdbff6713c
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_368
@@ -5544,7 +5544,7 @@ ScriptedImporter:
       y: 8
       width: 8
       height: 8
-    spriteID: ce4de9eea502a8647813e39250a194c0
+    spriteID: 67b2f0821a366bf4c8cb7db99e7de40b
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_369
@@ -5559,7 +5559,7 @@ ScriptedImporter:
       y: 8
       width: 8
       height: 8
-    spriteID: e9678a32618c4704b96c528d2b1c71f5
+    spriteID: 046bb8d6adae5ef429f7d2d29345c2c0
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_370
@@ -5574,7 +5574,7 @@ ScriptedImporter:
       y: 8
       width: 8
       height: 8
-    spriteID: f794474a15c70bf46b137ae277dfd37f
+    spriteID: d28c596b1255da145bb0ab4c88021033
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_371
@@ -5589,7 +5589,7 @@ ScriptedImporter:
       y: 8
       width: 8
       height: 8
-    spriteID: 1e1912c75f77024419e3db4d20a33c2a
+    spriteID: b448e362f81cc33418e1989b1f8998a1
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_372
@@ -5604,7 +5604,7 @@ ScriptedImporter:
       y: 0
       width: 8
       height: 8
-    spriteID: 82f0bb82dafb6c647ba7d28477f79a93
+    spriteID: c6ef7273e74f35e44966868f54cb5dfd
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_373
@@ -5619,7 +5619,7 @@ ScriptedImporter:
       y: 0
       width: 8
       height: 8
-    spriteID: 47e8286941588e1428d595aedfaab1d1
+    spriteID: 2490532881c184c498a76d7875402345
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_374
@@ -5634,7 +5634,7 @@ ScriptedImporter:
       y: 0
       width: 8
       height: 8
-    spriteID: 3e36721bc541f3d408079b2315050341
+    spriteID: 88a876ef3dbf26e42870eaa05eecef66
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_375
@@ -5649,7 +5649,7 @@ ScriptedImporter:
       y: 0
       width: 8
       height: 8
-    spriteID: 963ff4ead55a9fd42981e9a55662f01a
+    spriteID: dd1aaac70387d2d41a8769b27bb3964c
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_376
@@ -5664,7 +5664,7 @@ ScriptedImporter:
       y: 0
       width: 8
       height: 8
-    spriteID: 6efef4ab641ec454eb637ddf36f5897c
+    spriteID: e1ead718a7d8a9c4aaf11b48829f5e9a
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_377
@@ -5679,7 +5679,7 @@ ScriptedImporter:
       y: 0
       width: 8
       height: 8
-    spriteID: 46712878dcdfd1942a641349b30c08dd
+    spriteID: 49b9a50396bd66f4cbca785b5046c8a1
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_378
@@ -5694,7 +5694,7 @@ ScriptedImporter:
       y: 0
       width: 8
       height: 8
-    spriteID: f1b53530bab7cca478612b1dd42d2fa1
+    spriteID: aed39e70990ff5b4b87f52b5a27bec09
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_379
@@ -5709,7 +5709,7 @@ ScriptedImporter:
       y: 0
       width: 8
       height: 8
-    spriteID: 6e6f4c6d36d3d954081a5f89c0e35c3f
+    spriteID: 9b9fbc900f7e16a4ca3cae0b185034d1
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_380
@@ -5724,7 +5724,7 @@ ScriptedImporter:
       y: 0
       width: 8
       height: 8
-    spriteID: ac79d30fccdc1244c9d39e0bc4b015eb
+    spriteID: a20180c1db41329418e27951c7085d70
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_381
@@ -5739,7 +5739,7 @@ ScriptedImporter:
       y: 0
       width: 8
       height: 8
-    spriteID: b6cfbc6c16f78864f818a93baaf56280
+    spriteID: 4fd59d55a6db8a64ca82fb83f0de2211
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_382
@@ -5754,7 +5754,7 @@ ScriptedImporter:
       y: 0
       width: 8
       height: 8
-    spriteID: 4f5e8201861dbd1489d2eda751ca551f
+    spriteID: 4aeabe46dc3649046b429379e27ced15
     spriteOutline: []
     tessellationDetail: 0
   - name: Cavernas_by_Adam_Saltsman_383
@@ -5769,7 +5769,7 @@ ScriptedImporter:
       y: 0
       width: 8
       height: 8
-    spriteID: 5f905a5c20eed2a40ab539cdacea485e
+    spriteID: c795a5d3f8eee06439495e72e8df9757
     spriteOutline: []
     tessellationDetail: 0
   _secondaryTextures: []
