@@ -1,5 +1,5 @@
 {
-    "PixelsPerUnit": 8,
+    "PixelsPerUnit": 32,
     "CustomLevelPrefab": {
         "instanceID": 0
     },
@@ -10,22 +10,6 @@
     "CreateLevelBoundsTrigger": false,
     "UseParallax": true,
     "IntGridValues": [
-        {
-            "_key": "Especiais_1",
-            "_asset": {
-                "fileID": 11400000,
-                "guid": "d69a8d35168a3ae4cb455edc505c4fad",
-                "type": 2
-            }
-        },
-        {
-            "_key": "Especiais_2",
-            "_asset": {
-                "fileID": 11400000,
-                "guid": "58db17eddd0113f42b7de799c645b995",
-                "type": 2
-            }
-        },
         {
             "_key": "IntGrid_layer_1",
             "_asset": {

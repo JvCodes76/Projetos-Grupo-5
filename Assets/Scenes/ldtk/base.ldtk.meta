@@ -10,7 +10,7 @@ ScriptedImporter:
   script: {fileID: 11500000, guid: aaa16bfc62c086f4fb45da87b6acf9b1, type: 3}
   _reimportOnDependencyChange: 1
   _jsonFile: {fileID: -164016180542632921, guid: 9919036eca53e4e4786f1b7f71a84a84, type: 3}
-  _pixelsPerUnit: 8
+  _pixelsPerUnit: 32
   _customLevelPrefab: {instanceID: 0}
   _intGridValueColorsVisible: 0
   _useCompositeCollider: 1
@@ -20,10 +20,6 @@ ScriptedImporter:
   _useParallax: 1
   _scaleEntities: 1
   _intGridValues:
-  - _key: Especiais_1
-    _asset: {fileID: 11400000, guid: d69a8d35168a3ae4cb455edc505c4fad, type: 2}
-  - _key: Especiais_2
-    _asset: {fileID: 11400000, guid: 58db17eddd0113f42b7de799c645b995, type: 2}
   - _key: IntGrid_layer_1
     _asset: {fileID: 11400000, guid: e15a211ab7480934684f395fcfb7d1f5, type: 2}
   _entities: []

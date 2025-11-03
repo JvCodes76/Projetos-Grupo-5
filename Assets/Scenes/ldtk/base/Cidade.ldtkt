@@ -1,0 +1,40 @@
+{
+  "Rects": [
+    {
+      "x": 32,
+      "y": 0,
+      "w": 32,
+      "h": 32
+    }
+  ],
+  "Def": {
+    "__cHei": 9,
+    "__cWid": 9,
+    "cachedPixelData": {
+      "opaqueTiles": "111100001111111111111111111111110001111111111111010000111010000011010000001010000",
+      "averageColors": "f567f456f456f5674274426442744264f578f456f303f313f456f567f456f456f567f568f557f435f435f557f568f567f567f568f578f324f324f445f445f435856885784274f678f434f434f435f435f435f324f324f578f456f445f334f323d345f324c345934564567456f345f313f323d345f3246345634533451345c345f456f323e345f3454345a34553135313c3458345f334e345f345d345d34523452345"
+    },
+    "customData": [
+
+    ],
+    "embedAtlas": null,
+    "enumTags": [
+
+    ],
+    "identifier": "Cidade",
+    "padding": 0,
+    "pxHei": 288,
+    "pxWid": 288,
+    "relPath": "base/Tileset.png",
+    "savedSelections": [
+
+    ],
+    "spacing": 0,
+    "tags": [
+      "Level1"
+    ],
+    "tagsSourceEnumUid": null,
+    "tileGridSize": 32,
+    "uid": 128
+  }
+}
