@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
+using System.Collections.Generic;
 
 public class characterMovement : MonoBehaviour
 {
@@ -20,8 +22,6 @@ public class characterMovement : MonoBehaviour
     [SerializeField] private int maxAirJumps = 1;
     [SerializeField] private float upwardMovementMultiplier = 1f;
     [SerializeField] private float downwardMovementMultiplier = 1f;
-    [SerializeField] private bool variableJumpHeight = true;
-    [SerializeField] private float jumpCutoffMultiplier = 2f;
     [SerializeField] private float coyoteTime = 0.1f;
     [SerializeField] private float speedYLimit = 20f;
     [SerializeField] private float jumpBufferTime = 0.1f;
@@ -82,6 +82,7 @@ public class characterMovement : MonoBehaviour
     private PlayerInput playerInput;
     private InputAction moveAction;
     private InputAction jumpAction;
+    public GameController gameController;
 
     void Awake()
     {
@@ -434,6 +435,15 @@ public class characterMovement : MonoBehaviour
         {
             Gizmos.color = onGround ? Color.green : Color.red;
             Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Coin"))
+        {
+            Destroy(other.gameObject);
+            gameController.coinCount++;
         }
     }
 }
