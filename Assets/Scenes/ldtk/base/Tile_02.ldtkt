@@ -1,0 +1,30 @@
+{
+  "Rects": null,
+  "Def": {
+    "__cHei": 2,
+    "__cWid": 2,
+    "cachedPixelData": null,
+    "customData": [
+
+    ],
+    "embedAtlas": null,
+    "enumTags": [
+
+    ],
+    "identifier": "Tile_02",
+    "padding": 0,
+    "pxHei": 32,
+    "pxWid": 32,
+    "relPath": "../../tileset/chinese-street-tileset-pixel-art/PSD/Tiles.jpg",
+    "savedSelections": [
+
+    ],
+    "spacing": 0,
+    "tags": [
+
+    ],
+    "tagsSourceEnumUid": null,
+    "tileGridSize": 16,
+    "uid": 157
+  }
+}
