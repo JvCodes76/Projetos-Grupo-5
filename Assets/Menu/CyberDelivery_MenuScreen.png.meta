@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: e2dda69d731370042a10949e481248b4
+guid: c7e66e55d77298e42adaddf9daaa4789
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8101162885533724373
-    second: CyberDelivery_MenuScreen_0
+      213: -540302904687048382
+    second: ImageMenu_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: CyberDelivery_MenuScreen_0
+      name: ImageMenu_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1024
-        height: 585
+        width: 1344
+        height: 768
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5dee0dbf8bc1d6070800000000000000
-      internalID: 8101162885533724373
+      spriteID: 249440fee557088f0800000000000000
+      internalID: -540302904687048382
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      CyberDelivery_MenuScreen_0: 8101162885533724373
+      ImageMenu_0: -540302904687048382
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

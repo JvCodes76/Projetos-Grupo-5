@@ -2125,7 +2125,7 @@ MonoBehaviour:
   timerText: {fileID: 1209597912}
   GameOverScreen: {fileID: 845050387}
   autoStart: 1
-  isCountingUp: 1
+  isCountingUp: 0
   startTime: 3
 --- !u!1 &671100212
 GameObject:
