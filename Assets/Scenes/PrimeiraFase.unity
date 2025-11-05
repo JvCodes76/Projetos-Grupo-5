@@ -393,7 +393,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: -2
   m_Sprite: {fileID: -6470460504253458178, guid: 8d680e0411c8b3048882778531681a17, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -2211,7 +2211,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 0000000001a4eadb37e2703775eac84187897c33
+  m_ApplyToSortingLayers: 0000000001a4eadb37e2703775eac84187897c33551f4ec5d927bda2c15f688495eedf7267d071b1e33df9116d5d7567
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -2377,7 +2377,7 @@ MonoBehaviour:
   timerText: {fileID: 1209597912}
   GameOverScreen: {fileID: 845050387}
   autoStart: 1
-  isCountingUp: 0
+  isCountingUp: 1
   startTime: 3
 --- !u!1 &671100212
 GameObject:
@@ -2455,7 +2455,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 6937817954938267909, guid: 280340deecb4d2e42b121ea715272607, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -30005,7 +30005,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -2
+  m_SortingOrder: -3
   m_Sprite: {fileID: -855298285791758126, guid: d7f42d29005e5de419254388b5a25e6e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

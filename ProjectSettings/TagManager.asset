@@ -47,5 +47,26 @@ TagManager:
   - name: Background
     uniqueID: 3689587713
     locked: 0
+  - name: Ground
+    uniqueID: 3310231381
+    locked: 0
+  - name: Decoration_Back
+    uniqueID: 2730305497
+    locked: 0
+  - name: Player
+    uniqueID: 2221432769
+    locked: 0
+  - name: Effects
+    uniqueID: 1927278229
+    locked: 0
+  - name: Decoration_Front
+    uniqueID: 2977026151
+    locked: 0
+  - name: Foreground
+    uniqueID: 301546979
+    locked: 0
+  - name: HUD
+    uniqueID: 1735744877
+    locked: 0
   m_RenderingLayers:
   - Default
