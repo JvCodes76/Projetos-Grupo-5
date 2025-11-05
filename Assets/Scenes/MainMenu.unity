@@ -1166,7 +1166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 754a6d1cca27aa44e9fdd1d642a30198, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameplayScene: SampleScene
+  gameplayScene: PrimeiraFase
   settingsScene: SettingsMenu
 --- !u!1 &1883627736
 GameObject:
