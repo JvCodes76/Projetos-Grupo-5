@@ -5,7 +5,7 @@ public class GameOver_Script : MonoBehaviour
 {
     public void RestartButton()
     {
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("PrimeiraFase");
     }
 
     public void ExitButton()
