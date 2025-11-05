@@ -388,22 +388,38 @@ public class characterMovement : MonoBehaviour
         // Calcula a velocidade do pulo
         float thisJumpSpeed = originalJumpSpeed;
 
-        if (!onGround && coyoteTimeCounter <= 0f)
+        // identifica um Pulo Aéreo (não no chão, não no coyote time)
+        bool isAboutToAirJump = !onGround && coyoteTimeCounter <= 0f;
+        //verifica se é um Double Jump válido 
+        bool isDoubleJumpAvailable = isAboutToAirJump && airJumpsUsed < maxAirJumps;
+
+        if (isAboutToAirJump)
         {
             thisJumpSpeed *= airJumpHeightMultiplier;
+            isGroundJump = false; // Garante que a lógica de pulo variável não seja aplicada
         }
-
+        
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, thisJumpSpeed);
         currentlyJumping = true;
 
-        if (playerAnimator != null)
-        {
-            playerAnimator.SetTrigger("JumpTrigger");
-        }
-
-        if (!onGround && coyoteTimeCounter <= 0f)
+        if (isAboutToAirJump)
         {
             airJumpsUsed = Mathf.Min(airJumpsUsed + 1, maxAirJumps);
+        }
+
+        // Antes de aplicar a velocidade e incrementar o contador, checa se é um Double Jump válido.
+        if (playerAnimator != null)
+        {
+            if (isDoubleJumpAvailable)
+            {
+                // Pulo Duplo VÁLIDO
+                playerAnimator.SetTrigger("DoubleJumpTrigger");
+            }
+            else
+            {
+                // Pulo Normal, Coyote, ou Air Jump esgotado
+                playerAnimator.SetTrigger("JumpTrigger");
+            }
         }
 
         jumpSpeed = thisJumpSpeed;
