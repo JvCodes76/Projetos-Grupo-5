@@ -1,0 +1,40 @@
+{
+  "Rects": [
+    {
+      "x": 32,
+      "y": 96,
+      "w": 32,
+      "h": 32
+    }
+  ],
+  "Def": {
+    "__cHei": 8,
+    "__cWid": 10,
+    "cachedPixelData": {
+      "opaqueTiles": "01011000000101100000010010011011111111110000100000000011111100000011000000000000",
+      "averageColors": "f557f557f557f303f303f457f556767876797678f313f303f313f323f3237678f31386788678b568f314f313f314f557f557f557e314f324f324b568f678f678f679f679f324f313f323f323f324f324b345b345c345b345f345634534452345134513456345234563456345f334f335f345f345f345f345634533452345434533454345f345f313a34573454345334543454345634533451345734553452345"
+    },
+    "customData": [
+
+    ],
+    "embedAtlas": null,
+    "enumTags": [
+
+    ],
+    "identifier": "China",
+    "padding": 0,
+    "pxHei": 256,
+    "pxWid": 320,
+    "relPath": "base/Tiles.png",
+    "savedSelections": [
+
+    ],
+    "spacing": 0,
+    "tags": [
+      "China"
+    ],
+    "tagsSourceEnumUid": null,
+    "tileGridSize": 32,
+    "uid": 157
+  }
+}

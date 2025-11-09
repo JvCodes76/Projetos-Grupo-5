@@ -1,0 +1,46 @@
+{
+  "Rects": [
+    {
+      "x": 224,
+      "y": 160,
+      "w": 32,
+      "h": 32
+    },
+    {
+      "x": 32,
+      "y": 32,
+      "w": 32,
+      "h": 32
+    }
+  ],
+  "Def": {
+    "__cHei": 8,
+    "__cWid": 8,
+    "cachedPixelData": {
+      "opaqueTiles": "0000000000000000000000000000000001000101010001110100111100000000",
+      "averageColors": "a457c457c766c87673467456765577658457845684578446a457a446634684468446845684468457a457a44664466335844684568446c457a457844664468446f778f778f778e778f878f788f878f877f678f568f678e788e877f568f568f778f778f678f778e788f457f568f568f5683a733c833a734b832c934b835a733a73"
+    },
+    "customData": [
+
+    ],
+    "embedAtlas": null,
+    "enumTags": [
+
+    ],
+    "identifier": "Fabrica",
+    "padding": 0,
+    "pxHei": 256,
+    "pxWid": 256,
+    "relPath": "base/Fabrica_tile.png",
+    "savedSelections": [
+
+    ],
+    "spacing": 0,
+    "tags": [
+      "Fabrica"
+    ],
+    "tagsSourceEnumUid": null,
+    "tileGridSize": 32,
+    "uid": 262
+  }
+}
