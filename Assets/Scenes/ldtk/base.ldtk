@@ -3295,7 +3295,7 @@
 			"identifier": "World_Level_0",
 			"iid": "a2a50ff0-66b0-11ec-9cd7-c721746049b9",
 			"uid": 70,
-			"worldX": 0,
+			"worldX": 4096,
 			"worldY": 0,
 			"worldDepth": 0,
 			"pxWid": 2560,
@@ -3312,13 +3312,13 @@
 			"externalRelPath": "base/World_Level_0.ldtkl",
 			"fieldInstances": [],
 			"layerInstances": null,
-			"__neighbours": [{ "levelIid": "608175c0-8560-11f0-af53-a5e231d6acf6", "dir": "e" }]
+			"__neighbours": [ { "levelIid": "608175c0-8560-11f0-af53-a5e231d6acf6", "dir": "e" }, { "levelIid": "e32ee290-ac70-11f0-a9ab-e5d9eaddba3f", "dir": "w" } ]
 		},
 		{
 			"identifier": "World_Level_1",
 			"iid": "608175c0-8560-11f0-af53-a5e231d6acf6",
 			"uid": 114,
-			"worldX": 2560,
+			"worldX": 6656,
 			"worldY": 0,
 			"worldDepth": 0,
 			"pxWid": 2560,
@@ -3335,7 +3335,7 @@
 			"externalRelPath": "base/World_Level_1.ldtkl",
 			"fieldInstances": [],
 			"layerInstances": null,
-			"__neighbours": [ { "levelIid": "a2a50ff0-66b0-11ec-9cd7-c721746049b9", "dir": "w" }, { "levelIid": "e32ee290-ac70-11f0-a9ab-e5d9eaddba3f", "dir": "e" } ]
+			"__neighbours": [ { "levelIid": "a2a50ff0-66b0-11ec-9cd7-c721746049b9", "dir": "w" }, { "levelIid": "b5a34ae0-ac70-11f0-ae67-d9e2c236f47b", "dir": "e" } ]
 		},
 		{
 			"identifier": "World_Level_2",
@@ -3358,13 +3358,13 @@
 			"externalRelPath": "base/World_Level_2.ldtkl",
 			"fieldInstances": [],
 			"layerInstances": null,
-			"__neighbours": [ { "levelIid": "e32ee290-ac70-11f0-a9ab-e5d9eaddba3f", "dir": "w" }, { "levelIid": "1d759420-ac70-11f0-bf4e-69ab133ebb53", "dir": "e" } ]
+			"__neighbours": [ { "levelIid": "608175c0-8560-11f0-af53-a5e231d6acf6", "dir": "w" }, { "levelIid": "1d759420-ac70-11f0-bf4e-69ab133ebb53", "dir": "e" } ]
 		},
 		{
 			"identifier": "World_Level_3",
 			"iid": "e32ee290-ac70-11f0-a9ab-e5d9eaddba3f",
 			"uid": 127,
-			"worldX": 5120,
+			"worldX": 0,
 			"worldY": 0,
 			"worldDepth": 0,
 			"pxWid": 4096,
@@ -3381,7 +3381,7 @@
 			"externalRelPath": "base/World_Level_3.ldtkl",
 			"fieldInstances": [],
 			"layerInstances": null,
-			"__neighbours": [ { "levelIid": "608175c0-8560-11f0-af53-a5e231d6acf6", "dir": "w" }, { "levelIid": "b5a34ae0-ac70-11f0-ae67-d9e2c236f47b", "dir": "e" } ]
+			"__neighbours": [{ "levelIid": "a2a50ff0-66b0-11ec-9cd7-c721746049b9", "dir": "e" }]
 		},
 		{
 			"identifier": "World_Level_4",
