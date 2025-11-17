@@ -16,14 +16,14 @@
 	"worldDepth": 0,
 	"pxWid": 2560,
 	"pxHei": 2112,
-	"__bgColor": "#714883",
-	"bgColor": "#714883",
+	"__bgColor": "#0E54B6",
+	"bgColor": "#0E54B6",
 	"useAutoIdentifier": true,
 	"bgRelPath": null,
 	"bgPos": null,
 	"bgPivotX": 0.5,
 	"bgPivotY": 0.5,
-	"__smartColor": "#B19ABB",
+	"__smartColor": "#7AA1D7",
 	"__bgPos": null,
 	"externalRelPath": null,
 	"fieldInstances": [],
@@ -2815,5 +2815,5 @@
 			"entityInstances": []
 		}
 	],
-	"__neighbours": [ { "levelIid": "608175c0-8560-11f0-af53-a5e231d6acf6", "dir": "w" }, { "levelIid": "1d759420-ac70-11f0-bf4e-69ab133ebb53", "dir": "e" } ]
+	"__neighbours": [{ "levelIid": "608175c0-8560-11f0-af53-a5e231d6acf6", "dir": "w" }]
 }

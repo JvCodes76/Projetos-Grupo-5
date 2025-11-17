@@ -19,14 +19,13 @@ public class characterMovement : MonoBehaviour
     [Header("Vertical Jump Settings")]
     [SerializeField] private float jumpHeight = 4f;
     [SerializeField] private float timeToApex = 0.4f;
-    [SerializeField] private int maxAirJumps = 1;
     [SerializeField] private float upwardMovementMultiplier = 1f;
     [SerializeField] private float downwardMovementMultiplier = 1f;
     [SerializeField] private float coyoteTime = 0.1f;
     [SerializeField] private float speedYLimit = 20f;
     [SerializeField] private float jumpBufferTime = 0.1f;
     [SerializeField] private float airJumpHeightMultiplier = 1f;
-    [SerializeField] private float hangTime = 0.2f; // Tempo parado no ápice
+    [SerializeField] private float hangTime = 0.2f;
 
     [Header("Wall Jump Settings")]
     [SerializeField] private float wallCheckDistance = 0.1f;
@@ -34,7 +33,13 @@ public class characterMovement : MonoBehaviour
     [SerializeField] private Vector2 wallJumpForce = new Vector2(5f, 9f);
     [SerializeField] private float wallJumpTime = 0.2f;
     [SerializeField] private LayerMask wallLayer;
-    [SerializeField] private bool enableWallJump = true;
+
+
+    private bool enableWallJump;
+    private int maxAirJumps;
+    private float agility;
+    private float strenght;
+
 
     [Header("Ground Check")]
     [SerializeField] private Transform groundCheck;
@@ -58,7 +63,7 @@ public class characterMovement : MonoBehaviour
     [SerializeField] public bool onGround;
     [SerializeField] private bool currentlyJumping;
     [SerializeField] private int airJumpsUsed = 0;
-    [SerializeField] private float jumpStartTime; // Nova variável para registrar o tempo de início do hold
+    [SerializeField] private float jumpStartTime;
 
     [SerializeField] private bool isTouchingRightWall;
     [SerializeField] private bool isTouchingLeftWall;
@@ -70,13 +75,9 @@ public class characterMovement : MonoBehaviour
     private float originalJumpSpeed;
     private Collider2D playerCollider;
 
-    // Variável para registrar a posição Y inicial do pulo (para limitar altura)
     private float initialJumpY;
-    // Flag para distinguir ground jump de air jump
     private bool isGroundJump;
-    // Timer para hang time no ápice
     private float hangTimer = 0f;
-    // Para detectar o ápice (mudança de velocidade positiva para zero)
     private float previousVelocityY;
 
     private PlayerInput playerInput;
@@ -116,6 +117,15 @@ public class characterMovement : MonoBehaviour
 
     void Start()
     {
+        enableWallJump = PlayerData.Instance.canWallJump;
+        maxAirJumps = PlayerData.Instance.maxAirJumps;
+        agility = PlayerData.Instance.agility;
+        strenght = PlayerData.Instance.strenght;
+        jumpHeight += 0.1f*strenght;
+        maxSpeed += 0.5f*agility;
+        acceleration += agility;
+
+
         rb = GetComponent<Rigidbody2D>();
         if (rb == null)
         {
