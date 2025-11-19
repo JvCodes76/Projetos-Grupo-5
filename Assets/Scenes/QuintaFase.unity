@@ -37864,6 +37864,14 @@ PrefabInstance:
       propertyPath: gameController
       value: 
       objectReference: {fileID: 1370013933}
+    - target: {fileID: 7543550239980241752, guid: fbe9b19b6ebd70f4183d1a6885db563c, type: 3}
+      propertyPath: groundCheckRadius
+      value: 0.19
+      objectReference: {fileID: 0}
+    - target: {fileID: 7543550239980241752, guid: fbe9b19b6ebd70f4183d1a6885db563c, type: 3}
+      propertyPath: ceilingCheckRadius
+      value: 0.15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

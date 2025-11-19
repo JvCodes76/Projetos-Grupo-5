@@ -49,7 +49,7 @@ public class characterMovement : MonoBehaviour
     // Henrique teto
     [Header("Ceiling Check")]
     [SerializeField] private Transform ceilingCheck;
-    [SerializeField] private float ceilingCheckRadius = 0.2f;
+    [SerializeField] private float ceilingCheckRadius = 0.15f;
     [SerializeField] private LayerMask ceilingLayer = 1;
     // até aqui
 
@@ -168,6 +168,11 @@ public class characterMovement : MonoBehaviour
             cc.transform.SetParent(transform);
             cc.transform.localPosition = new Vector3(-0.05f, 0.3f, 0); // Cria um pouco acima do centro
             ceilingCheck = cc.transform;
+        }
+        
+        if (ceilingLayer.value == 0)
+        {
+            ceilingLayer = groundLayer;
         }
         // até aqui
 
