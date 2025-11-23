@@ -91,6 +91,7 @@ public class characterMovement : MonoBehaviour
     private InputAction moveAction;
     private InputAction jumpAction;
     public GameController gameController;
+    public PlayerData playerData;
 
     void Awake()
     {
@@ -512,7 +513,7 @@ public class characterMovement : MonoBehaviour
         if (other.gameObject.CompareTag("Coin"))
         {
             Destroy(other.gameObject);
-            gameController.coinCount++;
+            playerData.coinCount++;
         }
     }
 }

@@ -7,6 +7,8 @@ public class PlayerData : MonoBehaviour
     public float agility = 1f;
     public float strenght = 1f;
     public int maxAirJumps = 1;
+    public int currentLevel;
+    public int coinCount = 0;
     public bool canWallJump = true;
     public string playerName = "Cyborg";
     public System.Collections.Generic.List<string> inventory = new System.Collections.Generic.List<string>();
