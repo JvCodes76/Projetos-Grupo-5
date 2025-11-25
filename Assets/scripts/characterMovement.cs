@@ -46,13 +46,6 @@ public class characterMovement : MonoBehaviour
     [SerializeField] private float groundCheckRadius = 0.2f;
     [SerializeField] private LayerMask groundLayer = 1;
 
-    // Henrique teto
-    [Header("Ceiling Check")]
-    [SerializeField] private Transform ceilingCheck;
-    [SerializeField] private float ceilingCheckRadius = 0.15f;
-    [SerializeField] private LayerMask ceilingLayer = 1;
-    // até aqui
-
     [Header("Debug")]
     [SerializeField] public float currentHorizontalVelocity;
     [SerializeField] public float horizontalInput;
@@ -91,7 +84,9 @@ public class characterMovement : MonoBehaviour
     private InputAction moveAction;
     private InputAction jumpAction;
     public GameController gameController;
-    public PlayerData playerData;
+    // Henrique: Referência ao novo script de gancho
+    private GrapplingHook grapplingHook;
+    // até aqui
 
     void Awake()
     {
@@ -135,6 +130,9 @@ public class characterMovement : MonoBehaviour
 
 
         rb = GetComponent<Rigidbody2D>();
+        // Henrique: Pega a referência do GrapplingHook
+        grapplingHook = GetComponent<GrapplingHook>();
+        // até aqui
         if (rb == null)
         {
             Debug.LogError("PlayerMovement2D requer um Rigidbody2D no GameObject!");
@@ -161,21 +159,6 @@ public class characterMovement : MonoBehaviour
             gc.transform.localPosition = new Vector3(0, -0.5f, 0);
             groundCheck = gc.transform;
         }
-
-        // Henrique teto
-        if (ceilingCheck == null)
-        {
-            GameObject cc = new GameObject("CeilingCheck");
-            cc.transform.SetParent(transform);
-            cc.transform.localPosition = new Vector3(-0.05f, 0.3f, 0); // Cria um pouco acima do centro
-            ceilingCheck = cc.transform;
-        }
-        
-        if (ceilingLayer.value == 0)
-        {
-            ceilingLayer = groundLayer;
-        }
-        // até aqui
 
         coyoteTimeCounter = coyoteTime;
         jumpBufferCounter = 0f;
@@ -270,6 +253,14 @@ public class characterMovement : MonoBehaviour
     {
         if (rb == null) return;
 
+        // Henrique: Bloqueia o controle do jogador (incluindo gravidade) durante a puxada do gancho
+        if (grapplingHook != null && grapplingHook.IsGrappling)
+        {
+            rb.gravityScale = 0; // Remove a gravidade enquanto o gancho aplica a força de puxada
+            return; // Sai do FixedUpdate para não aplicar o movimento normal do personagem
+        }
+        // até aqui
+
         float currentVelocityX = rb.linearVelocity.x;
         float currentVelocityY = rb.linearVelocity.y;
 
@@ -317,23 +308,14 @@ public class characterMovement : MonoBehaviour
             }
         }
 
-        // Henrique teto
-        bool hitCeiling = Physics2D.OverlapCircle(ceilingCheck.position, ceilingCheckRadius, ceilingLayer);
-        // até aqui
-
         // Lógica para pulo variável (apenas para ground jumps)
-        if (currentlyJumping && pressingJump && isGroundJump) 
+        if (currentlyJumping && pressingJump && isGroundJump)
         {
             // Verifica se a altura máxima foi atingida
-            // Henrique teto
-            if (transform.position.y >= initialJumpY + jumpHeight || hitCeiling) // Não verificava se tinha colidido, apenas que o limite era a altura máxima
-            // até aqui
+            if (transform.position.y >= initialJumpY + jumpHeight)
             {
                 currentVelocityY = 0;  // Para de subir se atingiu o limite
                 currentlyJumping = false;  // Opcional: encerra o pulo se quiser
-                // Henrique teto
-                rb.gravityScale = defaultGravityScale * gravMultiplier; // Restaura gravidade ao normal
-                // até aqui
             }
             else
             {
@@ -411,10 +393,6 @@ public class characterMovement : MonoBehaviour
         wallJumpingCounter = wallJumpTime;
         airJumpsUsed = 0;
         currentlyJumping = true;
-
-        // Henrique fix
-        isGroundJump = false; // Isso impede que o FixedUpdate corte o pulo
-        // até aqui
 
         float jumpDirectionX = isTouchingRightWall ? -1f : 1f;
 
@@ -498,14 +476,6 @@ public class characterMovement : MonoBehaviour
             Gizmos.color = onGround ? Color.green : Color.red;
             Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
         }
-        
-        // Henrique teto
-        if (ceilingCheck != null)
-        {
-            Gizmos.color = Color.yellow; // Cor da esfera
-            Gizmos.DrawWireSphere(ceilingCheck.position, ceilingCheckRadius); // Desenho da esfera
-        }
-        // até aqui
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -513,7 +483,7 @@ public class characterMovement : MonoBehaviour
         if (other.gameObject.CompareTag("Coin"))
         {
             Destroy(other.gameObject);
-            playerData.coinCount++;
+            gameController.coinCount++;
         }
     }
 }
