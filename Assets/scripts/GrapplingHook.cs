@@ -3,36 +3,35 @@ using UnityEngine.InputSystem;
 
 public class GrapplingHook : MonoBehaviour
 {
-    // Henrique: Estados do Gancho para controlar o ciclo Puxar -> Lançar
-    private enum State { Ready, Grappling, Cooldown }
+    private enum State { Ready, Shooting, Grappling, Cooldown }
     private State currentState = State.Ready;
-    // até aqui
 
-    [Header("Configurações do Gancho")]
-    [SerializeField] private float grappleRadius = 15f;          // Raio de busca por alvos
-    // Henrique: Novos parâmetros para Puxar e Lançar
-    [SerializeField] private float grapplePullSpeed = 20f;       // Velocidade de puxada do jogador
-    [SerializeField] private float launchBoostForce = 35f;       // Força de lançamento após a puxada
-    [SerializeField] private float minDistanceToGrapplePoint = 0.5f; // Distância para considerar que "chegou" ao ponto
-    // até aqui
-    [SerializeField] private LayerMask whatIsGrappleable;        // Layer dos objetos que podem ser agarrados
-    [SerializeField] private LayerMask whatIsObstacle;           // Layer dos objetos que bloqueiam a visão (Paredes, Chão)
-    [SerializeField] private float grappleCooldown = 1.0f;       // Tempo de espera entre usos
+    [Header("Configurações de Física")]
+    [SerializeField] private float grappleRadius = 15f;
+    [SerializeField] private float grapplePullSpeed = 20f;
+    [SerializeField] private float launchBoostForce = 35f;
+    [SerializeField] private float hookTravelSpeed = 60f; 
+    [SerializeField] private float minDistanceToFinish = 1.0f; 
 
-    [Header("Componentes")]
+    [Header("Camadas")]
+    [SerializeField] private LayerMask whatIsGrappleable;
+    [SerializeField] private LayerMask whatIsObstacle;
+    [SerializeField] private float grappleCooldown = 0.5f;
+
+    [Header("Visuais (Pixel Art)")]
+    [SerializeField] private Transform firePoint;        
+    [SerializeField] private Transform hookTipTransform; 
+    [SerializeField] private LineRenderer ropeRenderer;
+
     private Rigidbody2D rb;
     private PlayerInput playerInput;
     private InputAction grappleAction;
     
-    // Estado do Gancho
-    private Vector2 grapplePoint; 
-    // Henrique: Armazena o vetor de direção do Puxar (usado para o Lançamento)
+    private Vector2 grappleTargetPosition;
     private Vector2 launchDirectionVector;
-    // até aqui
-    
-    // Propriedade pública para o CharacterMovement verificar o estado de puxada
-    public bool IsGrappling => currentState == State.Grappling;
     private float cooldownTimer;
+
+    public bool IsGrappling => currentState == State.Grappling;
 
     void Start()
     {
@@ -42,34 +41,53 @@ public class GrapplingHook : MonoBehaviour
         if (playerInput != null)
         {
             var actionMap = playerInput.actions.FindActionMap("Player");
-            if(actionMap != null)
-            {
-                grappleAction = actionMap.FindAction("Grapple");
-            }
-
-            if (grappleAction == null)
-            {
-                Debug.LogError("Ação 'Grapple' não encontrada no Input Actions! Adicione-a ou verifique o nome.");
-            }
+            if (actionMap != null) grappleAction = actionMap.FindAction("Grapple");
         }
+
+        // Garante que os visuais comecem invisíveis
+        if (hookTipTransform != null) hookTipTransform.gameObject.SetActive(false);
+        if (ropeRenderer != null) ropeRenderer.enabled = false;
     }
 
     void Update()
     {
-        // Gerenciamento do Cooldown
+        // 1. Cooldown
         if (currentState == State.Cooldown)
         {
             cooldownTimer -= Time.deltaTime;
-            if (cooldownTimer <= 0)
+            if (cooldownTimer <= 0) currentState = State.Ready;
+        }
+
+        // 2. Input
+        if (grappleAction != null && grappleAction.WasPressedThisFrame() && currentState == State.Ready)
+        {
+            FindTargetAndShoot();
+        }
+
+        // 3. Gancho Viajando (Shooting)
+        if (currentState == State.Shooting)
+        {
+            hookTipTransform.position = Vector2.MoveTowards(hookTipTransform.position, grappleTargetPosition, hookTravelSpeed * Time.deltaTime);
+            
+            UpdateVisuals(); 
+
+            // Se chegou ao ponto alvo, mude para o estado Grappling
+            if (Vector2.Distance(hookTipTransform.position, grappleTargetPosition) < 0.2f)
             {
-                currentState = State.Ready;
+                hookTipTransform.position = grappleTargetPosition; 
+                currentState = State.Grappling;
             }
         }
 
-        // Input e Início do Grapple
-        if (grappleAction != null && grappleAction.WasPressedThisFrame() && currentState == State.Ready)
+        // 4. Puxando Jogador (Grappling)
+        if (currentState == State.Grappling)
         {
-            StartGrapple();
+            if (hookTipTransform.position != (Vector3)grappleTargetPosition)
+            {
+                hookTipTransform.position = grappleTargetPosition;
+            }
+            
+            UpdateVisuals(); 
         }
     }
 
@@ -77,114 +95,99 @@ public class GrapplingHook : MonoBehaviour
     {
         if (rb == null) return;
 
-        // Lógica de Puxada
         if (currentState == State.Grappling)
         {
-            float distance = Vector2.Distance(rb.position, grapplePoint);
+            float distance = Vector2.Distance(rb.position, hookTipTransform.position);
 
-            // 1. Verifica se chegou perto o suficiente do ponto
-            if (distance <= minDistanceToGrapplePoint)
+            if (distance <= minDistanceToFinish)
             {
-                LaunchPlayer(); // Lança o jogador
+                LaunchPlayer();
             }
             else
             {
-                // 2. Puxa o jogador em direção ao ponto (movimento contínuo)
-                Vector2 direction = (grapplePoint - rb.position).normalized;
-                
-                // Aplica a velocidade de puxada no Rigidbody
-                rb.linearVelocity = direction * grapplePullSpeed; 
+                Vector2 direction = (hookTipTransform.position - transform.position).normalized;
+                rb.linearVelocity = direction * grapplePullSpeed;
             }
         }
     }
 
-    private void StartGrapple()
+    private void FindTargetAndShoot()
     {
-        // 1. Busca todos os alvos dentro do raio
-        Collider2D[] targetsInRadius = Physics2D.OverlapCircleAll(transform.position, grappleRadius, whatIsGrappleable);
-        
-        if (targetsInRadius.Length == 0)
-        {
-            currentState = State.Cooldown;
-            cooldownTimer = grappleCooldown;
-            return;
-        }
+        Collider2D[] targets = Physics2D.OverlapCircleAll(transform.position, grappleRadius, whatIsGrappleable);
+        if (targets.Length == 0) return;
 
-        float closestDistance = float.MaxValue;
-        Vector2 bestGrapplePoint = Vector2.zero;
-        bool validTargetFound = false;
-        Vector2 playerPosition = rb.position;
+        float closestDist = float.MaxValue;
+        Vector2 bestPoint = Vector2.zero;
+        bool found = false;
 
-        // 2. Checa a Linha de Visão (Line of Sight - LOS) para o alvo mais próximo
-        foreach (Collider2D target in targetsInRadius)
+        foreach (Collider2D target in targets)
         {
-            Vector2 targetPosition = target.bounds.center; 
-            Vector2 direction = (targetPosition - playerPosition).normalized;
-            float distance = Vector2.Distance(playerPosition, targetPosition);
-            
-            // Raycast para verificar se há OBSTÁCULOS bloqueando
-            Vector2 rayOrigin = playerPosition + direction * 0.1f;
-            RaycastHit2D losCheck = Physics2D.Raycast(rayOrigin, direction, distance - 0.1f, whatIsObstacle);
-            
-            if (losCheck.collider == null)
+            Vector2 targetPos = target.bounds.center;
+            Vector2 dir = (targetPos - (Vector2)transform.position).normalized;
+            float dist = Vector2.Distance(transform.position, targetPos);
+
+            if (!Physics2D.Raycast(transform.position, dir, dist, whatIsObstacle))
             {
-                if (distance < closestDistance)
+                if (dist < closestDist)
                 {
-                    closestDistance = distance;
-                    bestGrapplePoint = targetPosition;
-                    // Henrique: Salva a direção de puxada para uso no lançamento
-                    launchDirectionVector = direction; 
-                    // até aqui
-                    validTargetFound = true;
+                    closestDist = dist;
+                    bestPoint = targetPos;
+                    launchDirectionVector = dir;
+                    found = true;
                 }
             }
         }
 
-        // 3. Inicia o estado de Grappling (Puxada)
-        if (validTargetFound)
+        if (found)
         {
-            grapplePoint = bestGrapplePoint;
-            currentState = State.Grappling;
-        }
-        else
-        {
-            currentState = State.Cooldown;
-            cooldownTimer = grappleCooldown;
+            grappleTargetPosition = bestPoint;
+            currentState = State.Shooting;
+
+            // ATIVAÇÃO DOS VISUAIS
+            if (ropeRenderer != null) ropeRenderer.enabled = true;
+            if (hookTipTransform != null) hookTipTransform.gameObject.SetActive(true);
+            
+            hookTipTransform.position = firePoint.position;
         }
     }
 
     private void LaunchPlayer()
     {
-        if (rb == null) return;
-
-        // Zera a velocidade da puxada
         rb.linearVelocity = Vector2.zero;
-        
-        // Henrique: Lançamento do Jogador na mesma angulação da puxada
-        // A direção de lançamento é a mesma direção de puxada (do jogador para o gancho)
-        Vector2 launchDirection = launchDirectionVector;
-        
-        // Aplica o impulso
-        rb.AddForce(launchDirection * launchBoostForce, ForceMode2D.Impulse); 
-        // até aqui
+        rb.AddForce(launchDirectionVector * launchBoostForce, ForceMode2D.Impulse);
+
+        // Garante que os visuais sumam ao final
+        if (ropeRenderer != null) ropeRenderer.enabled = false;
+        if (hookTipTransform != null) hookTipTransform.gameObject.SetActive(false);
 
         currentState = State.Cooldown;
         cooldownTimer = grappleCooldown;
     }
     
+    private void UpdateVisuals()
+    {
+        if (ropeRenderer == null || !ropeRenderer.enabled) return;
+
+        Vector3 startPos = firePoint.position;   // Mão (Player)
+        Vector3 endPos = hookTipTransform.position; // Ponto de gancho (FIXO no estado Grappling)
+        
+        // 1. Line Renderer: Desenha a linha entre os dois pontos
+        ropeRenderer.SetPosition(0, startPos); 
+        ropeRenderer.SetPosition(1, endPos);   
+
+        // 2. Rotação do HookTip
+        Vector2 direction = endPos - startPos;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        
+        Quaternion targetRotation = Quaternion.Euler(0, 0, angle - 45f);
+
+        // Aplica rotação na ponta do hook.
+        hookTipTransform.rotation = targetRotation;
+    }
+
     void OnDrawGizmosSelected()
     {
-        if (grappleRadius > 0)
-        {
-            Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(transform.position, grappleRadius);
-        }
-        
-        // Mostra o ponto de agarre atual
-        if (currentState == State.Grappling)
-        {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(grapplePoint, 0.2f);
-        }
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, grappleRadius);
     }
 }

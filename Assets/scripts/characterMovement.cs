@@ -46,6 +46,11 @@ public class characterMovement : MonoBehaviour
     [SerializeField] private float groundCheckRadius = 0.2f;
     [SerializeField] private LayerMask groundLayer = 1;
 
+    [Header("Ceiling Check")]
+    [SerializeField] private Transform ceilingCheck;
+    [SerializeField] private float ceilingCheckRadius = 0.15f;
+    [SerializeField] private LayerMask ceilingLayer = 1;
+
     [Header("Debug")]
     [SerializeField] public float currentHorizontalVelocity;
     [SerializeField] public float horizontalInput;
@@ -84,7 +89,9 @@ public class characterMovement : MonoBehaviour
     private InputAction moveAction;
     private InputAction jumpAction;
     public GameController gameController;
-    // Henrique: Referência ao novo script de gancho
+    public PlayerData playerData;
+
+    // Henrique: Referência ao script do gancho
     private GrapplingHook grapplingHook;
     // até aqui
 
@@ -94,28 +101,14 @@ public class characterMovement : MonoBehaviour
 
         if (playerInput == null)
         {
-            Debug.LogError("PlayerInput component não encontrado! Adicione um no GameObject.");
+            Debug.LogError("PlayerInput component não encontrado!");
             enabled = false;
             return;
         }
 
         var actionMap = playerInput.actions.FindActionMap("Player");
-        if (actionMap == null)
-        {
-            Debug.LogError("Action Map 'Player' não encontrado no Input Actions!");
-            enabled = false;
-            return;
-        }
-
         moveAction = actionMap.FindAction("Movement");
         jumpAction = actionMap.FindAction("Jump");
-
-        if (moveAction == null || jumpAction == null)
-        {
-            Debug.LogError("Actions 'Movement' e/ou 'Jump' não encontradas no Action Map 'Player'!");
-            enabled = false;
-            return;
-        }
     }
 
     void Start()
@@ -130,24 +123,12 @@ public class characterMovement : MonoBehaviour
 
 
         rb = GetComponent<Rigidbody2D>();
-        // Henrique: Pega a referência do GrapplingHook
+        
+        // Henrique: Pega o componente do Gancho
         grapplingHook = GetComponent<GrapplingHook>();
         // até aqui
-        if (rb == null)
-        {
-            Debug.LogError("PlayerMovement2D requer um Rigidbody2D no GameObject!");
-            enabled = false;
-            return;
-        }
 
         playerCollider = GetComponent<Collider2D>();
-        if (playerCollider == null)
-        {
-            Debug.LogError("PlayerMovement2D requer um Collider2D no GameObject para o Wall Jump!");
-            enabled = false;
-            return;
-        }
-
         playerAnimator = GetComponent<Animator>();
         defaultGravityScale = rb.gravityScale;
         CalculateJumpVariables();
@@ -160,27 +141,31 @@ public class characterMovement : MonoBehaviour
             groundCheck = gc.transform;
         }
 
+        if (ceilingCheck == null)
+        {
+            GameObject cc = new GameObject("CeilingCheck");
+            cc.transform.SetParent(transform);
+            cc.transform.localPosition = new Vector3(-0.05f, 0.3f, 0);
+            ceilingCheck = cc.transform;
+        }
+        
+        if (ceilingLayer.value == 0) ceilingLayer = groundLayer;
+        if (wallLayer.value == 0) wallLayer = groundLayer;
+
         coyoteTimeCounter = coyoteTime;
         jumpBufferCounter = 0f;
-
-        if (wallLayer.value == 0)
-        {
-            wallLayer = groundLayer;
-        }
     }
 
     void Update()
     {
-        // Leitura horizontal via novo input system (1D Axis)
         horizontalInput = moveAction.ReadValue<float>();
 
-        // Captura o pulo
         if (jumpAction.WasPressedThisFrame())
         {
             desiredJump = true;
             jumpBufferCounter = jumpBufferTime;
             pressingJump = true;
-            jumpStartTime = Time.time; // Registra o tempo de início do hold
+            jumpStartTime = Time.time;
         }
 
         if (jumpAction.WasReleasedThisFrame())
@@ -242,10 +227,7 @@ public class characterMovement : MonoBehaviour
         if (isWallJumping)
         {
             wallJumpingCounter -= Time.deltaTime;
-            if (wallJumpingCounter <= 0f)
-            {
-                isWallJumping = false;
-            }
+            if (wallJumpingCounter <= 0f) isWallJumping = false;
         }
     }
 
@@ -253,18 +235,17 @@ public class characterMovement : MonoBehaviour
     {
         if (rb == null) return;
 
-        // Henrique: Bloqueia o controle do jogador (incluindo gravidade) durante a puxada do gancho
+        // Henrique: Se estiver usando o gancho, trava movimento e gravidade
         if (grapplingHook != null && grapplingHook.IsGrappling)
         {
-            rb.gravityScale = 0; // Remove a gravidade enquanto o gancho aplica a força de puxada
-            return; // Sai do FixedUpdate para não aplicar o movimento normal do personagem
+            rb.gravityScale = 0;
+            return; 
         }
         // até aqui
 
         float currentVelocityX = rb.linearVelocity.x;
         float currentVelocityY = rb.linearVelocity.y;
 
-        // Salva a velocidade Y anterior para detectar o ápice
         previousVelocityY = currentVelocityY;
 
         // Horizontal Movement
@@ -276,25 +257,18 @@ public class characterMovement : MonoBehaviour
         float speedDifference = targetSpeed - currentVelocityX;
 
         float horizontalMovement = 0f;
-
         float selectedRate;
 
-        if (horizontalInput == 0)
-            selectedRate = decelRate;
-        else if (Mathf.Sign(horizontalInput) != Mathf.Sign(currentVelocityX) && currentVelocityX != 0)
-            selectedRate = turnRate;
-        else
-            selectedRate = accelRate;
+        if (horizontalInput == 0) selectedRate = decelRate;
+        else if (Mathf.Sign(horizontalInput) != Mathf.Sign(currentVelocityX) && currentVelocityX != 0) selectedRate = turnRate;
+        else selectedRate = accelRate;
 
         float movement = selectedRate * Time.fixedDeltaTime;
 
-        if (speedDifference > 0)
-            horizontalMovement = Mathf.Min(movement, speedDifference);
-        else if (speedDifference < 0)
-            horizontalMovement = Mathf.Max(-movement, speedDifference);
+        if (speedDifference > 0) horizontalMovement = Mathf.Min(movement, speedDifference);
+        else if (speedDifference < 0) horizontalMovement = Mathf.Max(-movement, speedDifference);
 
-        if (isWallJumping)
-            horizontalMovement = 0f;
+        if (isWallJumping) horizontalMovement = 0f;
 
         float newVelocityX = currentVelocityX + horizontalMovement;
         currentHorizontalVelocity = newVelocityX;
@@ -302,59 +276,43 @@ public class characterMovement : MonoBehaviour
         // Vertical Movement
         if (isWallSliding)
         {
-            if (currentVelocityY < -wallSlideSpeed)
-            {
-                currentVelocityY = -wallSlideSpeed;
-            }
+            if (currentVelocityY < -wallSlideSpeed) currentVelocityY = -wallSlideSpeed;
         }
 
-        // Lógica para pulo variável (apenas para ground jumps)
+        bool hitCeiling = Physics2D.OverlapCircle(ceilingCheck.position, ceilingCheckRadius, ceilingLayer);
+
         if (currentlyJumping && pressingJump && isGroundJump)
         {
-            // Verifica se a altura máxima foi atingida
-            if (transform.position.y >= initialJumpY + jumpHeight)
+            if (transform.position.y >= initialJumpY + jumpHeight || hitCeiling)
             {
-                currentVelocityY = 0;  // Para de subir se atingiu o limite
-                currentlyJumping = false;  // Opcional: encerra o pulo se quiser
+                currentVelocityY = 0;
+                currentlyJumping = false;
+                rb.gravityScale = defaultGravityScale * gravMultiplier;
             }
             else
             {
-                currentVelocityY = jumpSpeed;  // Mantém subida constante
-                rb.gravityScale = 0;  // Desabilita gravidade temporariamente para subida reta
+                currentVelocityY = jumpSpeed;
+                rb.gravityScale = 0;
             }
         }
         else if (currentlyJumping && !pressingJump && isGroundJump)
         {
-            // Para ground jumps: quando solta o botão, para imediatamente e inicia hang time
             currentVelocityY = 0;
-            if (hangTimer == 0)
-            {
-                hangTimer = hangTime;
-            }
+            if (hangTimer == 0) hangTimer = hangTime;
         }
         else
         {
-            // Aplica multiplicadores de movimento vertical (subida/queda) apenas se NÃO estiver forçando o pulo
-            if (currentVelocityY > 0)
-            {
-                currentVelocityY *= upwardMovementMultiplier;
-            }
-            else if (currentVelocityY < 0)
-            {
-                currentVelocityY *= downwardMovementMultiplier;
-            }
+            if (currentVelocityY > 0) currentVelocityY *= upwardMovementMultiplier;
+            else if (currentVelocityY < 0) currentVelocityY *= downwardMovementMultiplier;
 
-            // Ajusta gravidade baseada no estado
             rb.gravityScale = defaultGravityScale * gravMultiplier;
         }
 
-        // Detecta o ápice para air jumps e inicia hang time
         if (currentlyJumping && !isGroundJump && previousVelocityY > 0 && currentVelocityY <= 0 && hangTimer == 0)
         {
             hangTimer = hangTime;
         }
 
-        // Durante hang time, mantém velocidade zero e gravidade desabilitada
         if (hangTimer > 0)
         {
             hangTimer -= Time.fixedDeltaTime;
@@ -363,10 +321,7 @@ public class characterMovement : MonoBehaviour
         }
 
         currentVelocityY = Mathf.Clamp(currentVelocityY, -speedYLimit, speedYLimit);
-
-        float newVelocityY = currentVelocityY;
-
-        rb.linearVelocity = new Vector2(newVelocityX, newVelocityY);
+        rb.linearVelocity = new Vector2(newVelocityX, currentVelocityY);
     }
 
     private void CheckWalls()
@@ -381,9 +336,6 @@ public class characterMovement : MonoBehaviour
 
         isTouchingRightWall = Physics2D.Raycast(rightOrigin, Vector2.right, wallCheckDistance, wallLayer);
         isTouchingLeftWall = Physics2D.Raycast(leftOrigin, Vector2.left, wallCheckDistance, wallLayer);
-
-        Debug.DrawRay(rightOrigin, Vector2.right * wallCheckDistance, isTouchingRightWall ? Color.green : Color.red);
-        Debug.DrawRay(leftOrigin, Vector2.left * wallCheckDistance, isTouchingLeftWall ? Color.green : Color.red);
     }
 
     private void WallJump()
@@ -393,57 +345,36 @@ public class characterMovement : MonoBehaviour
         wallJumpingCounter = wallJumpTime;
         airJumpsUsed = 0;
         currentlyJumping = true;
+        isGroundJump = false;
 
         float jumpDirectionX = isTouchingRightWall ? -1f : 1f;
-
         rb.linearVelocity = new Vector2(jumpDirectionX * wallJumpForce.x, wallJumpForce.y);
-
         jumpSpeed = wallJumpForce.y;
     }
 
     private void Jump()
     {
-        // Registra a posição Y inicial para limitar a altura (apenas para ground jumps)
         initialJumpY = transform.position.y;
-
-        // Determina se é ground jump ou air jump
         isGroundJump = onGround || coyoteTimeCounter > 0f;
-
-        // Calcula a velocidade do pulo
         float thisJumpSpeed = originalJumpSpeed;
-
-        // identifica um Pulo Aéreo (não no chão, não no coyote time)
         bool isAboutToAirJump = !onGround && coyoteTimeCounter <= 0f;
-        //verifica se é um Double Jump válido 
         bool isDoubleJumpAvailable = isAboutToAirJump && airJumpsUsed < maxAirJumps;
 
         if (isAboutToAirJump)
         {
             thisJumpSpeed *= airJumpHeightMultiplier;
-            isGroundJump = false; // Garante que a lógica de pulo variável não seja aplicada
+            isGroundJump = false;
         }
         
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, thisJumpSpeed);
         currentlyJumping = true;
 
-        if (isAboutToAirJump)
-        {
-            airJumpsUsed = Mathf.Min(airJumpsUsed + 1, maxAirJumps);
-        }
+        if (isAboutToAirJump) airJumpsUsed = Mathf.Min(airJumpsUsed + 1, maxAirJumps);
 
-        // Antes de aplicar a velocidade e incrementar o contador, checa se é um Double Jump válido.
         if (playerAnimator != null)
         {
-            if (isDoubleJumpAvailable)
-            {
-                // Pulo Duplo VÁLIDO
-                playerAnimator.SetTrigger("DoubleJumpTrigger");
-            }
-            else
-            {
-                // Pulo Normal, Coyote, ou Air Jump esgotado
-                playerAnimator.SetTrigger("JumpTrigger");
-            }
+            if (isDoubleJumpAvailable) playerAnimator.SetTrigger("DoubleJumpTrigger");
+            else playerAnimator.SetTrigger("JumpTrigger");
         }
 
         jumpSpeed = thisJumpSpeed;
@@ -451,22 +382,15 @@ public class characterMovement : MonoBehaviour
 
     private void CalculateJumpVariables()
     {
-        // Calcula jumpSpeed para alcançar jumpHeight em timeToApex com velocidade constante (gravidade = 0 durante subida)
         originalJumpSpeed = jumpHeight / timeToApex;
-
-        // Mantém o cálculo de gravMultiplier para quando a gravidade for restaurada (queda)
         float calculatedGravity = (2f * jumpHeight) / (Mathf.Pow(timeToApex, 2));
         gravMultiplier = calculatedGravity / Physics2D.gravity.magnitude / defaultGravityScale;
-
         jumpSpeed = originalJumpSpeed;
     }
 
     void OnValidate()
     {
-        if (rb != null && defaultGravityScale > 0)
-        {
-            CalculateJumpVariables();
-        }
+        if (rb != null && defaultGravityScale > 0) CalculateJumpVariables();
     }
 
     void OnDrawGizmosSelected()
@@ -475,6 +399,11 @@ public class characterMovement : MonoBehaviour
         {
             Gizmos.color = onGround ? Color.green : Color.red;
             Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+        }
+        if (ceilingCheck != null)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(ceilingCheck.position, ceilingCheckRadius);
         }
     }
 
