@@ -21,7 +21,7 @@ EditorBuildSettings:
     path: Assets/Scenes/TerceiraFase.unity
     guid: 281227c61d8e4e548a0a2d77c4c4b9da
   - enabled: 1
-    path: Assets/Scenes/QuartaFase.unity
+    path: Assets/Scenes/PrimeiraFase.unity
     guid: 9a0a96204419f3943b3f9e92fa6176e5
   - enabled: 1
     path: Assets/Scenes/QuintaFase.unity

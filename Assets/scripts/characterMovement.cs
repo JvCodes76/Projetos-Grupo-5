@@ -412,7 +412,7 @@ public class characterMovement : MonoBehaviour
         if (other.gameObject.CompareTag("Coin"))
         {
             Destroy(other.gameObject);
-            gameController.coinCount++;
+            playerData.coinCount++;
         }
     }
 }
