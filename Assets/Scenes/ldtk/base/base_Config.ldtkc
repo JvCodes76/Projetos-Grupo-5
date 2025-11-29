@@ -13,19 +13,25 @@
         {
             "_key": "MapaFabrica_1",
             "_asset": {
-                "instanceID": 0
+                "fileID": 11400000,
+                "guid": "e15a211ab7480934684f395fcfb7d1f5",
+                "type": 2
             }
         },
         {
             "_key": "MapaFabrica_2",
             "_asset": {
-                "instanceID": 0
+                "fileID": 11400000,
+                "guid": "e15a211ab7480934684f395fcfb7d1f5",
+                "type": 2
             }
         },
         {
             "_key": "MapaChina_1",
             "_asset": {
-                "instanceID": 0
+                "fileID": 11400000,
+                "guid": "e15a211ab7480934684f395fcfb7d1f5",
+                "type": 2
             }
         },
         {
