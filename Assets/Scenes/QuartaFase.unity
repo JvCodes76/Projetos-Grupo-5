@@ -30456,7 +30456,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1780977742771836320, guid: bf13c1f0438d9e54b81f85e96c514b04, type: 3}
       propertyPath: isCountingUp
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1796268045592547414, guid: bf13c1f0438d9e54b81f85e96c514b04, type: 3}
       propertyPath: m_Pivot.x

@@ -10,6 +10,7 @@ public class PlayerData : MonoBehaviour
     public int currentLevel;
     public int coinCount = 0;
     public bool canWallJump = true;
+    public bool canGrapplingHook = true;
     public string playerName = "Cyborg";
     public System.Collections.Generic.List<string> inventory = new System.Collections.Generic.List<string>();
 

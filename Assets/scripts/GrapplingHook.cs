@@ -10,8 +10,8 @@ public class GrapplingHook : MonoBehaviour
     [SerializeField] private float grappleRadius = 15f;
     [SerializeField] private float grapplePullSpeed = 20f;
     [SerializeField] private float launchBoostForce = 35f;
-    [SerializeField] private float hookTravelSpeed = 60f; 
-    [SerializeField] private float minDistanceToFinish = 1.0f; 
+    [SerializeField] private float hookTravelSpeed = 60f;
+    [SerializeField] private float minDistanceToFinish = 1.0f;
 
     [Header("Camadas")]
     [SerializeField] private LayerMask whatIsGrappleable;
@@ -19,14 +19,14 @@ public class GrapplingHook : MonoBehaviour
     [SerializeField] private float grappleCooldown = 0.5f;
 
     [Header("Visuais (Pixel Art)")]
-    [SerializeField] private Transform firePoint;        
-    [SerializeField] private Transform hookTipTransform; 
+    [SerializeField] private Transform firePoint;
+    [SerializeField] private Transform hookTipTransform;
     [SerializeField] private LineRenderer ropeRenderer;
 
     private Rigidbody2D rb;
     private PlayerInput playerInput;
     private InputAction grappleAction;
-    
+
     private Vector2 grappleTargetPosition;
     private Vector2 launchDirectionVector;
     private float cooldownTimer;
@@ -51,6 +51,17 @@ public class GrapplingHook : MonoBehaviour
 
     void Update()
     {
+        // Verifica se o gancho está habilitado pelo singleton PlayerData
+        if (!PlayerData.Instance.canGrapplingHook)
+        {
+            // Se estava ativo, desativa os visuais
+            if (currentState != State.Ready && currentState != State.Cooldown)
+            {
+                ResetGrapplingHook();
+            }
+            return;
+        }
+
         // 1. Cooldown
         if (currentState == State.Cooldown)
         {
@@ -68,13 +79,13 @@ public class GrapplingHook : MonoBehaviour
         if (currentState == State.Shooting)
         {
             hookTipTransform.position = Vector2.MoveTowards(hookTipTransform.position, grappleTargetPosition, hookTravelSpeed * Time.deltaTime);
-            
-            UpdateVisuals(); 
+
+            UpdateVisuals();
 
             // Se chegou ao ponto alvo, mude para o estado Grappling
             if (Vector2.Distance(hookTipTransform.position, grappleTargetPosition) < 0.2f)
             {
-                hookTipTransform.position = grappleTargetPosition; 
+                hookTipTransform.position = grappleTargetPosition;
                 currentState = State.Grappling;
             }
         }
@@ -86,14 +97,15 @@ public class GrapplingHook : MonoBehaviour
             {
                 hookTipTransform.position = grappleTargetPosition;
             }
-            
-            UpdateVisuals(); 
+
+            UpdateVisuals();
         }
     }
 
     void FixedUpdate()
     {
-        if (rb == null) return;
+        // Verifica se o gancho está habilitado
+        if (!PlayerData.Instance.canGrapplingHook || rb == null) return;
 
         if (currentState == State.Grappling)
         {
@@ -146,7 +158,7 @@ public class GrapplingHook : MonoBehaviour
             // ATIVAÇÃO DOS VISUAIS
             if (ropeRenderer != null) ropeRenderer.enabled = true;
             if (hookTipTransform != null) hookTipTransform.gameObject.SetActive(true);
-            
+
             hookTipTransform.position = firePoint.position;
         }
     }
@@ -157,28 +169,40 @@ public class GrapplingHook : MonoBehaviour
         rb.AddForce(launchDirectionVector * launchBoostForce, ForceMode2D.Impulse);
 
         // Garante que os visuais sumam ao final
-        if (ropeRenderer != null) ropeRenderer.enabled = false;
-        if (hookTipTransform != null) hookTipTransform.gameObject.SetActive(false);
+        ResetVisuals();
 
         currentState = State.Cooldown;
         cooldownTimer = grappleCooldown;
     }
-    
+
+    private void ResetVisuals()
+    {
+        if (ropeRenderer != null) ropeRenderer.enabled = false;
+        if (hookTipTransform != null) hookTipTransform.gameObject.SetActive(false);
+    }
+
+    private void ResetGrapplingHook()
+    {
+        ResetVisuals();
+        currentState = State.Ready;
+        cooldownTimer = 0f;
+    }
+
     private void UpdateVisuals()
     {
         if (ropeRenderer == null || !ropeRenderer.enabled) return;
 
         Vector3 startPos = firePoint.position;   // Mão (Player)
         Vector3 endPos = hookTipTransform.position; // Ponto de gancho (FIXO no estado Grappling)
-        
+
         // 1. Line Renderer: Desenha a linha entre os dois pontos
-        ropeRenderer.SetPosition(0, startPos); 
-        ropeRenderer.SetPosition(1, endPos);   
+        ropeRenderer.SetPosition(0, startPos);
+        ropeRenderer.SetPosition(1, endPos);
 
         // 2. Rotação do HookTip
         Vector2 direction = endPos - startPos;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        
+
         Quaternion targetRotation = Quaternion.Euler(0, 0, angle - 45f);
 
         // Aplica rotação na ponta do hook.
