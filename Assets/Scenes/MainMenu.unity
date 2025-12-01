@@ -146,8 +146,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: b7ef5fd1a08c5364ba485f3e10f57366, type: 3}
-  m_Resource: {fileID: 8300000, guid: b7ef5fd1a08c5364ba485f3e10f57366, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 0838da4005239f8439e4ae073af0e418, type: 3}
+  m_Resource: {fileID: 8300000, guid: 0838da4005239f8439e4ae073af0e418, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.303
   m_Pitch: 1
@@ -419,8 +419,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 9, y: 31}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: -0.00081882, y: 0.0000016093}
+  m_SizeDelta: {x: 97.161, y: 88.675}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &696122343
 Animator:
@@ -843,6 +843,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1230395579}
+  - component: {fileID: 1230395580}
   m_Layer: 0
   m_Name: MenuSounds
   m_TagString: Untagged
@@ -867,6 +868,18 @@ Transform:
   - {fileID: 1582606697}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1230395580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1230395578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f7874a7d7102e24b847f01ea4fff7ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1428748687
 GameObject:
   m_ObjectHideFlags: 0

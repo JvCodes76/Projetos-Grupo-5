@@ -8,26 +8,26 @@ public class VolumeSettings : MonoBehaviour
 
     private void Awake()
     {
-        // Pega o componente Slider que está no mesmo GameObject
+        // Pega o componente Slider que estï¿½ no mesmo GameObject
         volumeSlider = GetComponent<Slider>();
     }
 
     private void Start()
     {
-        // Carrega o volume salvo (se não tiver nada salvo, usa 1.0 como padrão)
+        // Carrega o volume salvo (se nï¿½o tiver nada salvo, usa 1.0 como padrï¿½o)
         float savedVolume = PlayerPrefs.GetFloat(VolumePrefKey, 1f);
 
         // Aplica o valor no slider e no volume global do jogo
         volumeSlider.value = savedVolume;
         AudioListener.volume = savedVolume;
 
-        // Escuta mudanças no slider
+        // Escuta mudanï¿½as no slider
         volumeSlider.onValueChanged.AddListener(HandleSliderValueChanged);
     }
 
     private void OnDestroy()
     {
-        // Boa prática: parar de escutar quando o objeto for destruído
+        // Boa prï¿½tica: parar de escutar quando o objeto for destruï¿½do
         if (volumeSlider != null)
         {
             volumeSlider.onValueChanged.RemoveListener(HandleSliderValueChanged);

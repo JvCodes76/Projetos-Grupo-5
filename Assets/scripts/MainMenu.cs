@@ -8,6 +8,11 @@ public class MainMenu : MonoBehaviour
 
     public void PlayGame()
     {
+        if (MenuMusicController.Instance != null)
+        {
+            MenuMusicController.Instance.StopMusicAndDestroy();
+        }
+        
         SceneManager.LoadScene(gameplayScene, LoadSceneMode.Single);
     }
 
