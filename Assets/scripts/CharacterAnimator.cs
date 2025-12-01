@@ -57,13 +57,21 @@ public class CharacterAnimator : MonoBehaviour
     {
         if (spriteRenderer == null || inputX == 0) return;
 
-        if (inputX > 0)
+        if (inputX > 0 && !characterMovement.isWallJumping)
         {
             spriteRenderer.flipX = false;
         }
-        else if (inputX < 0)
+        else if (inputX < 0 && !characterMovement.isWallJumping)
         {
             spriteRenderer.flipX = true;
+        }
+        if (characterMovement.isTouchingRightWall)
+        {
+            spriteRenderer.flipX = true;
+        }
+        if (characterMovement.isTouchingLeftWall)
+        {
+            spriteRenderer.flipX = false;
         }
     }
 }

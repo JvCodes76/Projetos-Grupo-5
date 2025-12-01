@@ -70,8 +70,8 @@ public class characterMovement : MonoBehaviour
     [SerializeField] private int airJumpsUsed = 0;
     [SerializeField] private float jumpStartTime;
 
-    [SerializeField] private bool isTouchingRightWall;
-    [SerializeField] private bool isTouchingLeftWall;
+    [SerializeField] public bool isTouchingRightWall;
+    [SerializeField] public bool isTouchingLeftWall;
     [SerializeField] public bool isWallSliding;
     public bool isWallJumping;
     private float wallJumpingCounter;
