@@ -38,7 +38,7 @@ public class characterMovement : MonoBehaviour
     private bool enableWallJump;
     private int maxAirJumps;
     private float agility;
-    private float strenght;
+    private float strength;
 
 
     [Header("Ground Check")]
@@ -116,8 +116,8 @@ public class characterMovement : MonoBehaviour
         enableWallJump = PlayerData.Instance.canWallJump;
         maxAirJumps = PlayerData.Instance.maxAirJumps;
         agility = PlayerData.Instance.agility;
-        strenght = PlayerData.Instance.strenght;
-        jumpHeight += 0.1f*strenght;
+        strength = PlayerData.Instance.strength;
+        jumpHeight += 0.1f*strength;
         maxSpeed += 0.5f*agility;
         acceleration += agility;
 

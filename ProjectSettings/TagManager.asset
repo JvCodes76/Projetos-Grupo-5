@@ -68,5 +68,8 @@ TagManager:
   - name: HUD
     uniqueID: 1735744877
     locked: 0
+  - name: GIF
+    uniqueID: 3510789035
+    locked: 0
   m_RenderingLayers:
   - Default

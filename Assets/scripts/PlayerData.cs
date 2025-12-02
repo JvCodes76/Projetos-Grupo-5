@@ -5,7 +5,7 @@ public class PlayerData : MonoBehaviour
     public static PlayerData Instance { get; private set; }
 
     public float agility = 1f;
-    public float strenght = 1f;
+    public float strength = 1f;
     public int maxAirJumps = 1;
     public int currentLevel;
     public int coinCount = 0;
@@ -30,7 +30,7 @@ public class PlayerData : MonoBehaviour
     public void SaveData()
     {
         PlayerPrefs.SetFloat("Agility", agility);
-        PlayerPrefs.SetFloat("Strenght", strenght);
+        PlayerPrefs.SetFloat("Strength", strength);
         PlayerPrefs.SetString("PlayerName", playerName);
         PlayerPrefs.Save();
     }
@@ -38,7 +38,7 @@ public class PlayerData : MonoBehaviour
     public void LoadData()
     {
         agility = PlayerPrefs.GetFloat("Agility", 1f);
-        strenght = PlayerPrefs.GetFloat("Strenght", 1f);
+        strength = PlayerPrefs.GetFloat("Strength", 1f);
         playerName = PlayerPrefs.GetString("PlayerName", "Cyborg");
     }
 }
