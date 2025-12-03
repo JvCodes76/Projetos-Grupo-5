@@ -14,24 +14,29 @@ public class ShopManager : MonoBehaviour
 
     void Start()
     {
+        // Buscar PlayerData
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
         {
             playerData = player.GetComponent<PlayerData>();
+            if (playerData == null)
+            {
+                Debug.LogError("Componente PlayerData não encontrado no objeto Player!");
+            }
         }
         else
         {
             Debug.LogError("GameObject com tag 'Player' não encontrado!");
         }
 
-        // CORREÇÃO: Primeiro encontrar o GameObject, depois obter o componente
+        // Buscar texto de moedas
         GameObject coinTextObj = GameObject.FindGameObjectWithTag("CoinText");
         if (coinTextObj != null)
         {
             coinsTXT = coinTextObj.GetComponent<TMP_Text>();
             if (coinsTXT == null)
             {
-                Debug.LogError("O GameObject com tag 'CoinText' não tem um componente TMP_Text!");
+                Debug.LogError("Componente TMP_Text não encontrado no objeto com tag 'CoinText'!");
             }
         }
         else
@@ -39,13 +44,16 @@ public class ShopManager : MonoBehaviour
             Debug.LogError("GameObject com tag 'CoinText' não encontrado!");
         }
 
-        // Atualiza o texto apenas se coinsTXT e playerData não forem nulos
-        if (coinsTXT != null && playerData != null)
-        {
-            coinsTXT.text = "Coins: " + playerData.coinCount.ToString();
-        }
+        // Inicializar itens da loja
+        InitializeShopItems();
 
-        // Inicialização dos itens da loja
+        // Atualizar texto de moedas
+        UpdateCoinText();
+    }
+
+    void InitializeShopItems()
+    {
+        // IDs dos Itens
         shopItems[0, 0] = 0;
         shopItems[0, 1] = 1;
         shopItems[0, 2] = 2;
@@ -74,17 +82,33 @@ public class ShopManager : MonoBehaviour
         shopItems[3, 4] = 3;
     }
 
+    void UpdateCoinText()
+    {
+        if (coinsTXT != null && playerData != null)
+        {
+            coinsTXT.text = "Coins: " + playerData.coinCount.ToString();
+        }
+    }
+
     public void Buy()
     {
-        GameObject ButtonRef = GameObject.FindGameObjectWithTag("Event").GetComponent<EventSystem>().currentSelectedGameObject;
-
-        // Adicione verificações de segurança
-        if (ButtonRef == null)
+        // Verificar se o EventSystem existe
+        EventSystem eventSystem = EventSystem.current;
+        if (eventSystem == null)
         {
-            Debug.LogError("Botão não encontrado!");
+            Debug.LogError("EventSystem não encontrado!");
             return;
         }
 
+        // Verificar se há um botão selecionado
+        GameObject ButtonRef = eventSystem.currentSelectedGameObject;
+        if (ButtonRef == null)
+        {
+            Debug.LogError("Nenhum botão selecionado!");
+            return;
+        }
+
+        // Verificar componente ButtonInfo
         ButtonInfo buttonInfo = ButtonRef.GetComponent<ButtonInfo>();
         if (buttonInfo == null)
         {
@@ -92,12 +116,27 @@ public class ShopManager : MonoBehaviour
             return;
         }
 
+        // Verificar se playerData está disponível
+        if (playerData == null)
+        {
+            Debug.LogError("PlayerData não está definido!");
+            return;
+        }
+
         selectedItem = buttonInfo.itemID;
 
-        if (playerData != null &&
-            playerData.coinCount >= shopItems[1, selectedItem] &&
+        // Verificar se o índice do item é válido
+        if (selectedItem < 0 || selectedItem >= shopItems.GetLength(1))
+        {
+            Debug.LogError("Índice de item inválido: " + selectedItem);
+            return;
+        }
+
+        // Verificar se pode comprar
+        if (playerData.coinCount >= shopItems[1, selectedItem] &&
             shopItems[2, selectedItem] < shopItems[3, selectedItem])
         {
+            // Processar compra
             shopItems[2, selectedItem]++;
 
             switch (selectedItem)
@@ -120,13 +159,13 @@ public class ShopManager : MonoBehaviour
             }
 
             playerData.coinCount -= shopItems[1, selectedItem];
+            UpdateCoinText();
 
-            // Atualiza o texto apenas se coinsTXT não for nulo
-            if (coinsTXT != null)
-            {
-                coinsTXT.text = "Coins: " + playerData.coinCount.ToString();
-            }
-            
+            Debug.Log("Item comprado: " + selectedItem);
+        }
+        else
+        {
+            Debug.Log("Não é possível comprar o item: " + selectedItem);
         }
     }
 }

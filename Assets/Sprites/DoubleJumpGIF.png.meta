@@ -1,0 +1,1597 @@
+fileFormatVersion: 2
+guid: c27583845e1e42042979014837caf0db
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -6077815896940386871
+    second: DoubleJumpGIF_0
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: DoubleJumpGIF_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 5184
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c565a4b4a247aba0800000000000000
+      internalID: -6077815896940386871
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_1
+      rect:
+        serializedVersion: 2
+        x: 502
+        y: 5184
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 642637bfa36b63145b2fbba8ce2aa781
+      internalID: -1717497039
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_2
+      rect:
+        serializedVersion: 2
+        x: 1004
+        y: 5184
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3f88431661ee9824f81a0e027ddc56a9
+      internalID: 574169357
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_3
+      rect:
+        serializedVersion: 2
+        x: 1506
+        y: 5184
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: abb2340f7957a214886c6ef6d48c238a
+      internalID: 562804056
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_4
+      rect:
+        serializedVersion: 2
+        x: 2008
+        y: 5184
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 89a1603b7a2e4bc4b88909ebeb8ecce2
+      internalID: -1589468666
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_5
+      rect:
+        serializedVersion: 2
+        x: 2510
+        y: 5184
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 30819ba5a0b10a743bb68dd8480bec72
+      internalID: 1401212726
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_6
+      rect:
+        serializedVersion: 2
+        x: 3012
+        y: 5184
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2fbcb619f374f0d43bffcbc33fbfa892
+      internalID: 469941801
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_7
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 4536
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 084f66c4079233f4eac21f7311a9c83c
+      internalID: -479733225
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_8
+      rect:
+        serializedVersion: 2
+        x: 502
+        y: 4536
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9ded9d49b8deee64996b355c7b435853
+      internalID: 687109716
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_9
+      rect:
+        serializedVersion: 2
+        x: 1004
+        y: 4536
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2f30d88abe1ce474ca4fdb9f011cbd0d
+      internalID: -1026352995
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_10
+      rect:
+        serializedVersion: 2
+        x: 1506
+        y: 4536
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ee8e107da6f2b824ebebd99d68130aa9
+      internalID: -312187188
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_11
+      rect:
+        serializedVersion: 2
+        x: 2008
+        y: 4536
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 85e7ae655c530a84e90ed23d8223fd0c
+      internalID: 416257907
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_12
+      rect:
+        serializedVersion: 2
+        x: 2510
+        y: 4536
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e78c5618536dd784e8f6682ca5a70706
+      internalID: 1919036479
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_13
+      rect:
+        serializedVersion: 2
+        x: 3012
+        y: 4536
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f0e89f996adda464398d084e2752a236
+      internalID: -266328456
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_14
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 3888
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5dd0fee480e9dbb4a9489c01b77e46b8
+      internalID: 1256703720
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_15
+      rect:
+        serializedVersion: 2
+        x: 502
+        y: 3888
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 83772faacf9c1ac4da883daa7d015e87
+      internalID: 1897895538
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_16
+      rect:
+        serializedVersion: 2
+        x: 1004
+        y: 3888
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 25e33a80bca8a1d4fa44380954f2ef2e
+      internalID: -245298657
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_17
+      rect:
+        serializedVersion: 2
+        x: 1506
+        y: 3888
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6b6547fd7d6025f4b9096effe0f90059
+      internalID: -1463415432
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_18
+      rect:
+        serializedVersion: 2
+        x: 2008
+        y: 3888
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fdb6f4dc93363b74e8e367461fa6aaa1
+      internalID: -2128983923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_19
+      rect:
+        serializedVersion: 2
+        x: 2510
+        y: 3888
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3b10173262214d440a3ea82c261fbb32
+      internalID: -522800421
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_20
+      rect:
+        serializedVersion: 2
+        x: 3012
+        y: 3888
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e95c5a70e835e3f4d8e2d0827e32a726
+      internalID: -996559290
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_21
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 3240
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c5949ae5d224de045893945406ff7b2e
+      internalID: 81998216
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_22
+      rect:
+        serializedVersion: 2
+        x: 502
+        y: 3240
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a904e73b0f2ef0349af5ef8f4d91c1c7
+      internalID: -801883741
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_23
+      rect:
+        serializedVersion: 2
+        x: 1004
+        y: 3240
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 32851ce52cde738468901f4cb1928c8d
+      internalID: -1588336256
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_24
+      rect:
+        serializedVersion: 2
+        x: 1506
+        y: 3240
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a9a55e17e4b8dd4da918b2af0970ba7
+      internalID: 842770696
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_25
+      rect:
+        serializedVersion: 2
+        x: 2008
+        y: 3240
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 21cac6837b795d14bab10b27e89a4ead
+      internalID: 1312364772
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_26
+      rect:
+        serializedVersion: 2
+        x: 2510
+        y: 3240
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 83a243702f361f046843bcfc380f48f5
+      internalID: -272239913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_27
+      rect:
+        serializedVersion: 2
+        x: 3012
+        y: 3240
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dc6f9c1f5644b214bae25f097e3b403f
+      internalID: 1251124780
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_28
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2592
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6d3fcca443756c646aec2418199e27d7
+      internalID: 1583748069
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_29
+      rect:
+        serializedVersion: 2
+        x: 502
+        y: 2592
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5647b7f299ff1034bb1c522ad8aebf08
+      internalID: -1802605814
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_30
+      rect:
+        serializedVersion: 2
+        x: 1004
+        y: 2592
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c3a4a7e053f44ce4eb5c4cedf3a997df
+      internalID: -22083936
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_31
+      rect:
+        serializedVersion: 2
+        x: 1506
+        y: 2592
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f3b6197265de09e4e9cb1b8cb471c341
+      internalID: 291176312
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_32
+      rect:
+        serializedVersion: 2
+        x: 2008
+        y: 2592
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 15a5334f9380c4344a0fbd55910557e3
+      internalID: -20489943
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_33
+      rect:
+        serializedVersion: 2
+        x: 2510
+        y: 2592
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0ce2a9728f5c3644c9eb69b57f5966c7
+      internalID: -905383293
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_34
+      rect:
+        serializedVersion: 2
+        x: 3012
+        y: 2592
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ea86be29d26ac84498e4d8cb852deeec
+      internalID: 1617811046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_35
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1944
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 66731ec759ebe044091baf008efeb911
+      internalID: 2024811211
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_36
+      rect:
+        serializedVersion: 2
+        x: 502
+        y: 1944
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 35cf1e7c7d03df842b2ebd2cfc75d36f
+      internalID: 925159141
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_37
+      rect:
+        serializedVersion: 2
+        x: 1004
+        y: 1944
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b5125ed60dcc60e47abde23356c64c36
+      internalID: -595919311
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_38
+      rect:
+        serializedVersion: 2
+        x: 1506
+        y: 1944
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e478e5a908c8f164f8c1ca9a7a64b24e
+      internalID: -224786790
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_39
+      rect:
+        serializedVersion: 2
+        x: 2008
+        y: 1944
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b6a4e14a2b98f7d4197372f9592065a8
+      internalID: -11541731
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_40
+      rect:
+        serializedVersion: 2
+        x: 2510
+        y: 1944
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 122ea6c9cd5437d43ab79f4a7faa376e
+      internalID: 1541543537
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_41
+      rect:
+        serializedVersion: 2
+        x: 3012
+        y: 1944
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6b357651c0e2cd344b1d516b15ad00bd
+      internalID: 16803703
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_42
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1296
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b2f9a6538c1411d479060269fd138f1b
+      internalID: -954262813
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_43
+      rect:
+        serializedVersion: 2
+        x: 502
+        y: 1296
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7175aab29cc729647affd598512867d7
+      internalID: -1291316180
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_44
+      rect:
+        serializedVersion: 2
+        x: 1004
+        y: 1296
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0747adcf2296cc244be16a95a32b2d5b
+      internalID: 565173884
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_45
+      rect:
+        serializedVersion: 2
+        x: 1506
+        y: 1296
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d89435c280dc21746bdd41cf498c79fb
+      internalID: -654698677
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_46
+      rect:
+        serializedVersion: 2
+        x: 2008
+        y: 1296
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 30da96523e84b6d47b279e6e23b9bd38
+      internalID: 1783315797
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_47
+      rect:
+        serializedVersion: 2
+        x: 2510
+        y: 1296
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a013b7ac2c8923e41bbc63dd791e4224
+      internalID: 263540778
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_48
+      rect:
+        serializedVersion: 2
+        x: 3012
+        y: 1296
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3f4b0b4aa51ae4c4b9f2f8a8397f5404
+      internalID: -1932718567
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_49
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 648
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5ac9489443a70074d9a5e5b97dce9a86
+      internalID: -1496254069
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_50
+      rect:
+        serializedVersion: 2
+        x: 502
+        y: 648
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4b8f11aee5bdeb342a79bd502b7d53a6
+      internalID: -891139358
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_51
+      rect:
+        serializedVersion: 2
+        x: 1004
+        y: 648
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1a12abcc757db904386270b73933ce37
+      internalID: -1130018194
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_52
+      rect:
+        serializedVersion: 2
+        x: 1506
+        y: 648
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f7cd935087d3906439b58c5d3c387eba
+      internalID: 1930299823
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_53
+      rect:
+        serializedVersion: 2
+        x: 2008
+        y: 648
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8a6e760d0f9e35943bb4f8c149c53c00
+      internalID: -2079248453
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_54
+      rect:
+        serializedVersion: 2
+        x: 2510
+        y: 648
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1e272b049dc37ce4797b24c49fa75fe5
+      internalID: -218850578
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_55
+      rect:
+        serializedVersion: 2
+        x: 3012
+        y: 648
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ff1bf678799faf8439c9b790c834c12f
+      internalID: -625678505
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_56
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cca7b29556e365d408410e7384bc9fa2
+      internalID: -212245399
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_57
+      rect:
+        serializedVersion: 2
+        x: 502
+        y: 0
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 352d89a53c973a94b9c8e2314f4e5b12
+      internalID: 794596871
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_58
+      rect:
+        serializedVersion: 2
+        x: 1004
+        y: 0
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 57eb47be4ce85774d81d5f0a34af721d
+      internalID: 146165583
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_59
+      rect:
+        serializedVersion: 2
+        x: 1506
+        y: 0
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 781cf37d6252b7d499db82fdfe650f8a
+      internalID: 850455215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_60
+      rect:
+        serializedVersion: 2
+        x: 2008
+        y: 0
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7db4d35847a4d0843a88e8ecd6c6a67f
+      internalID: -1631341923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_61
+      rect:
+        serializedVersion: 2
+        x: 2510
+        y: 0
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5bfcf03742f4bc54d99df49ed4a46fa5
+      internalID: 1170237777
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DoubleJumpGIF_62
+      rect:
+        serializedVersion: 2
+        x: 3012
+        y: 0
+        width: 502
+        height: 648
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 58c794cc24efe994db800396bfcd4efe
+      internalID: 1321247913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 7c4a7c28afb288047aee46b0b675f8cc
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":502.0,"y":648.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      DoubleJumpGIF_0: -6077815896940386871
+      DoubleJumpGIF_1: -1717497039
+      DoubleJumpGIF_10: -312187188
+      DoubleJumpGIF_11: 416257907
+      DoubleJumpGIF_12: 1919036479
+      DoubleJumpGIF_13: -266328456
+      DoubleJumpGIF_14: 1256703720
+      DoubleJumpGIF_15: 1897895538
+      DoubleJumpGIF_16: -245298657
+      DoubleJumpGIF_17: -1463415432
+      DoubleJumpGIF_18: -2128983923
+      DoubleJumpGIF_19: -522800421
+      DoubleJumpGIF_2: 574169357
+      DoubleJumpGIF_20: -996559290
+      DoubleJumpGIF_21: 81998216
+      DoubleJumpGIF_22: -801883741
+      DoubleJumpGIF_23: -1588336256
+      DoubleJumpGIF_24: 842770696
+      DoubleJumpGIF_25: 1312364772
+      DoubleJumpGIF_26: -272239913
+      DoubleJumpGIF_27: 1251124780
+      DoubleJumpGIF_28: 1583748069
+      DoubleJumpGIF_29: -1802605814
+      DoubleJumpGIF_3: 562804056
+      DoubleJumpGIF_30: -22083936
+      DoubleJumpGIF_31: 291176312
+      DoubleJumpGIF_32: -20489943
+      DoubleJumpGIF_33: -905383293
+      DoubleJumpGIF_34: 1617811046
+      DoubleJumpGIF_35: 2024811211
+      DoubleJumpGIF_36: 925159141
+      DoubleJumpGIF_37: -595919311
+      DoubleJumpGIF_38: -224786790
+      DoubleJumpGIF_39: -11541731
+      DoubleJumpGIF_4: -1589468666
+      DoubleJumpGIF_40: 1541543537
+      DoubleJumpGIF_41: 16803703
+      DoubleJumpGIF_42: -954262813
+      DoubleJumpGIF_43: -1291316180
+      DoubleJumpGIF_44: 565173884
+      DoubleJumpGIF_45: -654698677
+      DoubleJumpGIF_46: 1783315797
+      DoubleJumpGIF_47: 263540778
+      DoubleJumpGIF_48: -1932718567
+      DoubleJumpGIF_49: -1496254069
+      DoubleJumpGIF_5: 1401212726
+      DoubleJumpGIF_50: -891139358
+      DoubleJumpGIF_51: -1130018194
+      DoubleJumpGIF_52: 1930299823
+      DoubleJumpGIF_53: -2079248453
+      DoubleJumpGIF_54: -218850578
+      DoubleJumpGIF_55: -625678505
+      DoubleJumpGIF_56: -212245399
+      DoubleJumpGIF_57: 794596871
+      DoubleJumpGIF_58: 146165583
+      DoubleJumpGIF_59: 850455215
+      DoubleJumpGIF_6: 469941801
+      DoubleJumpGIF_60: -1631341923
+      DoubleJumpGIF_61: 1170237777
+      DoubleJumpGIF_62: 1321247913
+      DoubleJumpGIF_7: -479733225
+      DoubleJumpGIF_8: 687109716
+      DoubleJumpGIF_9: -1026352995
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
