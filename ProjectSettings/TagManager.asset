@@ -7,6 +7,8 @@ TagManager:
   - Ground
   - Coin
   - EndGoal
+  - CoinText
+  - Event
   layers:
   - Default
   - TransparentFX

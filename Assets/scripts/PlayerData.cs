@@ -8,7 +8,7 @@ public class PlayerData : MonoBehaviour
     public float strength = 1f;
     public int maxAirJumps = 1;
     public int currentLevel;
-    public int coinCount = 0;
+    public int coinCount = 100;
     public bool canWallJump = true;
     public bool canGrapplingHook = true;
     public string playerName = "Cyborg";

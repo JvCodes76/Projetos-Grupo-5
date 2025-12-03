@@ -1,17 +1,19 @@
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
 public class ButtonInfo : MonoBehaviour
 {
     public int itemID;
-    public Text PriceTxt;
-    public Text QuantityTxt;
+    public TMP_Text PriceTxt;
+    public TMP_Text QuantityTxt;
     public GameObject ShopManager;
 
     void Update()
     {
-
-        PriceTxt.text = "Price: $" + ShopManager.GetComponent<ShopManager>().shopItems[1, itemID].ToString();
-        QuantityTxt.text = ShopManager.GetComponent<ShopManager>().shopItems[2, itemID].ToString();
+        if (ShopManager != null && PriceTxt != null && QuantityTxt != null)
+        {
+            PriceTxt.text = "Price: $" + ShopManager.GetComponent<ShopManager>().shopItems[1, itemID].ToString();
+            QuantityTxt.text = ShopManager.GetComponent<ShopManager>().shopItems[2, itemID].ToString() + "/" + ShopManager.GetComponent<ShopManager>().shopItems[3, itemID].ToString();
+        }
     }
 }
