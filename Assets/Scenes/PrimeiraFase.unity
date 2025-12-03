@@ -37281,7 +37281,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1780977742771836320, guid: bf13c1f0438d9e54b81f85e96c514b04, type: 3}
       propertyPath: isCountingUp
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1796268045592547414, guid: bf13c1f0438d9e54b81f85e96c514b04, type: 3}
       propertyPath: m_Pivot.x
@@ -37602,11 +37602,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5149245257449956360, guid: fbe9b19b6ebd70f4183d1a6885db563c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 59.01
+      value: -23.39
       objectReference: {fileID: 0}
     - target: {fileID: 5149245257449956360, guid: fbe9b19b6ebd70f4183d1a6885db563c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 25.25
+      value: 18.1
       objectReference: {fileID: 0}
     - target: {fileID: 5149245257449956360, guid: fbe9b19b6ebd70f4183d1a6885db563c, type: 3}
       propertyPath: m_LocalPosition.z
