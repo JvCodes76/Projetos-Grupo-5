@@ -9,6 +9,7 @@ TagManager:
   - EndGoal
   - CoinText
   - Event
+  - SpawnPoint
   layers:
   - Default
   - TransparentFX

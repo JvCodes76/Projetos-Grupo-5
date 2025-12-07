@@ -113,6 +113,7 @@ public class characterMovement : MonoBehaviour
 
     void Start()
     {
+        FindPlayerData();
         enableWallJump = PlayerData.Instance.canWallJump;
         maxAirJumps = PlayerData.Instance.maxAirJumps;
         agility = PlayerData.Instance.agility;
@@ -407,12 +408,43 @@ public class characterMovement : MonoBehaviour
         }
     }
 
+    private void FindPlayerData()
+    {
+        if (playerData == null)
+        {
+            playerData = FindObjectOfType<PlayerData>();
+        }
+
+        if (playerData == null && PlayerData.Instance != null)
+        {
+            playerData = PlayerData.Instance;
+        }
+
+        if (playerData == null)
+        {
+            Debug.LogError("PlayerData não encontrado!");
+        }
+    }
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Coin"))
         {
             Destroy(other.gameObject);
-            playerData.coinCount++;
+
+            // Tenta usar a referência local primeiro, depois o Singleton
+            if (playerData != null)
+            {
+                playerData.coinCount++;
+            }
+            else if (PlayerData.Instance != null)
+            {
+                PlayerData.Instance.coinCount++;
+            }
+            else
+            {
+                Debug.LogWarning("Coin coletada, mas PlayerData não encontrado!");
+            }
         }
     }
+
 }

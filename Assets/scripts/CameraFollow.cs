@@ -9,37 +9,87 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] private Vector3 offset = new Vector3(0f, 1.5f, -10f);
     [SerializeField] private float smoothTime = 0.2f;
 
-    [Header("Limites da Câmera")]
-    [SerializeField] private float minX = 0;
-    [SerializeField] private float maxX = 1000;
-    [SerializeField] private float minY = 0;
-    [SerializeField] private float maxY = 1000;
-
     [Header("Configuração Inicial")]
     [SerializeField] private bool snapToTargetOnStart = true;
     [SerializeField] private float maxTeleportDistance = 20f;
 
+    private float currentMinX = 0;
+    private float currentMaxX = 1000;
+    private float currentMinY = 0;
+    private float currentMaxY = 1000;
+
     private Vector3 _velocity = Vector3.zero;
+    private bool _shouldSnap = false;
+
+    private void Awake()
+    {
+        // Garante que apenas uma câmera exista
+        CameraFollow[] existingCameras = FindObjectsOfType<CameraFollow>();
+        if (existingCameras.Length > 1)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        DontDestroyOnLoad(gameObject);
+    }
+
+    private void OnEnable()
+    {
+        SceneController.OnPlayerSpawned -= OnPlayerSpawned;
+        SceneController.OnPlayerSpawned += OnPlayerSpawned;
+    }
+
+    private void OnDisable()
+    {
+        SceneController.OnPlayerSpawned -= OnPlayerSpawned;
+    }
 
     private void Start()
     {
-        FindAndSetTarget();
+        // Garante que esta é a câmera principal
+        Camera.main.gameObject.tag = "MainCamera";
+
+        if (target == null)
+        {
+            FindTarget();
+        }
+
+        FindLevelBoundaries();
 
         if (snapToTargetOnStart && target != null)
         {
-            SnapToTarget();
+            _shouldSnap = true;
         }
+    }
+
+    private void OnPlayerSpawned(GameObject playerObject)
+    {
+        target = playerObject.transform;
+        Debug.Log("Câmera recebeu referência do jogador via evento");
+        FindLevelBoundaries();
+        _shouldSnap = true;
     }
 
     private void LateUpdate()
     {
         if (target == null)
         {
-            FindAndSetTarget();
-            if (target == null) return;
+            FindTarget();
+            if (target == null)
+            {
+                Debug.LogWarning("Nenhum target encontrado para a câmera");
+                return;
+            }
         }
 
-        // Teleporta se estiver muito longe
+        if (_shouldSnap)
+        {
+            SnapToTarget();
+            _shouldSnap = false;
+            return;
+        }
+
         float distance = Vector3.Distance(transform.position, target.position + offset);
         if (distance > maxTeleportDistance)
         {
@@ -48,8 +98,8 @@ public class CameraFollow : MonoBehaviour
         }
 
         Vector3 desiredPosition = target.position + offset;
-        desiredPosition.x = Mathf.Clamp(desiredPosition.x, minX, maxX);
-        desiredPosition.y = Mathf.Clamp(desiredPosition.y, minY, maxY);
+        desiredPosition.x = Mathf.Clamp(desiredPosition.x, currentMinX, currentMaxX);
+        desiredPosition.y = Mathf.Clamp(desiredPosition.y, currentMinY, currentMaxY);
 
         transform.position = Vector3.SmoothDamp(
             transform.position,
@@ -59,38 +109,39 @@ public class CameraFollow : MonoBehaviour
         );
     }
 
-    private void FindAndSetTarget()
+    private void FindLevelBoundaries()
     {
-        GameObject cyborg = GameObject.Find("Cyborg");
-        if (cyborg != null)
+        CameraBoundary boundary = FindObjectOfType<CameraBoundary>();
+
+        if (boundary != null)
         {
-            target = cyborg.transform;
-            Debug.Log("Target encontrado: " + target.name);
+            currentMinX = boundary.minX;
+            currentMaxX = boundary.maxX;
+            currentMinY = boundary.minY;
+            currentMaxY = boundary.maxY;
+
+            Debug.Log($"Limites da câmera atualizados para o nível atual");
         }
-        else
+    }
+
+    private void FindTarget()
+    {
+        GameObject playerObj = GameObject.FindWithTag("Player");
+        if (playerObj != null)
         {
-            Debug.LogWarning("GameObject 'Cyborg' não encontrado na cena.");
+            target = playerObj.transform;
+            Debug.Log("Câmera encontrou jogador via FindWithTag");
         }
     }
 
     private void SnapToTarget()
     {
+        if (target == null) return;
+
         Vector3 desiredPosition = target.position + offset;
-        desiredPosition.x = Mathf.Clamp(desiredPosition.x, minX, maxX);
-        desiredPosition.y = Mathf.Clamp(desiredPosition.y, minY, maxY);
+        desiredPosition.x = Mathf.Clamp(desiredPosition.x, currentMinX, currentMaxX);
+        desiredPosition.y = Mathf.Clamp(desiredPosition.y, currentMinY, currentMaxY);
         transform.position = desiredPosition;
         _velocity = Vector3.zero;
-    }
-
-    public void SetTarget(Transform newTarget)
-    {
-        target = newTarget;
-        SnapToTarget();
-    }
-
-    public void FindTargetAgain()
-    {
-        FindAndSetTarget();
-        if (target != null) SnapToTarget();
     }
 }
