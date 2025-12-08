@@ -34,12 +34,11 @@ public class characterMovement : MonoBehaviour
     [SerializeField] private float wallJumpTime = 0.2f;
     [SerializeField] private LayerMask wallLayer;
 
-
+    // Variáveis que vêm do PlayerData
     private bool enableWallJump;
     private int maxAirJumps;
     private float agility;
     private float strength;
-
 
     [Header("Ground Check")]
     [SerializeField] private Transform groundCheck;
@@ -79,6 +78,7 @@ public class characterMovement : MonoBehaviour
     public Rigidbody2D rb;
     private float originalJumpSpeed;
     private Collider2D playerCollider;
+    private bool canMove;
 
     private float initialJumpY;
     private bool isGroundJump;
@@ -89,11 +89,12 @@ public class characterMovement : MonoBehaviour
     private InputAction moveAction;
     private InputAction jumpAction;
     public GameController gameController;
-    public PlayerData playerData;
+
+    [Header("Referências")]
+    [SerializeField] private PlayerData playerData; // Agora é SerializeField para arrastar no Inspector
 
     // Henrique: Referência ao script do gancho
     private GrapplingHook grapplingHook;
-    // até aqui
 
     void Awake()
     {
@@ -109,25 +110,26 @@ public class characterMovement : MonoBehaviour
         var actionMap = playerInput.actions.FindActionMap("Player");
         moveAction = actionMap.FindAction("Movement");
         jumpAction = actionMap.FindAction("Jump");
+
+        // Tenta pegar o PlayerData do mesmo GameObject
+        if (playerData == null)
+        {
+            playerData = GetComponent<PlayerData>();
+        }
     }
 
     void Start()
     {
+        // Busca o PlayerData se ainda não foi encontrado
         FindPlayerData();
-        enableWallJump = PlayerData.Instance.canWallJump;
-        maxAirJumps = PlayerData.Instance.maxAirJumps;
-        agility = PlayerData.Instance.agility;
-        strength = PlayerData.Instance.strength;
-        jumpHeight += 0.1f*strength;
-        maxSpeed += 0.5f*agility;
-        acceleration += agility;
 
+        // Carrega os dados do PlayerData
+        LoadPlayerStats();
 
         rb = GetComponent<Rigidbody2D>();
-        
+
         // Henrique: Pega o componente do Gancho
         grapplingHook = GetComponent<GrapplingHook>();
-        // até aqui
 
         playerCollider = GetComponent<Collider2D>();
         playerAnimator = GetComponent<Animator>();
@@ -149,12 +151,62 @@ public class characterMovement : MonoBehaviour
             cc.transform.localPosition = new Vector3(-0.05f, 0.3f, 0);
             ceilingCheck = cc.transform;
         }
-        
+
         if (ceilingLayer.value == 0) ceilingLayer = groundLayer;
         if (wallLayer.value == 0) wallLayer = groundLayer;
 
         coyoteTimeCounter = coyoteTime;
         jumpBufferCounter = 0f;
+    }
+
+    /// <summary>
+    /// Carrega os stats do PlayerData para as variáveis locais
+    /// </summary>
+    private void LoadPlayerStats()
+    {
+        if (playerData != null)
+        {
+            enableWallJump = playerData.canWallJump;
+            maxAirJumps = playerData.maxAirJumps;
+            agility = playerData.agility;
+            strength = playerData.strength;
+
+            // Aplica modificadores baseados nos stats
+            jumpHeight += 0.1f * strength;
+            maxSpeed += 0.5f * agility;
+            acceleration += agility;
+        }
+        else
+        {
+            Debug.LogWarning("PlayerData não encontrado! Usando valores padrão.");
+            // Valores padrão caso PlayerData não exista
+            enableWallJump = true;
+            maxAirJumps = 1;
+            agility = 1f;
+            strength = 1f;
+        }
+    }
+
+    /// <summary>
+    /// Encontra o PlayerData na cena
+    /// </summary>
+    private void FindPlayerData()
+    {
+        if (playerData != null) return;
+
+        // Tenta pegar do mesmo GameObject
+        playerData = GetComponent<PlayerData>();
+
+        // Se não encontrou, busca na cena
+        if (playerData == null)
+        {
+            playerData = FindObjectOfType<PlayerData>();
+        }
+
+        if (playerData == null)
+        {
+            Debug.LogError("PlayerData não encontrado na cena!");
+        }
     }
 
     void Update()
@@ -174,7 +226,6 @@ public class characterMovement : MonoBehaviour
             pressingJump = false;
             currentlyJumping = false;
         }
-
 
         onGround = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
 
@@ -240,9 +291,8 @@ public class characterMovement : MonoBehaviour
         if (grapplingHook != null && grapplingHook.IsGrappling)
         {
             rb.gravityScale = 0;
-            return; 
+            return;
         }
-        // até aqui
 
         float currentVelocityX = rb.linearVelocity.x;
         float currentVelocityY = rb.linearVelocity.y;
@@ -366,7 +416,7 @@ public class characterMovement : MonoBehaviour
             thisJumpSpeed *= airJumpHeightMultiplier;
             isGroundJump = false;
         }
-        
+
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, thisJumpSpeed);
         currentlyJumping = true;
 
@@ -408,37 +458,17 @@ public class characterMovement : MonoBehaviour
         }
     }
 
-    private void FindPlayerData()
-    {
-        if (playerData == null)
-        {
-            playerData = FindObjectOfType<PlayerData>();
-        }
-
-        if (playerData == null && PlayerData.Instance != null)
-        {
-            playerData = PlayerData.Instance;
-        }
-
-        if (playerData == null)
-        {
-            Debug.LogError("PlayerData não encontrado!");
-        }
-    }
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Coin"))
         {
             Destroy(other.gameObject);
 
-            // Tenta usar a referência local primeiro, depois o Singleton
+            // Usa a referência local ao PlayerData
             if (playerData != null)
             {
                 playerData.coinCount++;
-            }
-            else if (PlayerData.Instance != null)
-            {
-                PlayerData.Instance.coinCount++;
+                playerData.SaveData(); // Salva as alterações
             }
             else
             {
@@ -447,4 +477,29 @@ public class characterMovement : MonoBehaviour
         }
     }
 
+    public void ResetToSpawnPoint()
+    {
+        // Encontra o spawn point na cena
+        GameObject spawnPoint = GameObject.FindGameObjectWithTag("SpawnPoint");
+
+        if (spawnPoint != null)
+        {
+            // Reposiciona o jogador no spawn point
+            transform.position = spawnPoint.transform.position;
+
+            // Reseta a velocidade do rigidbody
+            if (rb != null)
+            {
+                rb.linearVelocity = Vector2.zero;
+            }
+        }
+    }
+    public void DisableMovement()
+    {
+        canMove = false;
+    }
+    public void EnableMovement()
+    {
+        canMove = true;
+    }
 }

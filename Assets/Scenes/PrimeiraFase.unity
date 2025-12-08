@@ -37275,8 +37275,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1780977742771836320, guid: bf13c1f0438d9e54b81f85e96c514b04, type: 3}
+      propertyPath: startTime
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1780977742771836320, guid: bf13c1f0438d9e54b81f85e96c514b04, type: 3}
+      propertyPath: shopScreen
+      value: 
+      objectReference: {fileID: 3508608824494262109, guid: 35961955a94267a408beeffb41446e26, type: 3}
+    - target: {fileID: 1780977742771836320, guid: bf13c1f0438d9e54b81f85e96c514b04, type: 3}
       propertyPath: isCountingUp
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1796268045592547414, guid: bf13c1f0438d9e54b81f85e96c514b04, type: 3}
       propertyPath: m_Pivot.x
@@ -37397,7 +37405,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minX: -20
-  maxX: 86.5
+  maxX: 88.5
   minY: 0
   maxY: 54
   gizmoColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 
 public class PlayerData : MonoBehaviour
 {
-    public static PlayerData Instance { get; private set; }
-
     // DADOS DO JOGADOR
     public float agility = 1f;
     public float strength = 1f;
@@ -18,39 +16,17 @@ public class PlayerData : MonoBehaviour
 
     private void Awake()
     {
-        // Implementação do Singleton robusta
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject); // Mantém APENAS os dados
-            LoadData();
-
-            // Remove a tag "Player" se existir para evitar conflitos
-            if (gameObject.CompareTag("Player"))
-            {
-                gameObject.tag = "Untagged";
-                Debug.Log("Tag 'Player' removida do PlayerData para evitar conflitos");
-            }
-        }
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
+        LoadData();
     }
 
     public void SaveData()
     {
-        // Salva apenas dados, não a posição
         PlayerPrefs.SetInt("SavedLevel", currentLevel);
         PlayerPrefs.SetInt("CoinCount", coinCount);
-
         PlayerPrefs.SetFloat("Agility", agility);
         PlayerPrefs.SetFloat("Strength", strength);
         PlayerPrefs.SetInt("MaxAirJumps", maxAirJumps);
         PlayerPrefs.SetString("PlayerName", playerName);
-
-        // Salva booleanos como inteiros (0 = false, 1 = true)
         PlayerPrefs.SetInt("CanWallJump", canWallJump ? 1 : 0);
         PlayerPrefs.SetInt("CanGrapplingHook", canGrapplingHook ? 1 : 0);
 
@@ -60,16 +36,12 @@ public class PlayerData : MonoBehaviour
 
     public void LoadData()
     {
-        // Carrega dados com valores padrão
         currentLevel = PlayerPrefs.GetInt("SavedLevel", 1);
         coinCount = PlayerPrefs.GetInt("CoinCount", 100);
-
         agility = PlayerPrefs.GetFloat("Agility", 1f);
         strength = PlayerPrefs.GetFloat("Strength", 1f);
         maxAirJumps = PlayerPrefs.GetInt("MaxAirJumps", 1);
         playerName = PlayerPrefs.GetString("PlayerName", "Cyborg");
-
-        // Carrega booleanos
         canWallJump = PlayerPrefs.GetInt("CanWallJump", 1) == 1;
         canGrapplingHook = PlayerPrefs.GetInt("CanGrapplingHook", 1) == 1;
 
@@ -88,13 +60,10 @@ public class PlayerData : MonoBehaviour
         playerName = "Cyborg";
         inventory.Clear();
 
-        // Remove todas as chaves de save
         PlayerPrefs.DeleteAll();
-
         Debug.Log("Dados resetados para novo jogo");
     }
 
-    // Métodos para modificar dados
     public void AddCoins(int amount)
     {
         coinCount += amount;
@@ -131,7 +100,6 @@ public class PlayerData : MonoBehaviour
         }
     }
 
-    // Chamado quando o jogo é fechado
     private void OnApplicationQuit()
     {
         SaveData();

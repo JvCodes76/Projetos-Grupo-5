@@ -10,7 +10,10 @@ public class SceneController : MonoBehaviour
 
     [Header("Configurações")]
     public GameObject playerPrefab;
-    public int[] gameLevelIndexes = {2, 3, 4, 5, 6};
+    public int[] gameLevelIndexes = { 2, 3, 4, 5, 6 };
+
+    [Header("Referências")]
+    [SerializeField] private PlayerData playerData; // Referência ao PlayerData
 
     private void Awake()
     {
@@ -25,6 +28,9 @@ public class SceneController : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
         SceneManager.sceneLoaded += OnSceneLoaded;
+
+        // Tenta encontrar o PlayerData
+        FindPlayerData();
     }
 
     private void Start()
@@ -32,8 +38,19 @@ public class SceneController : MonoBehaviour
         ProcessCurrentScene();
     }
 
+    private void FindPlayerData()
+    {
+        if (playerData == null)
+        {
+            playerData = FindObjectOfType<PlayerData>();
+        }
+    }
+
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        // Atualiza a referência ao PlayerData
+        FindPlayerData();
+
         // Destroi qualquer player físico existente primeiro
         DestroyExistingPlayer();
 
@@ -148,11 +165,11 @@ public class SceneController : MonoBehaviour
             int nextLevelIndex = gameLevelIndexes[currentIndexInArray + 1];
             SceneManager.LoadScene(nextLevelIndex);
 
-            // Atualiza o nível no PlayerData
-            if (PlayerData.Instance != null)
+            // Atualiza o nível no PlayerData usando a referência local
+            if (playerData != null)
             {
-                PlayerData.Instance.currentLevel = nextLevelIndex;
-                PlayerData.Instance.SaveData();
+                playerData.currentLevel = nextLevelIndex;
+                playerData.SaveData();
             }
         }
         else
@@ -165,6 +182,11 @@ public class SceneController : MonoBehaviour
     public void LoadScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
+    }
+
+    public void LoadScene(int sceneIndex)
+    {
+        SceneManager.LoadScene(sceneIndex);
     }
 
     private void OnDestroy()

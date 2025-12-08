@@ -7,41 +7,31 @@ using TMPro;
 
 public class ShopManager : MonoBehaviour
 {
+    [Header("Referências")]
+    [SerializeField] private TMP_Text coinsTXT;
+    [SerializeField] private PlayerData playerData;
+    [SerializeField] private Timer timer;
+
+    [Header("Itens da Loja")]
     public int[,] shopItems = new int[5, 5];
-    public TMP_Text coinsTXT;
-    public PlayerData playerData;
-    private int selectedItem;
 
     void Start()
     {
-        // Buscar PlayerData
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null)
+        Debug.Log("ShopManager Iniciado");
+
+        // Buscar PlayerData se não atribuído
+        if (playerData == null)
         {
-            playerData = player.GetComponent<PlayerData>();
-            if (playerData == null)
-            {
-                Debug.LogError("Componente PlayerData não encontrado no objeto Player!");
-            }
-        }
-        else
-        {
-            Debug.LogError("GameObject com tag 'Player' não encontrado!");
+            playerData = FindObjectOfType<PlayerData>();
+            if (playerData != null) Debug.Log("PlayerData encontrado");
+            else Debug.LogError("PlayerData não encontrado!");
         }
 
-        // Buscar texto de moedas
-        GameObject coinTextObj = GameObject.FindGameObjectWithTag("CoinText");
-        if (coinTextObj != null)
+        // Buscar Timer se não atribuído
+        if (timer == null)
         {
-            coinsTXT = coinTextObj.GetComponent<TMP_Text>();
-            if (coinsTXT == null)
-            {
-                Debug.LogError("Componente TMP_Text não encontrado no objeto com tag 'CoinText'!");
-            }
-        }
-        else
-        {
-            Debug.LogError("GameObject com tag 'CoinText' não encontrado!");
+            timer = FindObjectOfType<Timer>();
+            if (timer != null) Debug.Log("Timer encontrado");
         }
 
         // Inicializar itens da loja
@@ -86,86 +76,77 @@ public class ShopManager : MonoBehaviour
     {
         if (coinsTXT != null && playerData != null)
         {
-            coinsTXT.text = "Coins: " + playerData.coinCount.ToString();
+            coinsTXT.text = "Moedas: " + playerData.coinCount.ToString();
         }
     }
 
-    public void Buy()
+    public void Buy(int itemID)
     {
-        // Verificar se o EventSystem existe
-        EventSystem eventSystem = EventSystem.current;
-        if (eventSystem == null)
-        {
-            Debug.LogError("EventSystem não encontrado!");
-            return;
-        }
+        Debug.Log("Tentando comprar item: " + itemID);
 
-        // Verificar se há um botão selecionado
-        GameObject ButtonRef = eventSystem.currentSelectedGameObject;
-        if (ButtonRef == null)
+        // Verificar se o ID é válido
+        if (itemID < 0 || itemID >= shopItems.GetLength(1))
         {
-            Debug.LogError("Nenhum botão selecionado!");
-            return;
-        }
-
-        // Verificar componente ButtonInfo
-        ButtonInfo buttonInfo = ButtonRef.GetComponent<ButtonInfo>();
-        if (buttonInfo == null)
-        {
-            Debug.LogError("Componente ButtonInfo não encontrado no botão!");
-            return;
-        }
-
-        // Verificar se playerData está disponível
-        if (playerData == null)
-        {
-            Debug.LogError("PlayerData não está definido!");
-            return;
-        }
-
-        selectedItem = buttonInfo.itemID;
-
-        // Verificar se o índice do item é válido
-        if (selectedItem < 0 || selectedItem >= shopItems.GetLength(1))
-        {
-            Debug.LogError("Índice de item inválido: " + selectedItem);
+            Debug.LogError("Índice de item inválido: " + itemID);
             return;
         }
 
         // Verificar se pode comprar
-        if (playerData.coinCount >= shopItems[1, selectedItem] &&
-            shopItems[2, selectedItem] < shopItems[3, selectedItem])
+        if (playerData != null &&
+            playerData.coinCount >= shopItems[1, itemID] &&
+            shopItems[2, itemID] < shopItems[3, itemID])
         {
             // Processar compra
-            shopItems[2, selectedItem]++;
+            shopItems[2, itemID]++;
 
-            switch (selectedItem)
+            switch (itemID)
             {
                 case 0:
                     playerData.maxAirJumps++;
+                    Debug.Log("Pulo duplo adquirido");
                     break;
                 case 1:
                     playerData.canWallJump = true;
+                    Debug.Log("Pulo na parede adquirido");
                     break;
                 case 2:
                     playerData.canGrapplingHook = true;
+                    Debug.Log("Gancho adquirido");
                     break;
                 case 3:
                     playerData.agility += 3;
+                    Debug.Log("Agilidade aumentada");
                     break;
                 case 4:
                     playerData.strength += 3;
+                    Debug.Log("Força aumentada");
                     break;
             }
 
-            playerData.coinCount -= shopItems[1, selectedItem];
+            playerData.coinCount -= shopItems[1, itemID];
             UpdateCoinText();
+            playerData.SaveData();
 
-            Debug.Log("Item comprado: " + selectedItem);
+            Debug.Log("Item comprado: " + itemID);
         }
         else
         {
-            Debug.Log("Não é possível comprar o item: " + selectedItem);
+            Debug.Log("Não é possível comprar o item: " + itemID);
+        }
+    }
+
+    public void CloseShop()
+    {
+        Debug.Log("Fechando loja");
+
+        // Fechar o shop e reiniciar o jogo
+        if (timer != null)
+        {
+            timer.RestartFromShop();
+        }
+        else
+        {
+            Debug.LogWarning("Timer não encontrado para fechar o shop!");
         }
     }
 }

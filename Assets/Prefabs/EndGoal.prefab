@@ -147,3 +147,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3642cb82f57d12c41a331212468a4326, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  victorySound: {fileID: 8300000, guid: 099074cacf635a54391c60f3ca8b02c0, type: 3}
+  soundVolume: 100
+  delayToLoadNextLevel: 0.5
