@@ -23,6 +23,9 @@ public class GrapplingHook : MonoBehaviour
     [SerializeField] private Transform hookTipTransform;
     [SerializeField] private LineRenderer ropeRenderer;
 
+    [Header("Referências")]
+    [SerializeField] private PlayerData playerData; // Referência ao PlayerData
+
     private Rigidbody2D rb;
     private PlayerInput playerInput;
     private InputAction grappleAction;
@@ -38,6 +41,16 @@ public class GrapplingHook : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         playerInput = GetComponent<PlayerInput>();
 
+        // Busca automaticamente o PlayerData se não foi atribuído
+        if (playerData == null)
+        {
+            playerData = FindObjectOfType<PlayerData>();
+            if (playerData == null)
+            {
+                Debug.LogWarning("PlayerData não encontrado. O gancho estará desativado.");
+            }
+        }
+
         if (playerInput != null)
         {
             var actionMap = playerInput.actions.FindActionMap("Player");
@@ -51,8 +64,10 @@ public class GrapplingHook : MonoBehaviour
 
     void Update()
     {
-        // Verifica se o gancho está habilitado pelo singleton PlayerData
-        if (!PlayerData.Instance.canGrapplingHook)
+        // Verifica se o gancho está habilitado pelo PlayerData
+        bool canGrapple = playerData != null && playerData.canGrapplingHook;
+
+        if (!canGrapple)
         {
             // Se estava ativo, desativa os visuais
             if (currentState != State.Ready && currentState != State.Cooldown)
@@ -105,7 +120,8 @@ public class GrapplingHook : MonoBehaviour
     void FixedUpdate()
     {
         // Verifica se o gancho está habilitado
-        if (!PlayerData.Instance.canGrapplingHook || rb == null) return;
+        bool canGrapple = playerData != null && playerData.canGrapplingHook;
+        if (!canGrapple || rb == null) return;
 
         if (currentState == State.Grappling)
         {
