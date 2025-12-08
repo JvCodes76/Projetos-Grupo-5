@@ -8,7 +8,7 @@
 		"appVersion": "1.5.3",
 		"url": "https://ldtk.io"
 	},
-	"identifier": "World_Level_0",
+	"identifier": "Quinta_Fase",
 	"iid": "a2a50ff0-66b0-11ec-9cd7-c721746049b9",
 	"uid": 70,
 	"worldX": 4096,
@@ -18,7 +18,7 @@
 	"pxHei": 2112,
 	"__bgColor": "#0E54B6",
 	"bgColor": "#0E54B6",
-	"useAutoIdentifier": true,
+	"useAutoIdentifier": false,
 	"bgRelPath": null,
 	"bgPos": null,
 	"bgPivotX": 0.5,
