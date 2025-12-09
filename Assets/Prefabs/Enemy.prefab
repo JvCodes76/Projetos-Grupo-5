@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8939347319297509064}
   - component: {fileID: 8562616785474328211}
   - component: {fileID: 1077417953901322555}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -74,8 +74,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -2072220605
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: -6582551849556756579, guid: 5a710cce5d3709d499e1860d0066b6cb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -119,7 +119,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4006924447194412955}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Shoot Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -150,7 +150,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 256483323944745994}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -184,7 +184,7 @@ GameObject:
   - component: {fileID: 2223244306163212551}
   - component: {fileID: 9042481656107738256}
   - component: {fileID: 8232231226192857462}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}

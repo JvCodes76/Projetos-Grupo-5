@@ -92,6 +92,9 @@ public class characterMovement : MonoBehaviour
 
     [Header("Referências")]
     [SerializeField] private PlayerData playerData; // Agora é SerializeField para arrastar no Inspector
+    [Header("Game Over")]
+    [SerializeField] private GameObject gameOverScreen;
+
 
     // Henrique: Referência ao script do gancho
     private GrapplingHook grapplingHook;
@@ -115,6 +118,27 @@ public class characterMovement : MonoBehaviour
         if (playerData == null)
         {
             playerData = GetComponent<PlayerData>();
+        }
+        if (gameOverScreen == null)
+        {
+            GameObject canvasObj = GameObject.Find("Canvas");
+            if (canvasObj != null)
+            {
+                Transform go = canvasObj.transform.Find("GameOverBackground");
+
+                if (go != null)
+                {
+                    gameOverScreen = go.gameObject;
+                }
+                else
+                {
+                    Debug.LogWarning("GameOverBackground não encontrado dentro de Canvas!");
+                }
+            }
+            else
+            {
+                Debug.LogWarning("Canvas não foi encontrado na cena!");
+            }
         }
     }
 
@@ -494,6 +518,24 @@ public class characterMovement : MonoBehaviour
             }
         }
     }
+    public void Die()
+    {
+        Debug.Log("Player morreu!");
+
+        if (gameOverScreen != null)
+        {
+            gameOverScreen.SetActive(true);
+        }
+        else
+        {
+            Debug.LogWarning("GameOver Screen não foi atribuída no inspetor!");
+        }
+
+        rb.linearVelocity = Vector2.zero;
+
+        DisableMovement();
+    }
+
     public void DisableMovement()
     {
         canMove = false;

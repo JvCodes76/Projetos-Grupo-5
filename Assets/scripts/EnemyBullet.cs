@@ -21,11 +21,17 @@ public class EnemyBullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        // --- Detecta PLAYER por tag OU layer ---
+        // PLAYER atingido
         if (col.CompareTag("Player") || col.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            Debug.Log("jogador morreu");
+            var player = col.GetComponent<characterMovement>();
+            if (player != null)
+            {
+                player.Die();
+            }
+
             Destroy(gameObject);
+            return;
         }
 
         // chão
@@ -34,6 +40,7 @@ public class EnemyBullet : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
 
     private void OnCollisionEnter2D(Collision2D col)
     {
