@@ -178,7 +178,7 @@ MonoBehaviour:
   hangTime: 0.3
   wallCheckDistance: 0.15
   wallSlideSpeed: 2
-  wallJumpForce: {x: 5, y: 10}
+  wallJumpForce: {x: 8, y: 14}
   wallJumpTime: 0.3
   wallLayer:
     serializedVersion: 2
@@ -373,6 +373,7 @@ MonoBehaviour:
   maxAirJumps: 3
   currentLevel: 5
   coinCount: 74
+  totalTimePlayed: 0
   canWallJump: 1
   canGrapplingHook: 1
   playerName: Cyborg
