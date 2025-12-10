@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using System;
-using System.Collections.Generic; // Necessário para usar Listas
+using System.Linq;
 
 public class GameEndScreen : MonoBehaviour
 {
@@ -13,10 +13,10 @@ public class GameEndScreen : MonoBehaviour
 
     private void Start()
     {
-        // 1. CORREÇÃO: Remove câmeras e áudios antigos que vieram de outras cenas
-        CleanUpOldCameras();
+        // 1. CHAVE: Limpa objetos persistentes indesejados (Resolve o problema da câmera e do audio listener)
+        CleanUpDontDestroyObjects();
 
-        // 2. Busca e exibe os dados
+        // 2. Busca e exibe os dados (com debug no console)
         ShowStats();
 
         // 3. Libera o mouse para clicar no botão
@@ -24,36 +24,34 @@ public class GameEndScreen : MonoBehaviour
         Cursor.visible = true;
     }
 
-    private void CleanUpOldCameras()
+    private void CleanUpDontDestroyObjects()
     {
-        // Encontra todas as câmeras na cena
-        Camera[] allCameras = FindObjectsOfType<Camera>();
+        // Tenta obter a cena especial "DontDestroyOnLoad"
+        Scene ddolScene = SceneManager.GetSceneByName("DontDestroyOnLoad");
         
-        // Pega a câmera atual desta cena (EndGame)
-        Camera currentSceneCamera = Camera.main;
-        if (currentSceneCamera == null) currentSceneCamera = GetComponent<Camera>();
-
-        foreach (Camera cam in allCameras)
+        if (ddolScene.isLoaded)
         {
-            // Se a câmera não for a câmera da cena EndGame e estiver na área "DontDestroyOnLoad"
-            if (cam != currentSceneCamera && cam.gameObject.scene.name == "DontDestroyOnLoad")
+            GameObject[] rootObjects = ddolScene.GetRootGameObjects();
+            
+            foreach (GameObject rootObj in rootObjects)
             {
-                Destroy(cam.gameObject);
-            }
-            // Se a câmera estiver duplicada
-            else if (cam != currentSceneCamera && cam.gameObject.scene.name != "EndGame") 
-            {
-                 Destroy(cam.gameObject);
+                // Destrói câmeras e AudioListeners que não fazem parte do PlayerData/SceneController
+                if ((rootObj.GetComponent<Camera>() != null || rootObj.GetComponent<AudioListener>() != null) 
+                    && rootObj.GetComponent<PlayerData>() == null && rootObj.GetComponent<SceneController>() == null)
+                {
+                     Debug.Log("GameEndScreen: Destruindo objeto persistente desnecessário: " + rootObj.name);
+                     Destroy(rootObj);
+                }
             }
         }
         
-        // Remove ouvintes de áudio extras (para sumir com o erro do console)
+        // Limpeza de AudioListener extras na cena atual
         AudioListener[] listeners = FindObjectsOfType<AudioListener>();
         if (listeners.Length > 1)
         {
             for (int i = 1; i < listeners.Length; i++)
             {
-                Destroy(listeners[i]);
+                Destroy(listeners[i].gameObject);
             }
         }
     }
@@ -64,9 +62,17 @@ public class GameEndScreen : MonoBehaviour
 
         if (data != null)
         {
+            // *** DEBUG SOLICITADO NO CONSOLE (Para você verificar os valores) ***
+            Debug.Log($"--- DADOS FINAIS (GameEndScreen) ---");
+            Debug.Log($"Moedas Finais: {data.coinCount}");
+            Debug.Log($"Tempo Total (segundos): {data.totalTimePlayed}");
+            Debug.Log($"------------------------------------");
+            
+            // CHAVE: Exibe as moedas no formato solicitado: "MOEDAS: 25"
             if(finalCoinsText != null)
-                finalCoinsText.text = "Moedas: " + data.coinCount.ToString();
+                finalCoinsText.text = "MOEDAS: " + data.coinCount.ToString();
 
+            // Formata e exibe o tempo total no formato solicitado: "TEMPO TOTAL: 01:25"
             if (finalTimeText != null)
             {
                 TimeSpan t = TimeSpan.FromSeconds(data.totalTimePlayed);
@@ -74,22 +80,23 @@ public class GameEndScreen : MonoBehaviour
                     ? string.Format("{0:00}:{1:00}:{2:00}", (int)t.TotalHours, t.Minutes, t.Seconds)
                     : string.Format("{0:00}:{1:00}", t.Minutes, t.Seconds);
 
-                finalTimeText.text = "Tempo Total: " + formattedTime;
+                finalTimeText.text = "TEMPO TOTAL: " + formattedTime;
             }
         }
         else
         {
-            Debug.LogWarning("PlayerData não encontrado. Testando pelo editor?");
+            Debug.LogError("GameEndScreen: PlayerData não encontrado! A tela final foi carregada sem dados do jogo.");
+            if(finalCoinsText != null) finalCoinsText.text = "MOEDAS: 0";
+            if(finalTimeText != null) finalTimeText.text = "TEMPO TOTAL: 00:00";
         }
     }
 
     public void BackToMenu()
     {
-        // Opcional: Destruir o PlayerData para resetar tudo ao voltar ao menu
+        // Limpa todos os objetos persistentes
         PlayerData data = FindObjectOfType<PlayerData>();
         if (data != null) Destroy(data.gameObject);
 
-        // Destroi o SceneController antigo também para evitar duplicatas
         if (SceneController.instance != null) Destroy(SceneController.instance.gameObject);
 
         SceneManager.LoadScene(mainMenuScene);

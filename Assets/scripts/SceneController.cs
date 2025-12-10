@@ -11,10 +11,10 @@ public class SceneController : MonoBehaviour
     [Header("Configurações")]
     public GameObject playerPrefab;
     public int[] gameLevelIndexes = { 2, 3, 4, 5, 6 };
-    public string endGameSceneName = "EndGame"; // NOVO: Nome da cena final
+    public string endGameSceneName = "EndGame"; // <<<< CHAVE: Define a cena final
 
     [Header("Referências")]
-    [SerializeField] private PlayerData playerData; 
+    [SerializeField] private PlayerData playerData;
 
     private void Awake()
     {
@@ -59,14 +59,14 @@ public class SceneController : MonoBehaviour
 
         Scene scene = SceneManager.GetActiveScene();
         
-        // Se for a cena final ou menu, não faz spawn do player
+        // Se for a cena final ou menu, não faz spawn do player.
         if (scene.name == endGameSceneName || scene.buildIndex == 0)
         {
              DestroyExistingPlayer();
              return;
         }
 
-        Debug.Log($"Processando cena: {scene.name} (Índice: {scene.buildIndex})");
+        Debug.Log($"SceneController: Processando cena: {scene.name} (Índice: {scene.buildIndex})");
 
         if (ShouldSpawnPlayerInThisScene(scene))
         {
@@ -142,18 +142,17 @@ public class SceneController : MonoBehaviour
 
     public void NextLevel()
     {
-        // 1. Salva o tempo da fase atual antes de sair
+        // CHAVE: Salva o tempo da fase atual ANTES de mudar de cena
         Timer currentTimer = FindObjectOfType<Timer>();
         if (currentTimer != null && playerData != null)
         {
             playerData.AddPlayTime(currentTimer.CurrentTime);
-            Debug.Log("Tempo da fase adicionado ao total.");
+            Debug.Log($"SceneController: Tempo da fase ({currentTimer.CurrentTime}s) adicionado ao total. Total acumulado: {playerData.totalTimePlayed}s.");
         }
 
         int currentBuildIndex = SceneManager.GetActiveScene().buildIndex;
         int currentIndexInArray = Array.IndexOf(gameLevelIndexes, currentBuildIndex);
 
-        // Verifica se existe uma próxima fase na lista
         if (currentIndexInArray != -1 && currentIndexInArray + 1 < gameLevelIndexes.Length)
         {
             int nextLevelIndex = gameLevelIndexes[currentIndexInArray + 1];
@@ -168,8 +167,8 @@ public class SceneController : MonoBehaviour
         else
         {
             // FIM DE JOGO: Carrega a tela de estatísticas
-            Debug.Log("Todas as fases concluídas! Carregando EndGame.");
-            SceneManager.LoadScene(endGameSceneName);
+            Debug.Log("SceneController: Todas as fases concluídas! Carregando EndGame.");
+            SceneManager.LoadScene(endGameSceneName); // <<<< Vai para EndGame
         }
     }
 

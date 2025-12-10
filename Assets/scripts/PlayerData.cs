@@ -11,7 +11,7 @@ public class PlayerData : MonoBehaviour
     public int coinCount = 100;
     
     [Header("Estatísticas Globais")]
-    public float totalTimePlayed = 0f; // NOVO: Guarda o tempo total de todas as fases
+    public float totalTimePlayed = 0f; // <<<<<< NOVO: Variável para tempo total acumulado
 
     public bool canWallJump = true;
     public bool canGrapplingHook = true;
@@ -34,11 +34,11 @@ public class PlayerData : MonoBehaviour
         PlayerPrefs.SetInt("CanWallJump", canWallJump ? 1 : 0);
         PlayerPrefs.SetInt("CanGrapplingHook", canGrapplingHook ? 1 : 0);
         
-        // NOVO: Salva o tempo total
+        // SALVA O TEMPO TOTAL
         PlayerPrefs.SetFloat("TotalTimePlayed", totalTimePlayed);
 
         PlayerPrefs.Save();
-        Debug.Log("Jogo Salvo! Fase: " + currentLevel + ", Moedas: " + coinCount);
+        Debug.Log("PlayerData: Jogo Salvo! Fase: " + currentLevel + ", Moedas: " + coinCount);
     }
 
     public void LoadData()
@@ -52,17 +52,17 @@ public class PlayerData : MonoBehaviour
         canWallJump = PlayerPrefs.GetInt("CanWallJump", 1) == 1;
         canGrapplingHook = PlayerPrefs.GetInt("CanGrapplingHook", 1) == 1;
         
-        // NOVO: Carrega o tempo total
+        // CARREGA O TEMPO TOTAL
         totalTimePlayed = PlayerPrefs.GetFloat("TotalTimePlayed", 0f);
 
-        Debug.Log("Dados carregados: Nível " + currentLevel + ", " + coinCount + " moedas");
+        Debug.Log($"PlayerData: Dados carregados. Nível {currentLevel}, {coinCount} moedas, Tempo Total: {totalTimePlayed}s.");
     }
 
-    // NOVO: Função chamada pelo SceneController ao passar de fase
+    // FUNÇÃO CHAVE: Acumula o tempo da fase atual ao total
     public void AddPlayTime(float timeInLevel)
     {
         totalTimePlayed += timeInLevel;
-        SaveData(); // Salva imediatamente para garantir
+        SaveData();
     }
 
     public void ResetData()
@@ -75,11 +75,11 @@ public class PlayerData : MonoBehaviour
         canWallJump = true;
         canGrapplingHook = true;
         playerName = "Cyborg";
-        totalTimePlayed = 0f; // NOVO: Reseta o tempo
+        totalTimePlayed = 0f; // Reseta o tempo
         inventory.Clear();
 
         PlayerPrefs.DeleteAll();
-        Debug.Log("Dados resetados para novo jogo");
+        Debug.Log("PlayerData: Dados resetados para novo jogo");
     }
 
     public void AddCoins(int amount)
