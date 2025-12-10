@@ -24,6 +24,9 @@ EditorBuildSettings:
     path: Assets/Scenes/QuintaFase.unity
     guid: 2faedad8345bc2b4b94832d41c3db00a
   - enabled: 1
+    path: Assets/Scenes/EndGame.unity
+    guid: 1a1abe758b0f9a8479e501c4b16b483a
+  - enabled: 0
     path: Assets/Scenes/SextaFase.unity
     guid: 13c4a65bab623b7408c7ced09ecc0ffc
   m_configObjects:

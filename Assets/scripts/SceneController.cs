@@ -8,12 +8,13 @@ public class SceneController : MonoBehaviour
     public static SceneController instance;
     public static event Action<GameObject> OnPlayerSpawned;
 
-    [Header("Configurações")]
+    [Header("ConfiguraÃ§Ãµes")]
     public GameObject playerPrefab;
     public int[] gameLevelIndexes = { 2, 3, 4, 5, 6 };
+    public string endGameSceneName = "EndGame"; // NOVO: Nome da cena final
 
-    [Header("Referências")]
-    [SerializeField] private PlayerData playerData; // Referência ao PlayerData
+    [Header("ReferÃªncias")]
+    [SerializeField] private PlayerData playerData; 
 
     private void Awake()
     {
@@ -29,7 +30,6 @@ public class SceneController : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         SceneManager.sceneLoaded += OnSceneLoaded;
 
-        // Tenta encontrar o PlayerData
         FindPlayerData();
     }
 
@@ -48,13 +48,8 @@ public class SceneController : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // Atualiza a referência ao PlayerData
         FindPlayerData();
-
-        // Destroi qualquer player físico existente primeiro
         DestroyExistingPlayer();
-
-        // Processa a cena atual
         ProcessCurrentScene();
     }
 
@@ -63,16 +58,22 @@ public class SceneController : MonoBehaviour
         if (instance != this) return;
 
         Scene scene = SceneManager.GetActiveScene();
-        Debug.Log($"Processando cena: {scene.name} (Índice: {scene.buildIndex})");
+        
+        // Se for a cena final ou menu, nÃ£o faz spawn do player
+        if (scene.name == endGameSceneName || scene.buildIndex == 0)
+        {
+             DestroyExistingPlayer();
+             return;
+        }
+
+        Debug.Log($"Processando cena: {scene.name} (Ãndice: {scene.buildIndex})");
 
         if (ShouldSpawnPlayerInThisScene(scene))
         {
-            Debug.Log("Spawning player...");
             SpawnPlayerIfNotExists();
         }
         else
         {
-            Debug.Log("Cena não é nível de jogo, destruindo player...");
             DestroyExistingPlayer();
         }
     }
@@ -84,7 +85,6 @@ public class SceneController : MonoBehaviour
 
     private void SpawnPlayerIfNotExists()
     {
-        // Verifica se existe algum player físico (não confundir com PlayerData)
         GameObject[] physicalPlayers = GameObject.FindGameObjectsWithTag("Player");
         bool hasPhysicalPlayer = physicalPlayers.Any(player => player.GetComponent<PlayerData>() == null);
 
@@ -94,7 +94,6 @@ public class SceneController : MonoBehaviour
         }
         else
         {
-            Debug.Log("Player físico já existe na cena, movendo para spawn point...");
             MovePlayerToSpawnPoint(physicalPlayers[0]);
         }
     }
@@ -102,7 +101,6 @@ public class SceneController : MonoBehaviour
     private void SpawnPlayer()
     {
         GameObject spawnPoint = GameObject.FindWithTag("SpawnPoint");
-
         Vector3 spawnPosition = Vector3.zero;
         Quaternion spawnRotation = Quaternion.identity;
 
@@ -110,22 +108,12 @@ public class SceneController : MonoBehaviour
         {
             spawnPosition = spawnPoint.transform.position;
             spawnRotation = spawnPoint.transform.rotation;
-            Debug.Log($"Spawning em: {spawnPoint.name} - Posição: {spawnPosition}");
-        }
-        else
-        {
-            Debug.LogWarning("SpawnPoint não encontrado. Spawnando na origem.");
         }
 
         if (playerPrefab != null)
         {
             GameObject newPlayer = Instantiate(playerPrefab, spawnPosition, spawnRotation);
             OnPlayerSpawned?.Invoke(newPlayer);
-            Debug.Log("Player spawnado com sucesso.");
-        }
-        else
-        {
-            Debug.LogError("PlayerPrefab não atribuído no SceneController!");
         }
     }
 
@@ -137,7 +125,6 @@ public class SceneController : MonoBehaviour
         {
             player.transform.position = spawnPoint.transform.position;
             player.transform.rotation = spawnPoint.transform.rotation;
-            Debug.Log("Player movido para o spawn point: " + spawnPoint.name);
         }
     }
 
@@ -146,26 +133,32 @@ public class SceneController : MonoBehaviour
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         foreach (GameObject player in players)
         {
-            // Destroi apenas players físicos, não o PlayerData
             if (player.GetComponent<PlayerData>() == null)
             {
                 Destroy(player);
-                Debug.Log("Player físico destruído: " + player.name);
             }
         }
     }
 
     public void NextLevel()
     {
+        // 1. Salva o tempo da fase atual antes de sair
+        Timer currentTimer = FindObjectOfType<Timer>();
+        if (currentTimer != null && playerData != null)
+        {
+            playerData.AddPlayTime(currentTimer.CurrentTime);
+            Debug.Log("Tempo da fase adicionado ao total.");
+        }
+
         int currentBuildIndex = SceneManager.GetActiveScene().buildIndex;
         int currentIndexInArray = Array.IndexOf(gameLevelIndexes, currentBuildIndex);
 
+        // Verifica se existe uma prÃ³xima fase na lista
         if (currentIndexInArray != -1 && currentIndexInArray + 1 < gameLevelIndexes.Length)
         {
             int nextLevelIndex = gameLevelIndexes[currentIndexInArray + 1];
             SceneManager.LoadScene(nextLevelIndex);
 
-            // Atualiza o nível no PlayerData usando a referência local
             if (playerData != null)
             {
                 playerData.currentLevel = nextLevelIndex;
@@ -174,20 +167,14 @@ public class SceneController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Não há mais níveis disponíveis! Voltando para o menu.");
-            SceneManager.LoadScene(0);
+            // FIM DE JOGO: Carrega a tela de estatÃ­sticas
+            Debug.Log("Todas as fases concluÃ­das! Carregando EndGame.");
+            SceneManager.LoadScene(endGameSceneName);
         }
     }
 
-    public void LoadScene(string sceneName)
-    {
-        SceneManager.LoadScene(sceneName);
-    }
-
-    public void LoadScene(int sceneIndex)
-    {
-        SceneManager.LoadScene(sceneIndex);
-    }
+    public void LoadScene(string sceneName) => SceneManager.LoadScene(sceneName);
+    public void LoadScene(int sceneIndex) => SceneManager.LoadScene(sceneIndex);
 
     private void OnDestroy()
     {

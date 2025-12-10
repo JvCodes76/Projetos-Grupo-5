@@ -37094,11 +37094,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5848264328766205707, guid: e13c0a42254c29d4aa67a10e9436b481, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 89.2
+      value: 92.5
       objectReference: {fileID: 0}
     - target: {fileID: 5848264328766205707, guid: e13c0a42254c29d4aa67a10e9436b481, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 18
+      value: 17.9
       objectReference: {fileID: 0}
     - target: {fileID: 5848264328766205707, guid: e13c0a42254c29d4aa67a10e9436b481, type: 3}
       propertyPath: m_LocalPosition.z
@@ -37284,7 +37284,7 @@ PrefabInstance:
       objectReference: {fileID: 3508608824494262109, guid: 35961955a94267a408beeffb41446e26, type: 3}
     - target: {fileID: 1780977742771836320, guid: bf13c1f0438d9e54b81f85e96c514b04, type: 3}
       propertyPath: isCountingUp
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1796268045592547414, guid: bf13c1f0438d9e54b81f85e96c514b04, type: 3}
       propertyPath: m_Pivot.x
@@ -37610,6 +37610,10 @@ PrefabInstance:
     - target: {fileID: 1618403915927313099, guid: 287c2daae2cc49442a4713b4a223d399, type: 3}
       propertyPath: m_Name
       value: EndGoal
+      objectReference: {fileID: 0}
+    - target: {fileID: 8601520048299624551, guid: 287c2daae2cc49442a4713b4a223d399, type: 3}
+      propertyPath: soundVolume
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

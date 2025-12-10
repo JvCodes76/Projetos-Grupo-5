@@ -34,7 +34,7 @@ Transform:
   m_GameObject: {fileID: 1227645096870838732}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 89.2, y: 18, z: 0}
+  m_LocalPosition: {x: -25, y: 18, z: 0}
   m_LocalScale: {x: 1.7, y: 1.7, z: 1.3}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -108,7 +108,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2073534527
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 1
   m_Sprite: {fileID: 5074806556455747457, guid: 385d307fa54bdf241ab90662f6388821, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -215,6 +215,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   gameController: {fileID: 0}
   playerData: {fileID: 0}
+  gameOverScreen: {fileID: 0}
 --- !u!114 &4080611709991361240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -367,11 +368,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fb6507200e89df4199618e922531007, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agility: 1
-  strength: 1
-  maxAirJumps: 1
-  currentLevel: 2
-  coinCount: 100
+  agility: 10
+  strength: 10
+  maxAirJumps: 3
+  currentLevel: 5
+  coinCount: 74
   canWallJump: 1
   canGrapplingHook: 1
   playerName: Cyborg

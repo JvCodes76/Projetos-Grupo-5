@@ -9,6 +9,10 @@ public class PlayerData : MonoBehaviour
     public int maxAirJumps = 1;
     public int currentLevel = 1;
     public int coinCount = 100;
+    
+    [Header("Estatísticas Globais")]
+    public float totalTimePlayed = 0f; // NOVO: Guarda o tempo total de todas as fases
+
     public bool canWallJump = true;
     public bool canGrapplingHook = true;
     public string playerName = "Cyborg";
@@ -29,6 +33,9 @@ public class PlayerData : MonoBehaviour
         PlayerPrefs.SetString("PlayerName", playerName);
         PlayerPrefs.SetInt("CanWallJump", canWallJump ? 1 : 0);
         PlayerPrefs.SetInt("CanGrapplingHook", canGrapplingHook ? 1 : 0);
+        
+        // NOVO: Salva o tempo total
+        PlayerPrefs.SetFloat("TotalTimePlayed", totalTimePlayed);
 
         PlayerPrefs.Save();
         Debug.Log("Jogo Salvo! Fase: " + currentLevel + ", Moedas: " + coinCount);
@@ -44,8 +51,18 @@ public class PlayerData : MonoBehaviour
         playerName = PlayerPrefs.GetString("PlayerName", "Cyborg");
         canWallJump = PlayerPrefs.GetInt("CanWallJump", 1) == 1;
         canGrapplingHook = PlayerPrefs.GetInt("CanGrapplingHook", 1) == 1;
+        
+        // NOVO: Carrega o tempo total
+        totalTimePlayed = PlayerPrefs.GetFloat("TotalTimePlayed", 0f);
 
         Debug.Log("Dados carregados: Nível " + currentLevel + ", " + coinCount + " moedas");
+    }
+
+    // NOVO: Função chamada pelo SceneController ao passar de fase
+    public void AddPlayTime(float timeInLevel)
+    {
+        totalTimePlayed += timeInLevel;
+        SaveData(); // Salva imediatamente para garantir
     }
 
     public void ResetData()
@@ -58,6 +75,7 @@ public class PlayerData : MonoBehaviour
         canWallJump = true;
         canGrapplingHook = true;
         playerName = "Cyborg";
+        totalTimePlayed = 0f; // NOVO: Reseta o tempo
         inventory.Clear();
 
         PlayerPrefs.DeleteAll();
