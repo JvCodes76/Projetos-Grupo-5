@@ -368,9 +368,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fb6507200e89df4199618e922531007, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agility: 10
-  strength: 10
-  maxAirJumps: 3
+  agility: 1
+  strength: 1
+  maxAirJumps: 1
   currentLevel: 5
   coinCount: 74
   totalTimePlayed: 0

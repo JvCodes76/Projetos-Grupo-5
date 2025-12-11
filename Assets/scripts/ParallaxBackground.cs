@@ -5,16 +5,44 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class ParallaxBackground : MonoBehaviour
 {
-    public ParallaxCamera parallaxCamera;
+    // Singleton da câmera
+    private static ParallaxCamera _parallaxCameraInstance;
+    public static ParallaxCamera ParallaxCameraInstance
+    {
+        get
+        {
+            if (_parallaxCameraInstance == null)
+            {
+                _parallaxCameraInstance = Camera.main.GetComponent<ParallaxCamera>();
+                if (_parallaxCameraInstance == null)
+                {
+                    GameObject cameraObj = new GameObject("ParallaxCamera");
+                    _parallaxCameraInstance = cameraObj.AddComponent<ParallaxCamera>();
+                }
+            }
+            return _parallaxCameraInstance;
+        }
+    }
+
     List<ParallaxLayer> parallaxLayers = new List<ParallaxLayer>();
 
     void Start()
     {
-        if (parallaxCamera == null)
-            parallaxCamera = Camera.main.GetComponent<ParallaxCamera>();
-        if (parallaxCamera != null)
-            parallaxCamera.onCameraTranslate += Move;
+        // Usa a instância singleton da câmera
+        if (_parallaxCameraInstance != null)
+        {
+            _parallaxCameraInstance.onCameraTranslate += Move;
+        }
         SetLayers();
+    }
+
+    void OnDestroy()
+    {
+        // Remove o evento quando o objeto for destruído
+        if (_parallaxCameraInstance != null)
+        {
+            _parallaxCameraInstance.onCameraTranslate -= Move;
+        }
     }
 
     void SetLayers()
@@ -31,11 +59,18 @@ public class ParallaxBackground : MonoBehaviour
             }
         }
     }
+
     void Move(float delta)
     {
         foreach (ParallaxLayer layer in parallaxLayers)
         {
             layer.Move(delta);
         }
+    }
+
+    // Método público para acessar a câmera de outros scripts
+    public static ParallaxCamera GetParallaxCamera()
+    {
+        return ParallaxCameraInstance;
     }
 }

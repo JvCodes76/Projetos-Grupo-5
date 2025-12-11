@@ -15,9 +15,6 @@ EditorBuildSettings:
     path: Assets/Scenes/PrimeiraFase.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
-    path: Assets/Scenes/SegundaFase.unity
-    guid: d8f902698f3d707478cb10356802e5b7
-  - enabled: 1
     path: Assets/Scenes/QuartaFase 1.unity
     guid: 3ae083b517c2b8d4c86f3257eba1a340
   - enabled: 1
@@ -29,6 +26,9 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SextaFase.unity
     guid: 13c4a65bab623b7408c7ced09ecc0ffc
+  - enabled: 0
+    path: Assets/Scenes/SegundaFase.unity
+    guid: d8f902698f3d707478cb10356802e5b7
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
