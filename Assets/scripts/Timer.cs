@@ -19,10 +19,10 @@ public class Timer : MonoBehaviour
     [Header("Referências")]
     [SerializeField] private PlayerData playerData;
     [SerializeField] private characterMovement characterMovement;
+    
 
     private float currentTime;
     private bool timerActive = false;
-    private GameObject shopScreenInstance; // Instância do prefab
 
     private void Awake()
     {
@@ -80,77 +80,36 @@ public class Timer : MonoBehaviour
                     timerText.color = Color.red;
                 }
 
+                // ATIVA A TELA DE GAME OVER (que é filha do timer)
+                if (gameOverScreen != null)
+                {
+                    gameOverScreen.SetActive(true);
+                }
+                else
+                {
+                    Debug.LogWarning("GameOver Screen não atribuída no Timer!");
+                }
+
+                // Opcional: Desativa o texto do timer para não ficar visível
+                if (timerText != null)
+                {
+                    timerText.gameObject.SetActive(false);
+                }
+
                 if (playerData != null)
                 {
                     playerData.SaveData();
                 }
 
-                // Mostra a tela de shop
-                ShowShopScreen();
+                if (characterMovement != null)
+                {
+                    characterMovement.Die();
+                }
+                return;
             }
         }
 
         UpdateTimerDisplay();
-    }
-
-    private void ShowShopScreen()
-    {
-        // Desativa o movimento do jogador
-        if (characterMovement != null)
-        {
-            characterMovement.DisableMovement();
-        }
-
-        // Instancia o prefab do shop se não existir
-        if (shopScreenInstance == null && shopScreenPrefab != null)
-        {
-            shopScreenInstance = Instantiate(shopScreenPrefab);
-
-            // Configura o botão de restart para chamar o método correto
-            Button restartButton = shopScreenInstance.GetComponentInChildren<Button>();
-            if (restartButton != null)
-            {
-                restartButton.onClick.AddListener(RestartFromShop);
-            }
-        }
-
-        // Ativa a instância do shop
-        if (shopScreenInstance != null)
-        {
-            shopScreenInstance.SetActive(true);
-        }
-
-        // Esconde a tela de game over se estiver ativa
-        if (gameOverScreen != null)
-        {
-            gameOverScreen.SetActive(false);
-        }
-    }
-
-    public void RestartFromShop()
-    {
-        // Reativa o movimento do jogador
-        if (characterMovement != null)
-        {
-            characterMovement.EnableMovement();
-            characterMovement.ResetToSpawnPoint();
-        }
-
-        // Reseta o timer
-        ResetTimer(true);
-
-        // Destroi a instância do shop
-        if (shopScreenInstance != null)
-        {
-            Destroy(shopScreenInstance);
-            shopScreenInstance = null;
-        }
-
-        // Restaura a cor original do texto
-        if (timerText != null)
-        {
-            timerText.color = Color.white;
-        }
     }
 
     private void UpdateTimerDisplay()

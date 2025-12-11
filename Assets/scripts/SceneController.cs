@@ -10,8 +10,8 @@ public class SceneController : MonoBehaviour
 
     [Header("Configurações")]
     public GameObject playerPrefab;
-    public int[] gameLevelIndexes = { 2, 3, 4, 5, 6 };
-    public string endGameSceneName = "EndGame"; // <<<< CHAVE: Define a cena final
+    public int[] gameLevelIndexes = { 2, 3, 4};
+    public string endGameSceneName = "EndGame";
 
     [Header("Referências")]
     [SerializeField] private PlayerData playerData;

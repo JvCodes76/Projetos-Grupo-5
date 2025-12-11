@@ -134,19 +134,4 @@ public class ShopManager : MonoBehaviour
             Debug.Log("Não é possível comprar o item: " + itemID);
         }
     }
-
-    public void CloseShop()
-    {
-        Debug.Log("Fechando loja");
-
-        // Fechar o shop e reiniciar o jogo
-        if (timer != null)
-        {
-            timer.RestartFromShop();
-        }
-        else
-        {
-            Debug.LogWarning("Timer não encontrado para fechar o shop!");
-        }
-    }
 }

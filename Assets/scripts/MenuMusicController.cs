@@ -21,7 +21,6 @@ public class MenuMusicController : MonoBehaviour
 
         Instance = this;
 
-        DontDestroyOnLoad(gameObject);
     }
 
     public void StopMusicAndDestroy()

@@ -530,11 +530,9 @@ public class characterMovement : MonoBehaviour
         {
             Debug.LogWarning("GameOver Screen não foi atribuída no inspetor!");
         }
-
         rb.linearVelocity = Vector2.zero;
-
-        DisableMovement();
     }
+
 
     public void DisableMovement()
     {
