@@ -1,12 +1,12 @@
-using UnityEngine;
+Ôªøusing UnityEngine;
 
 public class EndGoal : MonoBehaviour
 {
-    [Header("ConfiguraÁıes de ¡udio")]
+    [Header("Configura√ß√µes de √Åudio")]
     [SerializeField] private AudioClip victorySound;
     [SerializeField] private float soundVolume = 1f;
 
-    [Header("ConfiguraÁıes de TransiÁ„o")]
+    [Header("Configura√ß√µes de Transi√ß√£o")]
     [SerializeField] private float delayToLoadNextLevel = 0.5f;
 
     private AudioSource audioSource;
@@ -37,12 +37,12 @@ public class EndGoal : MonoBehaviour
 
     private void TriggerVictory()
     {
-        Debug.Log("VitÛria! Player atingiu o goal.");
+        Debug.Log("Vit√≥ria! Player atingiu o goal.");
 
-        // Reproduz som de vitÛria
+        // Reproduz som de vit√≥ria
         PlayVictorySound();
 
-        // Desativa o colisor para evitar m˙ltiplas chamadas
+        // Desativa o colisor para evitar m√∫ltiplas chamadas
         Collider2D collider = GetComponent<Collider2D>();
         if (collider != null)
         {
@@ -56,7 +56,7 @@ public class EndGoal : MonoBehaviour
             spriteRenderer.enabled = false;
         }
 
-        // Chama o prÛximo nÌvel com delay
+        // Chama o pr√≥ximo n√≠vel com delay
         Invoke(nameof(LoadNextLevel), delayToLoadNextLevel);
     }
 
@@ -78,7 +78,7 @@ public class EndGoal : MonoBehaviour
         {
             Debug.LogError("SceneController instance is null!");
 
-            // Fallback: tenta encontrar a inst‚ncia (M…TODO ATUALIZADO)
+            // Fallback: tenta encontrar a inst√¢ncia (M√âTODO ATUALIZADO)
             SceneController controller = FindFirstObjectByType<SceneController>();
             if (controller != null)
             {
@@ -91,7 +91,7 @@ public class EndGoal : MonoBehaviour
         }
     }
 
-    // MÈtodo para resetar o goal (˙til para testes)
+    // M√©todo para resetar o goal (√∫til para testes)
     public void ResetGoal()
     {
         alreadyTriggered = false;

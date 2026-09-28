@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class VolumeSettings : MonoBehaviour
@@ -8,26 +8,26 @@ public class VolumeSettings : MonoBehaviour
 
     private void Awake()
     {
-        // Pega o componente Slider que est� no mesmo GameObject
+        // Pega o componente Slider que está no mesmo GameObject
         volumeSlider = GetComponent<Slider>();
     }
 
     private void Start()
     {
-        // Carrega o volume salvo (se n�o tiver nada salvo, usa 1.0 como padr�o)
+        // Carrega o volume salvo (se não tiver nada salvo, usa 1.0 como padrão)
         float savedVolume = PlayerPrefs.GetFloat(VolumePrefKey, 1f);
 
         // Aplica o valor no slider e no volume global do jogo
         volumeSlider.value = savedVolume;
         AudioListener.volume = savedVolume;
 
-        // Escuta mudan�as no slider
+        // Escuta mudanças no slider
         volumeSlider.onValueChanged.AddListener(HandleSliderValueChanged);
     }
 
     private void OnDestroy()
     {
-        // Boa pr�tica: parar de escutar quando o objeto for destru�do
+        // Boa prática: parar de escutar quando o objeto for destruído
         if (volumeSlider != null)
         {
             volumeSlider.onValueChanged.RemoveListener(HandleSliderValueChanged);

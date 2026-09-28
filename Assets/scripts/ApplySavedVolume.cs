@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class ApplySavedVolume : MonoBehaviour
 {
@@ -6,7 +6,7 @@ public class ApplySavedVolume : MonoBehaviour
 
     private void Awake()
     {
-        // Lê o volume salvo (1 como padrão)
+        // LÃª o volume salvo (1 como padrÃ£o)
         float savedVolume = PlayerPrefs.GetFloat(VolumePrefKey, 1f);
 
         // Aplica esse valor ao volume global

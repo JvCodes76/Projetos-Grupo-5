@@ -1,13 +1,13 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 public class CameraBoundary : MonoBehaviour
 {
-    [Header("Limites da Câmera")]
+    [Header("Limites da CÃ¢mera")]
     public float minX = 0;
     public float maxX = 50;
     public float minY = 0;
     public float maxY = 15;
 
-    [Header("Visualização")]
+    [Header("VisualizaÃ§Ã£o")]
     public Color gizmoColor = Color.yellow;
 
     private void OnDrawGizmosSelected()

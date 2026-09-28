@@ -36,6 +36,7 @@ public class PlayerSaveController : MonoBehaviour
     }
 
     // Apenas para teste: Aperte F5 para salvar enquanto joga
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.F5))
@@ -43,4 +44,5 @@ public class PlayerSaveController : MonoBehaviour
             SaveMyGame();
         }
     }
+#endif
 }

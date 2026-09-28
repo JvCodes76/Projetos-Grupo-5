@@ -7,34 +7,37 @@ using TMPro;
 
 public class ShopManager : MonoBehaviour
 {
-    [Header("ReferÍncias")]
+    [Header("Refer√™ncias")]
     [SerializeField] private TMP_Text coinsTXT;
-    [SerializeField] private PlayerData playerData;
     [SerializeField] private Timer timer;
 
     [Header("Itens da Loja")]
-    public int[,] shopItems = new int[5, 5];
+    public int[,] shopItems = new int[5, PlayerData.ShopItemCount];
+
+    // Sempre o singleton persistente (nunca uma refer√™ncia do Inspector / prefab)
+    private PlayerData playerData => PlayerData.Instance;
+
+    void Awake()
+    {
+        // Inicializa cedo para o ButtonInfo j√° ler pre√ßos/quantidades corretos
+        InitializeShopItems();
+    }
 
     void Start()
     {
         Debug.Log("ShopManager Iniciado");
 
-        // Buscar PlayerData se n„o atribuÌdo
-        if (playerData == null)
-        {
-            playerData = FindObjectOfType<PlayerData>();
-            if (playerData != null) Debug.Log("PlayerData encontrado");
-            else Debug.LogError("PlayerData n„o encontrado!");
-        }
+        if (playerData != null) Debug.Log("PlayerData encontrado");
+        else Debug.LogError("PlayerData n√£o encontrado!");
 
-        // Buscar Timer se n„o atribuÌdo
+        // Buscar Timer se n√£o atribu√≠do
         if (timer == null)
         {
-            timer = FindObjectOfType<Timer>();
+            timer = FindFirstObjectByType<Timer>();
             if (timer != null) Debug.Log("Timer encontrado");
         }
 
-        // Inicializar itens da loja
+        // Recarrega as quantidades salvas (caso o PlayerData tenha mudado desde o Awake)
         InitializeShopItems();
 
         // Atualizar texto de moedas
@@ -50,21 +53,20 @@ public class ShopManager : MonoBehaviour
         shopItems[0, 3] = 3;
         shopItems[0, 4] = 4;
 
-        // PreÁos
+        // Pre√ßos
         shopItems[1, 0] = 1;
         shopItems[1, 1] = 1;
         shopItems[1, 2] = 2;
         shopItems[1, 3] = 3;
         shopItems[1, 4] = 4;
 
-        // Quantidades iniciais
-        shopItems[2, 0] = 0;
-        shopItems[2, 1] = 0;
-        shopItems[2, 2] = 0;
-        shopItems[2, 3] = 0;
-        shopItems[2, 4] = 0;
+        // Quantidades j√° compradas (persistidas no PlayerData/PlayerPrefs)
+        for (int i = 0; i < shopItems.GetLength(1); i++)
+        {
+            shopItems[2, i] = playerData != null ? playerData.GetShopPurchases(i) : 0;
+        }
 
-        // Quantidades m·ximas
+        // Quantidades m√°ximas
         shopItems[3, 0] = 2;
         shopItems[3, 1] = 1;
         shopItems[3, 2] = 1;
@@ -84,54 +86,60 @@ public class ShopManager : MonoBehaviour
     {
         Debug.Log("Tentando comprar item: " + itemID);
 
-        // Verificar se o ID È v·lido
+        // Verificar se o ID √© v√°lido
         if (itemID < 0 || itemID >= shopItems.GetLength(1))
         {
-            Debug.LogError("Õndice de item inv·lido: " + itemID);
+            Debug.LogError("√çndice de item inv√°lido: " + itemID);
             return;
         }
 
+        PlayerData data = playerData;
+
         // Verificar se pode comprar
-        if (playerData != null &&
-            playerData.coinCount >= shopItems[1, itemID] &&
+        if (data != null &&
+            data.coinCount >= shopItems[1, itemID] &&
             shopItems[2, itemID] < shopItems[3, itemID])
         {
             // Processar compra
             shopItems[2, itemID]++;
+            data.AddShopPurchase(itemID);
 
             switch (itemID)
             {
                 case 0:
-                    playerData.maxAirJumps++;
+                    data.maxAirJumps++;
                     Debug.Log("Pulo duplo adquirido");
                     break;
                 case 1:
-                    playerData.canWallJump = true;
+                    data.canWallJump = true;
                     Debug.Log("Pulo na parede adquirido");
                     break;
                 case 2:
-                    playerData.canGrapplingHook = true;
+                    data.canGrapplingHook = true;
                     Debug.Log("Gancho adquirido");
                     break;
                 case 3:
-                    playerData.agility += 3;
+                    data.agility += 3;
                     Debug.Log("Agilidade aumentada");
                     break;
                 case 4:
-                    playerData.strength += 3;
-                    Debug.Log("ForÁa aumentada");
+                    data.strength += 3;
+                    Debug.Log("For√ßa aumentada");
                     break;
             }
 
-            playerData.coinCount -= shopItems[1, itemID];
+            data.coinCount -= shopItems[1, itemID];
             UpdateCoinText();
-            playerData.SaveData();
+            data.SaveData();
+
+            // Aplica os upgrades imediatamente no jogador da cena
+            FindFirstObjectByType<characterMovement>()?.RefreshStats();
 
             Debug.Log("Item comprado: " + itemID);
         }
         else
         {
-            Debug.Log("N„o È possÌvel comprar o item: " + itemID);
+            Debug.Log("N√£o √© poss√≠vel comprar o item: " + itemID);
         }
     }
 }

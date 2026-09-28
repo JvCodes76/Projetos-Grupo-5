@@ -1414,7 +1414,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -784178261
-  m_SortingLayer: 9
+  m_SortingLayer: 10
   m_SortingOrder: 10
   m_Sprite: {fileID: -6077815896940386871, guid: c27583845e1e42042979014837caf0db, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1701,7 +1701,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coinsTXT: {fileID: 78667021172765460}
-  playerData: {fileID: 1493869190355990092, guid: fbe9b19b6ebd70f4183d1a6885db563c, type: 3}
   timer: {fileID: 1780977742771836320, guid: bf13c1f0438d9e54b81f85e96c514b04, type: 3}
 --- !u!1 &3974938088069318112
 GameObject:
@@ -3450,7 +3449,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -784178261
-  m_SortingLayer: 9
+  m_SortingLayer: 10
   m_SortingOrder: 10
   m_Sprite: {fileID: 7391703824576287186, guid: 8a857c3b383cbd64daa3847f10625b63, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

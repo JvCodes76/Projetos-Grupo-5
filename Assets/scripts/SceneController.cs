@@ -10,17 +10,13 @@ public class SceneController : MonoBehaviour
 
     [Header("Configurações")]
     public GameObject playerPrefab;
-    public int[] gameLevelIndexes = { 2, 3, 4};
+    // Índices de Build das fases jogáveis, na ordem (MainMenu=0, SettingsMenu=1, EndGame vem depois da última)
+    public int[] gameLevelIndexes = { 2, 3, 4 };
     public string endGameSceneName = "EndGame";
-
-    [Header("Referências")]
-    [SerializeField] private PlayerData playerData;
 
     private void Awake()
     {
-        SceneController[] controllers = FindObjectsOfType<SceneController>();
-
-        if (controllers.Length > 1)
+        if (instance != null && instance != this)
         {
             Destroy(gameObject);
             return;
@@ -29,8 +25,6 @@ public class SceneController : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
         SceneManager.sceneLoaded += OnSceneLoaded;
-
-        FindPlayerData();
     }
 
     private void Start()
@@ -38,18 +32,8 @@ public class SceneController : MonoBehaviour
         ProcessCurrentScene();
     }
 
-    private void FindPlayerData()
-    {
-        if (playerData == null)
-        {
-            playerData = FindObjectOfType<PlayerData>();
-        }
-    }
-
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        FindPlayerData();
-        DestroyExistingPlayer();
         ProcessCurrentScene();
     }
 
@@ -58,7 +42,7 @@ public class SceneController : MonoBehaviour
         if (instance != this) return;
 
         Scene scene = SceneManager.GetActiveScene();
-        
+
         // Se for a cena final ou menu, não faz spawn do player.
         if (scene.name == endGameSceneName || scene.buildIndex == 0)
         {
@@ -85,16 +69,17 @@ public class SceneController : MonoBehaviour
 
     private void SpawnPlayerIfNotExists()
     {
-        GameObject[] physicalPlayers = GameObject.FindGameObjectsWithTag("Player");
-        bool hasPhysicalPlayer = physicalPlayers.Any(player => player.GetComponent<PlayerData>() == null);
+        // O jogador é identificado só pela tag "Player" (o PlayerData agora é um singleton separado)
+        GameObject existingPlayer = GameObject.FindGameObjectWithTag("Player");
 
-        if (!hasPhysicalPlayer)
+        if (existingPlayer == null)
         {
             SpawnPlayer();
         }
         else
         {
-            MovePlayerToSpawnPoint(physicalPlayers[0]);
+            MovePlayerToSpawnPoint(existingPlayer);
+            OnPlayerSpawned?.Invoke(existingPlayer);
         }
     }
 
@@ -133,20 +118,20 @@ public class SceneController : MonoBehaviour
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         foreach (GameObject player in players)
         {
-            if (player.GetComponent<PlayerData>() == null)
-            {
-                Destroy(player);
-            }
+            Destroy(player);
         }
     }
 
     public void NextLevel()
     {
-        // CHAVE: Salva o tempo da fase atual ANTES de mudar de cena
-        Timer currentTimer = FindObjectOfType<Timer>();
+        PlayerData playerData = PlayerData.Instance;
+
+        // CHAVE: Soma o tempo da fase atual ao total ANTES de mudar de cena
+        Timer currentTimer = FindFirstObjectByType<Timer>();
         if (currentTimer != null && playerData != null)
         {
-            playerData.AddPlayTime(currentTimer.CurrentTime);
+            currentTimer.StopTimer();
+            playerData.totalTimePlayed += currentTimer.CurrentTime;
             Debug.Log($"SceneController: Tempo da fase ({currentTimer.CurrentTime}s) adicionado ao total. Total acumulado: {playerData.totalTimePlayed}s.");
         }
 
@@ -156,17 +141,24 @@ public class SceneController : MonoBehaviour
         if (currentIndexInArray != -1 && currentIndexInArray + 1 < gameLevelIndexes.Length)
         {
             int nextLevelIndex = gameLevelIndexes[currentIndexInArray + 1];
-            SceneManager.LoadScene(nextLevelIndex);
 
+            // Salva a PRÓXIMA fase como ponto de "Continuar" (junto com o tempo acumulado)
             if (playerData != null)
             {
                 playerData.currentLevel = nextLevelIndex;
                 playerData.SaveData();
             }
+
+            SceneManager.LoadScene(nextLevelIndex);
         }
         else
         {
-            // FIM DE JOGO: Carrega a tela de estatísticas
+            // FIM DE JOGO: salva o tempo total e carrega a tela de estatísticas
+            if (playerData != null)
+            {
+                playerData.SaveData();
+            }
+
             Debug.Log("SceneController: Todas as fases concluídas! Carregando EndGame.");
             SceneManager.LoadScene(endGameSceneName); // <<<< Vai para EndGame
         }

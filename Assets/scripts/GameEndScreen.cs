@@ -46,7 +46,7 @@ public class GameEndScreen : MonoBehaviour
         }
         
         // Limpeza de AudioListener extras na cena atual
-        AudioListener[] listeners = FindObjectsOfType<AudioListener>();
+        AudioListener[] listeners = FindObjectsByType<AudioListener>(FindObjectsSortMode.None);
         if (listeners.Length > 1)
         {
             for (int i = 1; i < listeners.Length; i++)
@@ -58,7 +58,8 @@ public class GameEndScreen : MonoBehaviour
 
     private void ShowStats()
     {
-        PlayerData data = FindObjectOfType<PlayerData>();
+        // PlayerData é o singleton persistente que veio das fases (tem as moedas e o tempo acumulado)
+        PlayerData data = PlayerData.Instance;
 
         if (data != null)
         {
@@ -93,10 +94,10 @@ public class GameEndScreen : MonoBehaviour
 
     public void BackToMenu()
     {
-        // Limpa todos os objetos persistentes
-        PlayerData data = FindObjectOfType<PlayerData>();
-        if (data != null) Destroy(data.gameObject);
+        // O PlayerData persistente NÃO é destruído (o MainMenu reaproveita o mesmo singleton).
+        if (PlayerData.Instance != null) PlayerData.Instance.SaveData();
 
+        // O SceneController é recriado pelo GameController do MainMenu
         if (SceneController.instance != null) Destroy(SceneController.instance.gameObject);
 
         SceneManager.LoadScene(mainMenuScene);

@@ -13,6 +13,8 @@ public class ParallaxBackground : MonoBehaviour
         {
             if (_parallaxCameraInstance == null)
             {
+                if (Camera.main == null)
+                    return null;
                 _parallaxCameraInstance = Camera.main.GetComponent<ParallaxCamera>();
                 if (_parallaxCameraInstance == null)
                 {
@@ -29,9 +31,10 @@ public class ParallaxBackground : MonoBehaviour
     void Start()
     {
         // Usa a instância singleton da câmera
-        if (_parallaxCameraInstance != null)
+        var cam = ParallaxCameraInstance;
+        if (cam != null)
         {
-            _parallaxCameraInstance.onCameraTranslate += Move;
+            cam.onCameraTranslate += Move;
         }
         SetLayers();
     }

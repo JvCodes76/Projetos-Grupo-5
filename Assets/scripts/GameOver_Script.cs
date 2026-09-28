@@ -3,17 +3,6 @@ using UnityEngine.SceneManagement;
 
 public class GameOver_Script : MonoBehaviour
 {
-    [Header("Referências")]
-    [SerializeField] private PlayerData playerData; 
-
-    private void Start()
-    {
-        if (playerData == null)
-        {
-            playerData = FindObjectOfType<PlayerData>();
-        }
-    }
-
     public void RestartButton()
     {
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
@@ -23,17 +12,10 @@ public class GameOver_Script : MonoBehaviour
 
     public void ExitButton()
     {
-        if (playerData != null)
+        // O PlayerData é um singleton persistente: NÃO destruir, só salvar antes de voltar ao menu
+        if (PlayerData.Instance != null)
         {
-            Destroy(playerData.gameObject);
-        }
-        else
-        {
-            PlayerData existingPlayerData = FindObjectOfType<PlayerData>();
-            if (existingPlayerData != null)
-            {
-                Destroy(existingPlayerData.gameObject);
-            }
+            PlayerData.Instance.SaveData();
         }
 
         SceneManager.LoadScene("MainMenu");

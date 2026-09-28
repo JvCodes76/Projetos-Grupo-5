@@ -33,13 +33,18 @@ public class MainMenu : MonoBehaviour
     // --- BOTÃO: NOVO JOGO ---
     public void PlayGame()
     {
-        // 1. Reseta os dados (apaga a chave "SavedLevel" do disco)
-        PlayerPrefs.DeleteKey(SavedLevelKey);
-        PlayerPrefs.Save();
-        
-        // *OPCIONAL: Lógica para Resetar outros dados, se necessário.
-        PlayerData data = FindObjectOfType<PlayerData>();
-        if(data != null) data.ResetData(); // Reseta tempo, moedas, etc., e chama PlayerPrefs.DeleteAll().
+        // 1. Reseta o save do jogo (fase, tempo, moedas, loja...). Apaga só as chaves do jogo:
+        //    volume, VSync e outras configurações são preservados.
+        PlayerData data = PlayerData.Instance;
+        if (data != null)
+        {
+            data.ResetData();
+        }
+        else
+        {
+            PlayerPrefs.DeleteKey(SavedLevelKey);
+            PlayerPrefs.Save();
+        }
 
         // 2. Para a música do menu
         // if (MenuMusicController.Instance != null) { MenuMusicController.Instance.StopMusicAndDestroy(); }
@@ -80,16 +85,19 @@ public class MainMenu : MonoBehaviour
         }
     }
     
-    // Pressione F12 para apagar o save (função de debug)
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+    // Pressione F12 para apagar o save (função de debug — só no Editor/Development Build)
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.F12))
         {
+            if (PlayerData.Instance != null) PlayerData.Instance.ResetData(); // Zera também os dados em memória
             PlayerPrefs.DeleteAll();
             Debug.Log("TODOS OS DADOS DE SAVE FORAM APAGADOS! Recarregando Menu.");
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name); 
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
+#endif
 
     public void OpenSettings()
     {

@@ -78,7 +78,13 @@ public class characterMovement : MonoBehaviour
     public Rigidbody2D rb;
     private float originalJumpSpeed;
     private Collider2D playerCollider;
-    private bool canMove;
+    private bool canMove = true;
+    private bool isDead = false;
+
+    // Valores base (Inspector) usados para recalcular os stats sem acumular
+    private float baseJumpHeight;
+    private float baseMaxSpeed;
+    private float baseAcceleration;
 
     private float initialJumpY;
     private bool isGroundJump;
@@ -101,6 +107,11 @@ public class characterMovement : MonoBehaviour
 
     void Awake()
     {
+        // Guarda os valores base do Inspector antes de qualquer modificador ser aplicado
+        baseJumpHeight = jumpHeight;
+        baseMaxSpeed = maxSpeed;
+        baseAcceleration = acceleration;
+
         playerInput = GetComponent<PlayerInput>();
 
         if (playerInput == null)
@@ -195,10 +206,10 @@ public class characterMovement : MonoBehaviour
             agility = playerData.agility;
             strength = playerData.strength;
 
-            // Aplica modificadores baseados nos stats
-            jumpHeight += 0.1f * strength;
-            maxSpeed += 0.5f * agility;
-            acceleration += agility;
+            // Aplica modificadores baseados nos stats a partir dos valores base (sem acumular)
+            jumpHeight = baseJumpHeight + 0.1f * strength;
+            maxSpeed = baseMaxSpeed + 0.5f * agility;
+            acceleration = baseAcceleration + agility;
         }
         else
         {
@@ -208,7 +219,21 @@ public class characterMovement : MonoBehaviour
             maxAirJumps = 1;
             agility = 1f;
             strength = 1f;
+            jumpHeight = baseJumpHeight;
+            maxSpeed = baseMaxSpeed;
+            acceleration = baseAcceleration;
         }
+    }
+
+    /// <summary>
+    /// Recarrega os stats do PlayerData e recalcula o pulo, sem acumular sobre chamadas anteriores.
+    /// Chamado, por exemplo, pelo ShopManager após uma compra.
+    /// </summary>
+    public void RefreshStats()
+    {
+        FindPlayerData();
+        LoadPlayerStats();
+        CalculateJumpVariables();
     }
 
     /// <summary>
@@ -224,7 +249,7 @@ public class characterMovement : MonoBehaviour
         // Se não encontrou, busca na cena
         if (playerData == null)
         {
-            playerData = FindObjectOfType<PlayerData>();
+            playerData = FindFirstObjectByType<PlayerData>();
         }
 
         if (playerData == null)
@@ -235,6 +260,16 @@ public class characterMovement : MonoBehaviour
 
     void Update()
     {
+        // Enquanto morto ou com o movimento desabilitado, ignora input e não avança a lógica de pulo
+        if (isDead || !canMove)
+        {
+            horizontalInput = 0f;
+            desiredJump = false;
+            pressingJump = false;
+            currentlyJumping = false;
+            return;
+        }
+
         horizontalInput = moveAction.ReadValue<float>();
 
         if (jumpAction.WasPressedThisFrame())
@@ -251,7 +286,8 @@ public class characterMovement : MonoBehaviour
             currentlyJumping = false;
         }
 
-        onGround = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+        // Só considera "no chão" quando não estiver subindo (evita reconceder coyote/pulo do chão logo após pular)
+        onGround = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer) && rb.linearVelocity.y <= 0.1f;
 
         CheckWalls();
 
@@ -310,6 +346,13 @@ public class characterMovement : MonoBehaviour
     void FixedUpdate()
     {
         if (rb == null) return;
+
+        // Enquanto morto ou com o movimento desabilitado, mantém o corpo parado
+        if (isDead || !canMove)
+        {
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
 
         // Henrique: Se estiver usando o gancho, trava movimento e gravidade
         if (grapplingHook != null && grapplingHook.IsGrappling)
@@ -441,6 +484,9 @@ public class characterMovement : MonoBehaviour
             isGroundJump = false;
         }
 
+        // Consome o coyote time para evitar um pulo extra do chão logo após este pulo
+        coyoteTimeCounter = 0f;
+
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, thisJumpSpeed);
         currentlyJumping = true;
 
@@ -520,6 +566,10 @@ public class characterMovement : MonoBehaviour
     }
     public void Die()
     {
+        // Die() pode ser chamado mais de uma vez (timer + balas): garante idempotência
+        if (isDead) return;
+        isDead = true;
+
         Debug.Log("Player morreu!");
 
         if (gameOverScreen != null)
@@ -530,7 +580,17 @@ public class characterMovement : MonoBehaviour
         {
             Debug.LogWarning("GameOver Screen não foi atribuída no inspetor!");
         }
-        rb.linearVelocity = Vector2.zero;
+
+        // Henrique: Cancela o gancho, se estiver ativo, e libera o controle do movimento
+        if (grapplingHook != null)
+        {
+            grapplingHook.CancelGrapple();
+        }
+
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+        }
     }
 
 

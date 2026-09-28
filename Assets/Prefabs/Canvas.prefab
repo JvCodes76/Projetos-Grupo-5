@@ -360,7 +360,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a11d117e1e18b514fba7de96a92c69a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerData: {fileID: 1493869190355990092, guid: fbe9b19b6ebd70f4183d1a6885db563c, type: 3}
 --- !u!1 &2317652015283942488
 GameObject:
   m_ObjectHideFlags: 0
@@ -1024,5 +1023,3 @@ MonoBehaviour:
   autoStart: 1
   isCountingUp: 1
   startTime: 3
-  playerData: {fileID: 1493869190355990092, guid: fbe9b19b6ebd70f4183d1a6885db563c, type: 3}
-  characterMovement: {fileID: 7543550239980241752, guid: fbe9b19b6ebd70f4183d1a6885db563c, type: 3}

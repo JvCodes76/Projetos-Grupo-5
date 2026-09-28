@@ -17,6 +17,9 @@ public class GrapplingHook : MonoBehaviour
     [SerializeField] private LayerMask whatIsGrappleable;
     [SerializeField] private LayerMask whatIsObstacle;
     [SerializeField] private float grappleCooldown = 0.5f;
+    [SerializeField] private float maxGrappleDuration = 3f;
+    [SerializeField] private float stuckCheckInterval = 0.3f;
+    [SerializeField] private float stuckDistanceThreshold = 0.05f;
 
     [Header("Visuais (Pixel Art)")]
     [SerializeField] private Transform firePoint;
@@ -34,6 +37,12 @@ public class GrapplingHook : MonoBehaviour
     private Vector2 launchDirectionVector;
     private float cooldownTimer;
 
+    // Henrique: Controle de timeout e detecção de "gancho travado"
+    private float grappleElapsedTime;
+    private float stuckCheckTimer;
+    private float lastDistanceToTarget;
+    private bool missingReferenceWarningLogged;
+
     public bool IsGrappling => currentState == State.Grappling;
 
     void Start()
@@ -44,7 +53,7 @@ public class GrapplingHook : MonoBehaviour
         // Busca automaticamente o PlayerData se não foi atribuído
         if (playerData == null)
         {
-            playerData = FindObjectOfType<PlayerData>();
+            playerData = FindFirstObjectByType<PlayerData>();
             if (playerData == null)
             {
                 Debug.LogWarning("PlayerData não encontrado. O gancho estará desativado.");
@@ -114,6 +123,29 @@ public class GrapplingHook : MonoBehaviour
             }
 
             UpdateVisuals();
+
+            // Henrique: Timeout de segurança para não travar o jogador presa no gancho para sempre
+            grappleElapsedTime += Time.deltaTime;
+            if (grappleElapsedTime >= maxGrappleDuration)
+            {
+                CancelGrapple();
+                return;
+            }
+
+            // Henrique: Se a distância até o alvo não estiver diminuindo, considera o gancho "travado"
+            float currentDistance = rb != null ? Vector2.Distance(rb.position, hookTipTransform.position) : Vector2.Distance(transform.position, hookTipTransform.position);
+            stuckCheckTimer += Time.deltaTime;
+            if (stuckCheckTimer >= stuckCheckInterval)
+            {
+                if (Mathf.Abs(lastDistanceToTarget - currentDistance) < stuckDistanceThreshold)
+                {
+                    CancelGrapple();
+                    return;
+                }
+
+                lastDistanceToTarget = currentDistance;
+                stuckCheckTimer = 0f;
+            }
         }
     }
 
@@ -141,6 +173,17 @@ public class GrapplingHook : MonoBehaviour
 
     private void FindTargetAndShoot()
     {
+        // Henrique: Sem esses pontos de referência não há como disparar o gancho com segurança
+        if (hookTipTransform == null || firePoint == null)
+        {
+            if (!missingReferenceWarningLogged)
+            {
+                Debug.LogWarning("GrapplingHook: hookTipTransform ou firePoint não atribuídos no inspetor. Gancho desativado.");
+                missingReferenceWarningLogged = true;
+            }
+            return;
+        }
+
         Collider2D[] targets = Physics2D.OverlapCircleAll(transform.position, grappleRadius, whatIsGrappleable);
         if (targets.Length == 0) return;
 
@@ -170,6 +213,11 @@ public class GrapplingHook : MonoBehaviour
         {
             grappleTargetPosition = bestPoint;
             currentState = State.Shooting;
+
+            // Henrique: Reseta os contadores de timeout/stuck para esta nova tentativa de gancho
+            grappleElapsedTime = 0f;
+            stuckCheckTimer = 0f;
+            lastDistanceToTarget = float.MaxValue;
 
             // ATIVAÇÃO DOS VISUAIS
             if (ropeRenderer != null) ropeRenderer.enabled = true;
@@ -202,6 +250,18 @@ public class GrapplingHook : MonoBehaviour
         ResetVisuals();
         currentState = State.Ready;
         cooldownTimer = 0f;
+    }
+
+    /// <summary>
+    /// Henrique: Cancela o gancho a força (ex: quando o jogador morre) e libera o movimento normal.
+    /// </summary>
+    public void CancelGrapple()
+    {
+        if (currentState != State.Shooting && currentState != State.Grappling) return;
+
+        ResetVisuals();
+        currentState = State.Cooldown;
+        cooldownTimer = grappleCooldown;
     }
 
     private void UpdateVisuals()

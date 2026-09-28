@@ -1,15 +1,15 @@
-using UnityEngine;
+Ôªøusing UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
     [Header("Target")]
     [SerializeField] private Transform target;
 
-    [Header("Offset & SuavizaÁ„o")]
+    [Header("Offset & Suaviza√ß√£o")]
     [SerializeField] private Vector3 offset = new Vector3(0f, 1.5f, -10f);
     [SerializeField] private float smoothTime = 0.2f;
 
-    [Header("ConfiguraÁ„o Inicial")]
+    [Header("Configura√ß√£o Inicial")]
     [SerializeField] private bool snapToTargetOnStart = true;
     [SerializeField] private float maxTeleportDistance = 20f;
 
@@ -20,11 +20,13 @@ public class CameraFollow : MonoBehaviour
 
     private Vector3 _velocity = Vector3.zero;
     private bool _shouldSnap = false;
+    private float _findTargetTimer = 0f;
+    private bool _hasLoggedWarning = false;
 
     private void Awake()
     {
-        // Garante que apenas uma c‚mera exista
-        CameraFollow[] existingCameras = FindObjectsOfType<CameraFollow>();
+        // Garante que apenas uma c√¢mera exista
+        CameraFollow[] existingCameras = FindObjectsByType<CameraFollow>(FindObjectsSortMode.None);
         if (existingCameras.Length > 1)
         {
             Destroy(gameObject);
@@ -47,7 +49,7 @@ public class CameraFollow : MonoBehaviour
 
     private void Start()
     {
-        // Garante que esta È a c‚mera principal
+        // Garante que esta √© a c√¢mera principal
         Camera.main.gameObject.tag = "MainCamera";
 
         if (target == null)
@@ -66,7 +68,7 @@ public class CameraFollow : MonoBehaviour
     private void OnPlayerSpawned(GameObject playerObject)
     {
         target = playerObject.transform;
-        Debug.Log("C‚mera recebeu referÍncia do jogador via evento");
+        Debug.Log("C√¢mera recebeu refer√™ncia do jogador via evento");
         FindLevelBoundaries();
         _shouldSnap = true;
     }
@@ -75,11 +77,25 @@ public class CameraFollow : MonoBehaviour
     {
         if (target == null)
         {
-            FindTarget();
+            _findTargetTimer += Time.deltaTime;
+            if (_findTargetTimer >= 0.5f)
+            {
+                FindTarget();
+                _findTargetTimer = 0f;
+            }
+
             if (target == null)
             {
-                Debug.LogWarning("Nenhum target encontrado para a c‚mera");
+                if (!_hasLoggedWarning)
+                {
+                    Debug.LogWarning("Nenhum target encontrado para a c√¢mera");
+                    _hasLoggedWarning = true;
+                }
                 return;
+            }
+            else
+            {
+                _hasLoggedWarning = false;
             }
         }
 
@@ -111,7 +127,7 @@ public class CameraFollow : MonoBehaviour
 
     private void FindLevelBoundaries()
     {
-        CameraBoundary boundary = FindObjectOfType<CameraBoundary>();
+        CameraBoundary boundary = FindFirstObjectByType<CameraBoundary>();
 
         if (boundary != null)
         {
@@ -120,7 +136,7 @@ public class CameraFollow : MonoBehaviour
             currentMinY = boundary.minY;
             currentMaxY = boundary.maxY;
 
-            Debug.Log($"Limites da c‚mera atualizados para o nÌvel atual");
+            Debug.Log($"Limites da c√¢mera atualizados para o n√≠vel atual");
         }
     }
 
@@ -130,7 +146,7 @@ public class CameraFollow : MonoBehaviour
         if (playerObj != null)
         {
             target = playerObj.transform;
-            Debug.Log("C‚mera encontrou jogador via FindWithTag");
+            Debug.Log("C√¢mera encontrou jogador via FindWithTag");
         }
     }
 

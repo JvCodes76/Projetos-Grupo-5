@@ -14,18 +14,19 @@ public class EnemyBullet : MonoBehaviour
     private characterMovement characterMovement;
     private GameObject gameOverScreen;
     private TextMeshProUGUI timerText;
+    private bool hasHit = false;
 
     private void Awake()
     {
         // Encontrar as referências necessárias
-        playerData = FindObjectOfType<PlayerData>();
-        characterMovement = FindObjectOfType<characterMovement>();
+        playerData = FindFirstObjectByType<PlayerData>();
+        characterMovement = FindFirstObjectByType<characterMovement>();
 
         // Procurar a tela de game over
         FindGameOverScreen();
 
         // Procurar o texto do timer
-        Timer timer = FindObjectOfType<Timer>();
+        Timer timer = FindFirstObjectByType<Timer>();
         if (timer != null)
         {
             timerText = timer.GetComponentInChildren<TextMeshProUGUI>();
@@ -41,21 +42,15 @@ public class EnemyBullet : MonoBehaviour
         // Se não encontrou, tenta procurar em todos os objetos (incluindo os desativados)
         if (gameOverScreen == null)
         {
-            // Encontra todos os objetos do tipo Canvas (incluindo os desativados)
-            Canvas[] allCanvases = Resources.FindObjectsOfTypeAll<Canvas>();
-            foreach (Canvas canvas in allCanvases)
+            // Encontra todos os Transform (incluindo os desativados)
+            Transform[] allTransforms = FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            foreach (Transform transform in allTransforms)
             {
-                // Procura por um objeto com a tag "GameOverScreen" dentro do Canvas
-                Transform[] children = canvas.GetComponentsInChildren<Transform>(true);
-                foreach (Transform child in children)
+                if (transform.CompareTag("GameOver") && transform.gameObject.scene.IsValid())
                 {
-                    if (child.CompareTag("GameOver"))
-                    {
-                        gameOverScreen = child.gameObject;
-                        break;
-                    }
+                    gameOverScreen = transform.gameObject;
+                    break;
                 }
-                if (gameOverScreen != null) break;
             }
         }
 
@@ -74,17 +69,25 @@ public class EnemyBullet : MonoBehaviour
         direction = dir.normalized;
     }
 
+    private void Start()
+    {
+        Destroy(gameObject, 5f);
+    }
+
     private void Update()
     {
         transform.Translate(direction * speed * Time.deltaTime);
-        Destroy(gameObject, 5f);
     }
 
     private void OnTriggerEnter2D(Collider2D col)
     {
         if (col.CompareTag("Player") || col.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            TriggerDeathSequence();
+            if (!hasHit)
+            {
+                hasHit = true;
+                TriggerDeathSequence();
+            }
             Destroy(gameObject);
             return;
         }

@@ -16,10 +16,9 @@ public class Timer : MonoBehaviour
     [SerializeField] private bool isCountingUp = true;
     [SerializeField] private float startTime = 60f;
 
-    [Header("Referências")]
-    [SerializeField] private PlayerData playerData;
-    [SerializeField] private characterMovement characterMovement;
-    
+    // Referência ao jogador REAL da cena (spawnado pelo SceneController) — resolvida em runtime.
+    // Não use referência do Inspector aqui: nas fases o jogador só existe depois do sceneLoaded.
+    private characterMovement characterMovement;
 
     private float currentTime;
     private bool timerActive = false;
@@ -30,20 +29,40 @@ public class Timer : MonoBehaviour
         {
             timerText = GetComponentInChildren<TextMeshProUGUI>();
         }
+    }
 
-        if (playerData == null)
+    private void OnEnable()
+    {
+        SceneController.OnPlayerSpawned += HandlePlayerSpawned;
+    }
+
+    private void OnDisable()
+    {
+        SceneController.OnPlayerSpawned -= HandlePlayerSpawned;
+    }
+
+    private void HandlePlayerSpawned(GameObject player)
+    {
+        if (player != null)
         {
-            playerData = FindObjectOfType<PlayerData>();
+            characterMovement = player.GetComponent<characterMovement>();
         }
+    }
 
+    // Busca o jogador só quando precisa (ele é spawnado depois do Awake deste script)
+    private characterMovement GetPlayerMovement()
+    {
         if (characterMovement == null)
         {
-            characterMovement = FindObjectOfType<characterMovement>();
+            characterMovement = FindFirstObjectByType<characterMovement>();
         }
+        return characterMovement;
     }
 
     private void Start()
     {
+        // Marca a fase atual como ponto de "Continuar"
+        PlayerData playerData = PlayerData.Instance;
         if (playerData != null)
         {
             playerData.currentLevel = SceneManager.GetActiveScene().buildIndex;
@@ -96,14 +115,20 @@ public class Timer : MonoBehaviour
                     timerText.gameObject.SetActive(false);
                 }
 
-                if (playerData != null)
+                if (PlayerData.Instance != null)
                 {
-                    playerData.SaveData();
+                    PlayerData.Instance.SaveData();
                 }
 
-                if (characterMovement != null)
+                // Mata o jogador REAL da cena (não o prefab)
+                characterMovement player = GetPlayerMovement();
+                if (player != null)
                 {
-                    characterMovement.Die();
+                    player.Die();
+                }
+                else
+                {
+                    Debug.LogWarning("Timer: tempo esgotado, mas o jogador não foi encontrado na cena!");
                 }
                 return;
             }

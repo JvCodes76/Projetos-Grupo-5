@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 
 public class VSyncSettings : MonoBehaviour
@@ -10,20 +10,20 @@ public class VSyncSettings : MonoBehaviour
 
     private void Awake()
     {
-        // Pega o Toggle que está no mesmo GameObject
+        // Pega o Toggle que estÃ¡ no mesmo GameObject
         vsyncToggle = GetComponent<Toggle>();
     }
 
     private void Start()
     {
-        // 1) Ler se o VSync estava ligado ou desligado da última vez
-        //    (por padrão, vamos considerar ligado = 1)
+        // 1) Ler se o VSync estava ligado ou desligado da Ãºltima vez
+        //    (por padrÃ£o, vamos considerar ligado = 1)
         bool vsyncOn = PlayerPrefs.GetInt(VSyncPrefKey, 1) == 1;
 
         // 2) Atualizar o estado visual da checkbox
         vsyncToggle.isOn = vsyncOn;
 
-        // 3) Aplicar esse estado nas configurações reais (Unity)
+        // 3) Aplicar esse estado nas configuraÃ§Ãµes reais (Unity)
         ApplyVSync(vsyncOn);
 
         // 4) Escutar quando o jogador clicar na checkbox
@@ -32,7 +32,7 @@ public class VSyncSettings : MonoBehaviour
 
     private void OnDestroy()
     {
-        // Boa prática: parar de escutar quando o objeto for destruído
+        // Boa prÃ¡tica: parar de escutar quando o objeto for destruÃ­do
         if (vsyncToggle != null)
         {
             vsyncToggle.onValueChanged.RemoveListener(HandleToggleChanged);
@@ -57,8 +57,8 @@ public class VSyncSettings : MonoBehaviour
             // Ativa VSync: 1 = sincronizar com o refresh do monitor
             QualitySettings.vSyncCount = 1;
 
-            // Descobre a taxa de atualização atual do monitor
-            int refreshRate = Screen.currentResolution.refreshRate;
+            // Descobre a taxa de atualizaÃ§Ã£o atual do monitor
+            int refreshRate = Mathf.RoundToInt((float)Screen.currentResolution.refreshRateRatio.value);
 
             // Define o limite de FPS (FrameLimit) com base nessa taxa
             Application.targetFrameRate = refreshRate;
@@ -71,9 +71,9 @@ public class VSyncSettings : MonoBehaviour
             // Desliga VSync
             QualitySettings.vSyncCount = 0;
 
-            // Aqui você escolhe o comportamento quando o VSync está desligado:
+            // Aqui vocÃª escolhe o comportamento quando o VSync estÃ¡ desligado:
             // -1 = sem limite (Unity decide)
-            // ou você pode colocar um valor fixo, tipo 120, 144 etc.
+            // ou vocÃª pode colocar um valor fixo, tipo 120, 144 etc.
             Application.targetFrameRate = -1;
 
             PlayerPrefs.SetInt(FrameLimitPrefKey, -1);

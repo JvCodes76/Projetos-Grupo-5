@@ -1,4 +1,4 @@
-using UnityEngine;
+Ôªøusing UnityEngine;
 using TMPro;
 
 public class ButtonInfo : MonoBehaviour
@@ -10,17 +10,17 @@ public class ButtonInfo : MonoBehaviour
 
     void Start()
     {
-        // Se n„o foi atribuÌdo no Inspector, tenta encontrar
+        // Se n√£o foi atribu√≠do no Inspector, tenta encontrar
         if (shopManager == null)
         {
-            shopManager = FindObjectOfType<ShopManager>();
+            shopManager = FindFirstObjectByType<ShopManager>();
             if (shopManager != null)
             {
                 Debug.Log("ShopManager encontrado pelo ButtonInfo");
             }
             else
             {
-                Debug.LogError("ShopManager n„o encontrado pelo ButtonInfo!");
+                Debug.LogError("ShopManager n√£o encontrado pelo ButtonInfo!");
             }
         }
     }
@@ -32,7 +32,7 @@ public class ButtonInfo : MonoBehaviour
         {
             if (PriceTxt != null)
             {
-                PriceTxt.text = "PreÁo: $" + shopManager.shopItems[1, itemID].ToString();
+                PriceTxt.text = "Pre√ßo: $" + shopManager.shopItems[1, itemID].ToString();
             }
 
             if (QuantityTxt != null)

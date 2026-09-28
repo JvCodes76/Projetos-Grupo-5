@@ -1597,9 +1597,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 1227645096870838732, guid: fbe9b19b6ebd70f4183d1a6885db563c, type: 3}
-  gameLevelIndexes: 020000000300000004000000050000000600000007000000
+  gameLevelIndexes: 020000000300000004000000
   endGameSceneName: EndGame
-  playerData: {fileID: 0}
 --- !u!4 &1614789976
 Transform:
   m_ObjectHideFlags: 0
@@ -2022,6 +2021,7 @@ MonoBehaviour:
   canGrapplingHook: 1
   playerName: Cyborg
   inventory: []
+  shopPurchases: 0000000000000000000000000000000000000000
 --- !u!4 &1904110421
 Transform:
   m_ObjectHideFlags: 0
