@@ -1,6 +1,6 @@
 # Plano de refactor — Roguelike + arquitetura event-driven
 
-Projeto: `Projetos Grupo 5` (Unity 6000.1.7f1) · Plano escrito em 28/09/2026 · Base: branch atual com os bugfixes do [RELATORIO_BUGS.md](RELATORIO_BUGS.md) (ainda não commitados).
+Projeto: `Projetos Grupo 5` (Unity 6000.1.7f1) · Plano escrito em 28/09/2026 · Base: branch `refactor/roguelike`, criada a partir de `main` @ `8df28c9` (bugfixes do [RELATORIO_BUGS.md](RELATORIO_BUGS.md) já commitados).
 
 ---
 
@@ -70,6 +70,7 @@ Assets/_Roguelike/
     Stats/                     PlayerStats (base + modificadores)
     Levels/                    LevelDefinition, RunConfig
   Tests/EditMode/            ← asmdef Roguelike.Tests.EditMode
+  Editor/                    ← asmdef Roguelike.Editor (só Editor): TestRunnerBridge e ferramentas
   Data/                      ← assets .asset (Upgrades/, Rarities/, Levels/, RunConfig)
   Prefabs/                   ← RunSystems (DDOL), RunUI
 Assets/scripts/              ← MonoBehaviours legados e adaptadores novos continuam no Assembly-CSharp
@@ -191,7 +192,7 @@ Na ferramenta de delegação só dá para escolher o modelo; **o esforço vem da
 | `mecanico` | Haiku 4.5 · — | Tarefas mecânicas **com verificação automática** (teste, compilação ou script): criar assets a partir de tabela, apagar código morto após checar referências, docs. |
 | *Orquestrador* (sessão principal) | Opus 5.5 · **medium** | Lê o plano, dispara os agentes, verifica compilação e testes, atualiza o progresso. |
 
-Exemplo de definição (validar na tarefa 0.3 que a versão instalada aceita o campo `effort`):
+Exemplo de definição (o campo `effort` foi validado na tarefa 0.3; as definições reais usam IDs completos, como `claude-opus-5-5`, para fixar a versão do modelo):
 
 ```markdown
 ---
@@ -208,7 +209,8 @@ Você trabalha num projeto Unity 6 com Event Bus (ver PLANO_REFACTOR_ROGUELIKE.m
 - **Trava do Editor:** só **um** agente por vez usa o Unity MCP para cenas, prefabs e assets (existe um único Editor aberto). Agentes que só editam `.cs` podem rodar em paralelo.
 - **Sem worktrees:** o Editor está preso à pasta principal, então um worktree não compila nem testa.
 - **Todo prompt de delegação traz:** contrato/interfaces, arquivos que o agente possui, arquivos proibidos, se usa o Editor, definição de pronto, como verificar, e o formato de relatório (arquivos alterados + saída da verificação + pendências). Isso evita relatórios vagos como o do Haiku ontem.
-- **Nenhum agente faz commit.** O orquestrador propõe os commits ao fim da etapa e você aprova.
+- **Commits são feitos só por você (João), nunca por um agente.** Isso vale para o orquestrador e para os subagentes: ninguém roda `git commit`, `git push` ou comandos que reescrevam histórico. Ao fim da etapa, o orquestrador entrega o título e a descrição do commit, e você faz o commit.
+- **Não é preciso fatiar em commits pequenos.** Um commit por etapa (ou por ponto de corte ✂️) é suficiente, com uma descrição que liste o que mudou.
 
 ---
 
@@ -224,12 +226,19 @@ Os tokens estimados são somente dos subagentes, com base na calibração de ont
 ### Etapa 0 — Preparação e infraestrutura (~150k)
 | ✓ | # | Tarefa | Agente | Paralelo | Editor | Pronto quando |
 |---|---|---|---|---|---|---|
-| ☐ | 0.1 | Commitar os bugfixes atuais numa branch `refactor/roguelike` (separar o commit do pacote AI Assistant). Formato `[Tipo] - Título`. | Orquestrador | — | não | `git log` limpo, working tree limpa |
-| ☐ | 0.2 | `QuartaFase.unity` tem 34 marcadores de conflito: checar se o GUID é referenciado; se não for, remover; se for, restaurar do git. | `mecanico` | sim | não | Nenhum `<<<<<<<` no repo |
-| ☐ | 0.3 | Criar as 6 definições de agente em `.claude/agents/` e confirmar que aparecem com o modelo e o esforço certos. | `mecanico` | sim | não | Agentes listados |
-| ☐ | 0.4 | asmdefs `Roguelike.Core` + `Roguelike.Tests.EditMode`; utilitário `TestRunnerBridge` (Editor) que roda os testes EditMode via `TestRunnerApi` e grava `Temp/TestResults.json`; um teste simples passando via MCP. | `dev` | sim | sim | Resultado lido via MCP |
-| ☐ | 0.5 | Configurar o Smart Merge do Unity (UnityYAMLMerge) para `.unity`/`.prefab`, para evitar outro `QuartaFase` no trabalho em grupo. | `mecanico` | sim | não | `.gitattributes` + instrução no README |
+| ☑ | 0.1 | Commitar os bugfixes atuais numa branch `refactor/roguelike` (separar o commit do pacote AI Assistant). Formato `[Tipo] - Título`. | Orquestrador | — | não | `git log` limpo, working tree limpa |
+| ☑ | 0.2 | `QuartaFase.unity` tem 34 marcadores de conflito: checar se o GUID é referenciado; se não for, remover; se for, restaurar do git. | `mecanico` | sim | não | Nenhum `<<<<<<<` no repo |
+| ◐ | 0.3 | Criar as 6 definições de agente em `.claude/agents/` e confirmar que aparecem com o modelo e o esforço certos. | `mecanico` | sim | não | Agentes listados |
+| ☑ | 0.4 | asmdefs `Roguelike.Core` + `Roguelike.Tests.EditMode`; utilitário `TestRunnerBridge` (Editor) que roda os testes EditMode via `TestRunnerApi` e grava `Temp/TestResults.json`; um teste simples passando via MCP. | `dev` | sim | sim | Resultado lido via MCP |
+| ☑ | 0.5 | Configurar o Smart Merge do Unity (UnityYAMLMerge) para `.unity`/`.prefab`, para evitar outro `QuartaFase` no trabalho em grupo. | `mecanico` | sim | não | `.gitattributes` + instrução no README |
 | ☐ | 0.6 | Registrar as decisões D1–D7 (seção 2). | **Humanos (time)** | — | — | Seção 2 atualizada |
+
+**Notas da execução (28/09/2026):**
+- **0.1:** os bugfixes já tinham sido commitados e enviados em `main` (`8df28c9`), junto com o pacote AI Assistant e fora do formato `[Tipo] - Título`. Separar o pacote exigiria reescrever o histórico já publicado, por isso ficou como está. A branch `refactor/roguelike` foi criada a partir de `8df28c9`.
+- **0.2:** o GUID `9a0a9620…` tinha zero referências, a cena não estava no build nem era carregada pelo nome. Foi substituída por `QuartaFase 1` (commit `2350525`, "git conflict fix") e removida.
+- **0.3 (◐):** o campo `effort` foi validado na documentação. Como `.claude/agents/` é uma pasta nova, os agentes **só aparecem numa sessão nova**. Confirmar na abertura da Etapa 1 e então marcar ☑.
+- **0.4:** foi feita pelo orquestrador, porque as definições de agente ainda não carregam nesta sessão. Foi preciso um terceiro asmdef, `Roguelike.Editor` (só Editor), para o bridge. O caminho de falha foi provado com um teste que falha de propósito (nome, mensagem e stack trace aparecem no JSON), e esse teste foi apagado depois. Estado final: 1/1 verde.
+- **0.5:** `.gitattributes` cobre `.unity`, `.prefab` e `.asset`. O driver usa `--fallback none`, porque sem ele um conflito real trava o `git merge` tentando abrir uma ferramenta gráfica. Testado num repositório descartável: dois objetos adicionados no fim da mesma cena são combinados sem conflito; o mesmo campo alterado nos dois lados gera conflito (`UU`) com YAML válido. O driver também foi registrado no `.git/config` deste clone.
 
 ### Etapa 1 — Event Bus e contratos (~450k)
 | ✓ | # | Tarefa | Agente | Depende | Editor | Pronto quando |
@@ -292,13 +301,22 @@ Distribuição de uso por modelo (aproximada, por número de tarefas): Opus 5.5 
 1. Abra uma **sessão nova** com Opus 5.5 e peça: *"Execute a Etapa N do PLANO_REFACTOR_ROGUELIKE.md"*.
 2. O orquestrador lê o plano e o checklist, dispara as tarefas na ordem e no paralelismo das tabelas e respeita a trava do Editor.
 3. Depois de cada tarefa, o orquestrador verifica compilação e testes via MCP antes de marcar ☑.
-4. Ao fim (ou no ponto de corte ✂️), ele atualiza os ☐ deste arquivo e propõe os commits (`[Feat] - ...`, `[Refactor] - ...`); você aprova.
+4. Ao fim (ou no ponto de corte ✂️), ele atualiza os ☐ deste arquivo e entrega o título (`[Tipo] - Título`) e a descrição do commit da etapa. **Você faz o commit**; nenhum agente commita (ver §4.4).
+
+### 6.1 Receita de verificação no Editor (Unity MCP)
+O `unity-mcp` deste projeto é o relay oficial do Unity AI Assistant. As tools úteis são `Unity_RunCommand` (compila e executa C# de Editor; a classe precisa se chamar `CommandScript` e implementar `IRunCommand`) e `Unity_GetConsoleLogs`. **Não existem** `run_tests`, `execute_menu_item` nem `manage_scene`, que o skill `unity-mcp-skill` descreve para outro servidor. O Editor precisa estar aberto.
+
+1. **Importar o que mudou:** depois de criar ou editar `.cs`/`.asmdef`, rode `Unity_RunCommand` com `AssetDatabase.Refresh()`. Fora de foco, o Editor não faz o refresh sozinho.
+2. **Esperar a recompilação:** enquanto a Unity recompila, o MCP responde `Unity not detected (no fresh discovery files found)`. Basta repetir a chamada.
+3. **Erros de compilação:** `Unity_GetConsoleLogs` com `logTypes: "error"` deve voltar `errorCount: 0`.
+4. **Testes:** `Unity_RunCommand` chamando `Roguelike.EditorTools.TestRunnerBridge.RunEditModeTests()` (ou `Run(caminho, callback)` para receber o relatório no log do comando). Depois, leia `Temp/TestResults.json` e confira `status: "finished"`, um `startedAt` recente e `failed: 0`. A execução é síncrona: testes `[UnityTest]` ficam de fora.
+5. **Cenas/prefabs/assets:** C# de Editor via `Unity_RunCommand` (`EditorSceneManager`, `PrefabUtility`, `SerializedObject`, `AssetDatabase`), nunca edição de YAML como texto.
 
 ## 7. Convenções (alinhadas ao guideline da equipe)
 - Identificadores em inglês; comentários e logs em português, como o código atual.
 - Logs no formato `[Área] - mensagem` (ex.: `[RunManager] - Fase 2 concluída em 18.4s`); logs temporários marcados com `// [DEBUG]`.
 - Valores de balanceamento em ScriptableObject ou `[SerializeField]`, nunca fixos no código.
-- Commits no formato `[Tipo] - Título`.
+- Commits no formato `[Tipo] - Título`, feitos por você; um commit por etapa basta.
 - Cada evento novo entra no catálogo da §3.4 no mesmo PR.
 
 ## 8. Riscos

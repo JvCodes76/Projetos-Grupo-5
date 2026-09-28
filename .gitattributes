@@ -1,2 +1,9 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Smart Merge da Unity (UnityYAMLMerge) para cenas, prefabs e assets serializados.
+# O driver precisa ser configurado uma vez por máquina (ver README, seção "Smart Merge").
+# Sem essa configuração, o git usa o merge de texto padrão.
+*.unity  merge=unityyamlmerge
+*.prefab merge=unityyamlmerge
+*.asset  merge=unityyamlmerge
