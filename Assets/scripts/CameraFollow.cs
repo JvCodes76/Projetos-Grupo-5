@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+using UnityEngine;
+using Roguelike.Events;
 
 public class CameraFollow : MonoBehaviour
 {
@@ -20,8 +21,6 @@ public class CameraFollow : MonoBehaviour
 
     private Vector3 _velocity = Vector3.zero;
     private bool _shouldSnap = false;
-    private float _findTargetTimer = 0f;
-    private bool _hasLoggedWarning = false;
 
     private void Awake()
     {
@@ -38,24 +37,18 @@ public class CameraFollow : MonoBehaviour
 
     private void OnEnable()
     {
-        SceneController.OnPlayerSpawned -= OnPlayerSpawned;
-        SceneController.OnPlayerSpawned += OnPlayerSpawned;
+        EventBus<PlayerSpawned>.Subscribe(HandlePlayerSpawned);
     }
 
     private void OnDisable()
     {
-        SceneController.OnPlayerSpawned -= OnPlayerSpawned;
+        EventBus<PlayerSpawned>.Unsubscribe(HandlePlayerSpawned);
     }
 
     private void Start()
     {
         // Garante que esta é a câmera principal
         Camera.main.gameObject.tag = "MainCamera";
-
-        if (target == null)
-        {
-            FindTarget();
-        }
 
         FindLevelBoundaries();
 
@@ -65,39 +58,17 @@ public class CameraFollow : MonoBehaviour
         }
     }
 
-    private void OnPlayerSpawned(GameObject playerObject)
+    private void HandlePlayerSpawned(PlayerSpawned evt)
     {
-        target = playerObject.transform;
-        Debug.Log("Câmera recebeu referência do jogador via evento");
+        target = evt.Player.transform;
+        Debug.Log("[CameraFollow] - Câmera recebeu referência do jogador via evento");
         FindLevelBoundaries();
         _shouldSnap = true;
     }
 
     private void LateUpdate()
     {
-        if (target == null)
-        {
-            _findTargetTimer += Time.deltaTime;
-            if (_findTargetTimer >= 0.5f)
-            {
-                FindTarget();
-                _findTargetTimer = 0f;
-            }
-
-            if (target == null)
-            {
-                if (!_hasLoggedWarning)
-                {
-                    Debug.LogWarning("Nenhum target encontrado para a câmera");
-                    _hasLoggedWarning = true;
-                }
-                return;
-            }
-            else
-            {
-                _hasLoggedWarning = false;
-            }
-        }
+        if (target == null) return;
 
         if (_shouldSnap)
         {
@@ -137,16 +108,6 @@ public class CameraFollow : MonoBehaviour
             currentMaxY = boundary.maxY;
 
             Debug.Log($"Limites da câmera atualizados para o nível atual");
-        }
-    }
-
-    private void FindTarget()
-    {
-        GameObject playerObj = GameObject.FindWithTag("Player");
-        if (playerObj != null)
-        {
-            target = playerObj.transform;
-            Debug.Log("Câmera encontrou jogador via FindWithTag");
         }
     }
 

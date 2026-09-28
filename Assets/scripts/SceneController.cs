@@ -2,17 +2,20 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using System;
+using Roguelike.Events;
 
 public class SceneController : MonoBehaviour
 {
     public static SceneController instance;
-    public static event Action<GameObject> OnPlayerSpawned;
 
     [Header("Configurações")]
     public GameObject playerPrefab;
     // Índices de Build das fases jogáveis, na ordem (MainMenu=0, SettingsMenu=1, EndGame vem depois da última)
     public int[] gameLevelIndexes = { 2, 3, 4 };
     public string endGameSceneName = "EndGame";
+
+    // Delay antes de carregar a próxima fase após LevelGoalReached (era o delayToLoadNextLevel do EndGoal).
+    [SerializeField] private float nextLevelDelay = 0.5f;
 
     private void Awake()
     {
@@ -27,6 +30,16 @@ public class SceneController : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
+    private void OnEnable()
+    {
+        EventBus<LevelGoalReached>.Subscribe(HandleLevelGoalReached);
+    }
+
+    private void OnDisable()
+    {
+        EventBus<LevelGoalReached>.Unsubscribe(HandleLevelGoalReached);
+    }
+
     private void Start()
     {
         ProcessCurrentScene();
@@ -34,7 +47,16 @@ public class SceneController : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        // Cancela um NextLevel agendado: um Menu/Restart durante o delay não pode pular de fase na cena errada.
+        CancelInvoke(nameof(NextLevel));
         ProcessCurrentScene();
+    }
+
+    private void HandleLevelGoalReached(LevelGoalReached evt)
+    {
+        if (instance != this) return;
+
+        Invoke(nameof(NextLevel), nextLevelDelay);
     }
 
     private void ProcessCurrentScene()
@@ -79,7 +101,7 @@ public class SceneController : MonoBehaviour
         else
         {
             MovePlayerToSpawnPoint(existingPlayer);
-            OnPlayerSpawned?.Invoke(existingPlayer);
+            EventBus<PlayerSpawned>.Raise(new PlayerSpawned(existingPlayer));
         }
     }
 
@@ -98,7 +120,7 @@ public class SceneController : MonoBehaviour
         if (playerPrefab != null)
         {
             GameObject newPlayer = Instantiate(playerPrefab, spawnPosition, spawnRotation);
-            OnPlayerSpawned?.Invoke(newPlayer);
+            EventBus<PlayerSpawned>.Raise(new PlayerSpawned(newPlayer));
         }
     }
 
@@ -125,15 +147,6 @@ public class SceneController : MonoBehaviour
     public void NextLevel()
     {
         PlayerData playerData = PlayerData.Instance;
-
-        // CHAVE: Soma o tempo da fase atual ao total ANTES de mudar de cena
-        Timer currentTimer = FindFirstObjectByType<Timer>();
-        if (currentTimer != null && playerData != null)
-        {
-            currentTimer.StopTimer();
-            playerData.totalTimePlayed += currentTimer.CurrentTime;
-            Debug.Log($"SceneController: Tempo da fase ({currentTimer.CurrentTime}s) adicionado ao total. Total acumulado: {playerData.totalTimePlayed}s.");
-        }
 
         int currentBuildIndex = SceneManager.GetActiveScene().buildIndex;
         int currentIndexInArray = Array.IndexOf(gameLevelIndexes, currentBuildIndex);

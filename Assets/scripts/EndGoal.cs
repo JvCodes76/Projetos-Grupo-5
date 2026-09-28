@@ -1,13 +1,11 @@
 ﻿using UnityEngine;
+using Roguelike.Events;
 
 public class EndGoal : MonoBehaviour
 {
     [Header("Configurações de Áudio")]
     [SerializeField] private AudioClip victorySound;
     [SerializeField] private float soundVolume = 1f;
-
-    [Header("Configurações de Transição")]
-    [SerializeField] private float delayToLoadNextLevel = 0.5f;
 
     private AudioSource audioSource;
     private bool alreadyTriggered = false;
@@ -56,8 +54,8 @@ public class EndGoal : MonoBehaviour
             spriteRenderer.enabled = false;
         }
 
-        // Chama o próximo nível com delay
-        Invoke(nameof(LoadNextLevel), delayToLoadNextLevel);
+        // Avisa o resto do jogo que o objetivo da fase foi alcançado
+        EventBus<LevelGoalReached>.Raise(new LevelGoalReached());
     }
 
     private void PlayVictorySound()
@@ -65,29 +63,6 @@ public class EndGoal : MonoBehaviour
         if (victorySound != null && audioSource != null)
         {
             audioSource.PlayOneShot(victorySound, soundVolume);
-        }
-    }
-
-    private void LoadNextLevel()
-    {
-        if (SceneController.instance != null)
-        {
-            SceneController.instance.NextLevel();
-        }
-        else
-        {
-            Debug.LogError("SceneController instance is null!");
-
-            // Fallback: tenta encontrar a instância (MÉTODO ATUALIZADO)
-            SceneController controller = FindFirstObjectByType<SceneController>();
-            if (controller != null)
-            {
-                controller.NextLevel();
-            }
-            else
-            {
-                Debug.LogError("Nenhum SceneController encontrado na cena!");
-            }
         }
     }
 
@@ -107,7 +82,5 @@ public class EndGoal : MonoBehaviour
         {
             spriteRenderer.enabled = true;
         }
-
-        CancelInvoke(nameof(LoadNextLevel));
     }
 }

@@ -1,6 +1,5 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using TMPro;
+using Roguelike.Run;
 
 public class EnemyBullet : MonoBehaviour
 {
@@ -9,60 +8,7 @@ public class EnemyBullet : MonoBehaviour
 
     [SerializeField] private LayerMask groundLayer;
 
-    // Referências necessárias
-    private PlayerData playerData;
-    private characterMovement characterMovement;
-    private GameObject gameOverScreen;
-    private TextMeshProUGUI timerText;
     private bool hasHit = false;
-
-    private void Awake()
-    {
-        // Encontrar as referências necessárias
-        playerData = FindFirstObjectByType<PlayerData>();
-        characterMovement = FindFirstObjectByType<characterMovement>();
-
-        // Procurar a tela de game over
-        FindGameOverScreen();
-
-        // Procurar o texto do timer
-        Timer timer = FindFirstObjectByType<Timer>();
-        if (timer != null)
-        {
-            timerText = timer.GetComponentInChildren<TextMeshProUGUI>();
-        }
-    }
-
-    // Método para encontrar a tela de game over
-    private void FindGameOverScreen()
-    {
-        // Procura por tag (funciona mesmo se estiver dentro de Canvas e desativado)
-        gameOverScreen = GameObject.FindGameObjectWithTag("GameOver");
-
-        // Se não encontrou, tenta procurar em todos os objetos (incluindo os desativados)
-        if (gameOverScreen == null)
-        {
-            // Encontra todos os Transform (incluindo os desativados)
-            Transform[] allTransforms = FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-            foreach (Transform transform in allTransforms)
-            {
-                if (transform.CompareTag("GameOver") && transform.gameObject.scene.IsValid())
-                {
-                    gameOverScreen = transform.gameObject;
-                    break;
-                }
-            }
-        }
-
-        if (gameOverScreen == null)
-        {
-            Debug.LogError("GameOver Screen não encontrada! Certifique-se de que existe um objeto com a tag 'GameOverScreen' na cena.");
-        }
-        else
-        {
-            Debug.Log("GameOver Screen encontrada: " + gameOverScreen.name);
-        }
-    }
 
     public void SetDirection(Vector2 dir)
     {
@@ -86,7 +32,16 @@ public class EnemyBullet : MonoBehaviour
             if (!hasHit)
             {
                 hasHit = true;
-                TriggerDeathSequence();
+
+                var player = col.GetComponentInParent<characterMovement>();
+                if (player != null)
+                {
+                    player.Die(DeathCause.EnemyProjectile);
+                }
+                else
+                {
+                    Debug.LogWarning("[EnemyBullet] - characterMovement não encontrado no Player atingido!");
+                }
             }
             Destroy(gameObject);
             return;
@@ -104,44 +59,6 @@ public class EnemyBullet : MonoBehaviour
         if (((1 << col.gameObject.layer) & groundLayer) != 0)
         {
             Destroy(gameObject);
-        }
-    }
-
-    private void TriggerDeathSequence()
-    {
-        Debug.Log("Sequência de morte iniciada");
-
-        // Chamar o método Die do characterMovement
-        if (characterMovement != null)
-        {
-            characterMovement.Die();
-        }
-        else
-        {
-            Debug.LogWarning("characterMovement não encontrado!");
-        }
-
-        // Mostrar tela de game over
-        if (gameOverScreen != null)
-        {
-            gameOverScreen.SetActive(true);
-            Debug.Log("GameOver Screen ativada");
-        }
-        else
-        {
-            Debug.LogError("GameOver Screen não encontrada! Não é possível mostrar a tela de game over.");
-        }
-
-        // Desativar o texto do timer se existir
-        if (timerText != null)
-        {
-            timerText.gameObject.SetActive(false);
-        }
-
-        // Salvar dados do jogador
-        if (playerData != null)
-        {
-            playerData.SaveData();
         }
     }
 }

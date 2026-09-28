@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
+using Roguelike.Events;
 
 // Minimapa gerado a partir de uma "screenshot" da fase atual.
 // No início da fase, uma câmera temporária fotografa a fase inteira (limites dos tilemaps)
@@ -45,17 +46,17 @@ public class Minimap : MonoBehaviour
 
     private void OnEnable()
     {
-        SceneController.OnPlayerSpawned += HandlePlayerSpawned;
+        EventBus<PlayerSpawned>.Subscribe(HandlePlayerSpawned);
     }
 
     private void OnDisable()
     {
-        SceneController.OnPlayerSpawned -= HandlePlayerSpawned;
+        EventBus<PlayerSpawned>.Unsubscribe(HandlePlayerSpawned);
     }
 
-    private void HandlePlayerSpawned(GameObject playerObject)
+    private void HandlePlayerSpawned(PlayerSpawned evt)
     {
-        player = playerObject.transform;
+        player = evt.Player.transform;
     }
 
     private void Start()
@@ -81,13 +82,7 @@ public class Minimap : MonoBehaviour
     {
         if (playerMarker == null) return;
 
-        // O jogador é spawnado pelo SceneController, às vezes depois do Start deste script
-        if (player == null)
-        {
-            GameObject playerObject = GameObject.FindWithTag("Player");
-            if (playerObject != null) player = playerObject.transform;
-        }
-
+        // O jogador é atribuído via PlayerSpawned, que pode chegar depois do Start deste script
         playerMarker.gameObject.SetActive(player != null);
         if (player == null) return;
 

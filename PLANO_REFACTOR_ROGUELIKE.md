@@ -98,20 +98,27 @@ Regras: assinar em `OnEnable`, desassinar em `OnDisable`. Eventos são `readonly
 
 ### 3.4 Catálogo de eventos (MVP)
 
+Tipos exatos dos payloads e invariantes: `ARQUITETURA.md` §4 (tarefa 1.1).
+
 | Evento | Payload | Emissor | Ouvintes |
 |---|---|---|---|
-| `RunStarted` | seed, RunConfig | RunManager | RunUI, PlayerStats (reset) |
+| `RunStarted` | seed, RunConfig | RunManager | RunUI (o PlayerStats é recriado com o RunState) |
 | `LevelStarted` | índice, LevelDefinition, limite efetivo | RunManager | LevelTimer, HUD |
-| `PlayerSpawned` | GameObject | Spawner | CameraFollow, EnemyAI, LevelTimer |
-| `LevelTimeChanged` | segundos (granularidade de 0,1 s) | LevelTimer | HUD |
-| `LevelTimeExpired` | — | LevelTimer | RunManager, characterMovement |
-| `PlayerDied` | causa | characterMovement | RunManager, LevelTimer (para) |
+| `PlayerSpawned` | GameObject | Spawner | CameraFollow, EnemyAI, LevelTimer, Minimap, RunManager |
+| `LevelTimeChanged` | segundos (granularidade de 0,1 s), limite efetivo | LevelTimer | HUD, RunManager (tempo oficial da fase) |
+| `LevelTimeExpired` | — | LevelTimer | RunManager, characterMovement (trava, **sem** emitir `PlayerDied`) |
+| `PlayerDied` | causa (`DeathCause`) | characterMovement | RunManager, LevelTimer (para) |
 | `LevelGoalReached` | — | EndGoal | LevelTimer (para), RunManager |
-| `LevelCompleted` | índice, tempo, limite, desempenho 0–1, nota | RunManager | LevelResultView, telemetria |
-| `UpgradeOffersGenerated` | 3× (UpgradeDefinition, raridade) | RunManager | UpgradeSelectionView |
-| `UpgradeSelected` | UpgradeDefinition | UpgradeSelectionView | RunManager, PlayerStats |
-| `PlayerStatsChanged` | snapshot dos stats | PlayerStats | characterMovement, GrapplingHook, HUD |
+| `LevelCompleted` | `LevelResult`: índice, tempo, limite, alvo, desempenho 0–1, nota | RunManager | LevelResultView, telemetria |
+| `UpgradeOffersGenerated` | índice da fase, 3× (UpgradeDefinition, raridade sorteada) | RunManager | UpgradeSelectionView |
+| `UpgradeSelected` | UpgradeDefinition | UpgradeSelectionView | RunManager |
+| `PlayerStatsChanged` | snapshot dos stats | RunManager (em nome do PlayerStats) | characterMovement, GrapplingHook, HUD |
 | `RunEnded` | vitória/derrota, RunSummary | RunManager | RunEndView, telemetria |
+| `NewRunRequested` | — | MainMenu ("Nova Run") | RunManager |
+| `LevelResultDismissed` | — | LevelResultView | RunManager |
+| `RunEndDismissed` | — | RunEndView | RunManager |
+
+Os três últimos (decisões do jogador na UI) e as colunas extras de payload vieram da tarefa 1.1 (ADR-14 e ADR-24 do `ARQUITETURA.md`). Eles fecham as transições do diagrama da §1 sem que as views referenciem o RunManager.
 
 ### 3.5 Upgrades, raridade e desempenho
 
@@ -228,7 +235,7 @@ Os tokens estimados são somente dos subagentes, com base na calibração de ont
 |---|---|---|---|---|---|---|
 | ☑ | 0.1 | Commitar os bugfixes atuais numa branch `refactor/roguelike` (separar o commit do pacote AI Assistant). Formato `[Tipo] - Título`. | Orquestrador | — | não | `git log` limpo, working tree limpa |
 | ☑ | 0.2 | `QuartaFase.unity` tem 34 marcadores de conflito: checar se o GUID é referenciado; se não for, remover; se for, restaurar do git. | `mecanico` | sim | não | Nenhum `<<<<<<<` no repo |
-| ◐ | 0.3 | Criar as 6 definições de agente em `.claude/agents/` e confirmar que aparecem com o modelo e o esforço certos. | `mecanico` | sim | não | Agentes listados |
+| ☑ | 0.3 | Criar as 6 definições de agente em `.claude/agents/` e confirmar que aparecem com o modelo e o esforço certos. | `mecanico` | sim | não | Agentes listados |
 | ☑ | 0.4 | asmdefs `Roguelike.Core` + `Roguelike.Tests.EditMode`; utilitário `TestRunnerBridge` (Editor) que roda os testes EditMode via `TestRunnerApi` e grava `Temp/TestResults.json`; um teste simples passando via MCP. | `dev` | sim | sim | Resultado lido via MCP |
 | ☑ | 0.5 | Configurar o Smart Merge do Unity (UnityYAMLMerge) para `.unity`/`.prefab`, para evitar outro `QuartaFase` no trabalho em grupo. | `mecanico` | sim | não | `.gitattributes` + instrução no README |
 | ☐ | 0.6 | Registrar as decisões D1–D7 (seção 2). | **Humanos (time)** | — | — | Seção 2 atualizada |
@@ -236,18 +243,36 @@ Os tokens estimados são somente dos subagentes, com base na calibração de ont
 **Notas da execução (28/09/2026):**
 - **0.1:** os bugfixes já tinham sido commitados e enviados em `main` (`8df28c9`), junto com o pacote AI Assistant e fora do formato `[Tipo] - Título`. Separar o pacote exigiria reescrever o histórico já publicado, por isso ficou como está. A branch `refactor/roguelike` foi criada a partir de `8df28c9`.
 - **0.2:** o GUID `9a0a9620…` tinha zero referências, a cena não estava no build nem era carregada pelo nome. Foi substituída por `QuartaFase 1` (commit `2350525`, "git conflict fix") e removida.
-- **0.3 (◐):** o campo `effort` foi validado na documentação. Como `.claude/agents/` é uma pasta nova, os agentes **só aparecem numa sessão nova**. Confirmar na abertura da Etapa 1 e então marcar ☑.
+- **0.3:** o campo `effort` foi validado na documentação. Como `.claude/agents/` é uma pasta nova, os agentes só aparecem numa sessão nova. Confirmado na abertura da Etapa 1: os 6 agentes aparecem na lista de tipos de agente.
 - **0.4:** foi feita pelo orquestrador, porque as definições de agente ainda não carregam nesta sessão. Foi preciso um terceiro asmdef, `Roguelike.Editor` (só Editor), para o bridge. O caminho de falha foi provado com um teste que falha de propósito (nome, mensagem e stack trace aparecem no JSON), e esse teste foi apagado depois. Estado final: 1/1 verde.
 - **0.5:** `.gitattributes` cobre `.unity`, `.prefab` e `.asset`. O driver usa `--fallback none`, porque sem ele um conflito real trava o `git merge` tentando abrir uma ferramenta gráfica. Testado num repositório descartável: dois objetos adicionados no fim da mesma cena são combinados sem conflito; o mesmo campo alterado nos dois lados gera conflito (`UU`) com YAML válido. O driver também foi registrado no `.git/config` deste clone.
 
 ### Etapa 1 — Event Bus e contratos (~450k)
 | ✓ | # | Tarefa | Agente | Depende | Editor | Pronto quando |
 |---|---|---|---|---|---|---|
-| ☐ | 1.1 | `ARQUITETURA.md` + esqueletos **compiláveis** de todos os contratos da §3: IEvent, GameEvents, StatType/StatModifier/AbilityFlags, PlayerStats, UpgradeDefinition, RarityDefinition/RarityTable, LevelDefinition, RunConfig, interfaces de RunFlow e OfferGenerator. | `arquiteto` | 0.4 | compilar | Compila; contratos revisados por você |
-| ☐ | 1.2 | `EventBus<T>` + `EventBusRegistry` + testes (inscrever/desinscrever durante `Raise`, limpeza, ordem). | `dev` | 1.1 | testes | Testes verdes |
+| ◐ | 1.1 | `ARQUITETURA.md` + esqueletos **compiláveis** de todos os contratos da §3: IEvent, GameEvents, StatType/StatModifier/AbilityFlags, PlayerStats, UpgradeDefinition, RarityDefinition/RarityTable, LevelDefinition, RunConfig, interfaces de RunFlow e OfferGenerator. | `arquiteto` | 0.4 | compilar | Compila; contratos revisados por você |
+| ☑ | 1.2 | `EventBus<T>` + `EventBusRegistry` + testes (inscrever/desinscrever durante `Raise`, limpeza, ordem). | `dev` | 1.1 | testes | Testes verdes |
 | ✂️ | | *Ponto de corte* | | | | |
-| ☐ | 1.3 | Migração gradual para eventos com **o jogo continuando jogável**: EndGoal → `LevelGoalReached`; `characterMovement.Die`/EnemyBullet → `PlayerDied`; Timer → `LevelTimeExpired`; `SceneController.OnPlayerSpawned` → `PlayerSpawned` (CameraFollow e Timer passam a ouvir). Remover os `FindFirstObjectByType` que viraram desnecessários. | `dev` | 1.2 | compilar | Fluxo antigo funciona; nenhum acoplamento direto entre esses sistemas |
+| ☑ | 1.3 | Migração gradual para eventos com **o jogo continuando jogável**: EndGoal → `LevelGoalReached`; `characterMovement.Die`/EnemyBullet → `PlayerDied`; Timer → `LevelTimeExpired`; `SceneController.OnPlayerSpawned` → `PlayerSpawned` (CameraFollow e Timer passam a ouvir). Remover os `FindFirstObjectByType` que viraram desnecessários. | `dev` | 1.2 | compilar | Fluxo antigo funciona; nenhum acoplamento direto entre esses sistemas |
 | ☐ | 1.4 | Revisão da etapa + 10 min de playtest humano. | `revisor` + humano | 1.3 | — | Sem achados críticos |
+
+**Notas da execução (28/09/2026):**
+- **1.1 (◐):** compila, sem warnings novos. `ARQUITETURA.md` tem 24 ADRs, e 51 tipos foram criados em `Roguelike.Core`. Custou 254k tokens (Opus xhigh), cerca de 22 % da janela Pro. **Falta a revisão do João**, com prioridade para 4 ADRs:
+  - **ADR-12:** o desempenho usa o limite base, então o Relógio de Bolso só adia a derrota.
+  - **ADR-18:** o `PlayerBaseStats` usa os valores efetivos 10,5 / 41 / 2,6, e não os do prefab (10 / 40 / 2,5).
+  - **ADR-19:** sem o WallGrab, o jogador também não desliza na parede.
+  - **ADR-14:** 3 eventos novos de decisão do jogador, já refletidos na §3.4.
+- **1.2:** 16 testes novos, 17/17 verdes. O teste de exceção em handler usava `LogAssert` e deixava 2 erros no Console a cada execução, o que quebrava a receita da §6.1. O orquestrador trocou por um `ILogHandler` de captura. A §6.1 agora também explica como limpar o Console via MCP.
+- **1.3:** 7 scripts migrados, 17/17 verdes, Console 0/0. Um smoke test em Play Mode via MCP (sem salvar cenas) passou por MainMenu → PrimeiraFase → câmera no jogador → `LevelGoalReached` → QuartaFase 1 → `Die(EnemyProjectile)` → `GameOverBackground` ativo, com o segundo `Die` ignorado. Custou 168k tokens (Sonnet).
+  - **Dono da tela de game over:** o `Timer`, que ouve `PlayerDied` e cuida do próprio tempo esgotado. O `delayToLoadNextLevel` saiu do EndGoal e virou `SceneController.nextLevelDelay`, com o mesmo valor de 0,5 s.
+  - **Mudanças de comportamento:**
+    - o timer para ao tocar o objetivo, e não 0,5 s depois;
+    - o timer também para quando o jogador morre por bala (antes continuava contando).
+  - **Bug antigo preservado:** com contagem regressiva, o `totalTimePlayed` soma o tempo *restante*. Isso some com o `LevelTimer` na 3.1.
+  - **Ficou para depois:** o `FindFirstObjectByType<PlayerData>` do `characterMovement` sai na 2.4.
+  - **Campos órfãos no YAML:** `delayToLoadNextLevel` no `EndGoal.prefab` e `gameOverScreen` no `Cyborg.prefab`. São inofensivos e somem quando o prefab for salvo de novo.
+- **✂️ Parada:** a janela de 5 h chegou a 85 % ao fim da 1.3, então a 1.4 (revisor Opus high + playtest) ficou para a próxima janela.
+- **Dica para a Etapa 2 (do arquiteto):** rodar a 2.1 e a 2.2 em paralelo e a 2.3 depois, ou validar a 2.3 só no fim. Os testes da 2.3 que passam por `StartRun`/`CompleteLevel`/`SelectUpgrade` dependem do `PlayerStats` (2.1) e do `PerformanceEvaluator` (2.2). O ideal é usar um `IUpgradeOfferGenerator` falso.
 
 ### Etapa 2 — Núcleo roguelike (~400k)
 2.1, 2.2 e 2.3 rodam **em paralelo** (arquivos disjuntos, lógica pura).
@@ -308,7 +333,7 @@ O `unity-mcp` deste projeto é o relay oficial do Unity AI Assistant. As tools �
 
 1. **Importar o que mudou:** depois de criar ou editar `.cs`/`.asmdef`, rode `Unity_RunCommand` com `AssetDatabase.Refresh()`. Fora de foco, o Editor não faz o refresh sozinho.
 2. **Esperar a recompilação:** enquanto a Unity recompila, o MCP responde `Unity not detected (no fresh discovery files found)`. Basta repetir a chamada.
-3. **Erros de compilação:** `Unity_GetConsoleLogs` com `logTypes: "error"` deve voltar `errorCount: 0`.
+3. **Erros de compilação:** `Unity_GetConsoleLogs` com `logTypes: "error"` deve voltar `errorCount: 0`. O Console **não** se limpa sozinho ao recompilar, então entradas antigas confundem a contagem. Para limpar antes de medir, use `typeof(EditorWindow).Assembly.GetType("UnityEditor.LogEntries").GetMethod("Clear").Invoke(null, null)` dentro do `Unity_RunCommand`. Não dá para fazer `using System.Reflection`, porque o MCP recusa esse namespace.
 4. **Testes:** `Unity_RunCommand` chamando `Roguelike.EditorTools.TestRunnerBridge.RunEditModeTests()` (ou `Run(caminho, callback)` para receber o relatório no log do comando). Depois, leia `Temp/TestResults.json` e confira `status: "finished"`, um `startedAt` recente e `failed: 0`. A execução é síncrona: testes `[UnityTest]` ficam de fora.
 5. **Cenas/prefabs/assets:** C# de Editor via `Unity_RunCommand` (`EditorSceneManager`, `PrefabUtility`, `SerializedObject`, `AssetDatabase`), nunca edição de YAML como texto.
 

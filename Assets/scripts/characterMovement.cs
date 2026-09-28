@@ -2,6 +2,8 @@
 using UnityEngine.InputSystem;
 using System.Collections;
 using System.Collections.Generic;
+using Roguelike.Events;
+using Roguelike.Run;
 
 public class characterMovement : MonoBehaviour
 {
@@ -98,9 +100,6 @@ public class characterMovement : MonoBehaviour
 
     [Header("Referências")]
     [SerializeField] private PlayerData playerData; // Agora é SerializeField para arrastar no Inspector
-    [Header("Game Over")]
-    [SerializeField] private GameObject gameOverScreen;
-
 
     // Henrique: Referência ao script do gancho
     private GrapplingHook grapplingHook;
@@ -130,27 +129,23 @@ public class characterMovement : MonoBehaviour
         {
             playerData = GetComponent<PlayerData>();
         }
-        if (gameOverScreen == null)
-        {
-            GameObject canvasObj = GameObject.Find("Canvas");
-            if (canvasObj != null)
-            {
-                Transform go = canvasObj.transform.Find("GameOverBackground");
+    }
 
-                if (go != null)
-                {
-                    gameOverScreen = go.gameObject;
-                }
-                else
-                {
-                    Debug.LogWarning("GameOverBackground não encontrado dentro de Canvas!");
-                }
-            }
-            else
-            {
-                Debug.LogWarning("Canvas não foi encontrado na cena!");
-            }
-        }
+    private void OnEnable()
+    {
+        EventBus<LevelTimeExpired>.Subscribe(HandleLevelTimeExpired);
+    }
+
+    private void OnDisable()
+    {
+        EventBus<LevelTimeExpired>.Unsubscribe(HandleLevelTimeExpired);
+    }
+
+    private void HandleLevelTimeExpired(LevelTimeExpired evt)
+    {
+        // Tempo esgotado trava o jogador como a morte, mas NÃO emite PlayerDied (ADR-10)
+        if (isDead) return;
+        LockPlayer();
     }
 
     void Start()
@@ -564,22 +559,10 @@ public class characterMovement : MonoBehaviour
             }
         }
     }
-    public void Die()
+    // Trava o jogador (usado pela morte e pelo tempo esgotado): cancela o gancho e zera a velocidade
+    private void LockPlayer()
     {
-        // Die() pode ser chamado mais de uma vez (timer + balas): garante idempotência
-        if (isDead) return;
         isDead = true;
-
-        Debug.Log("Player morreu!");
-
-        if (gameOverScreen != null)
-        {
-            gameOverScreen.SetActive(true);
-        }
-        else
-        {
-            Debug.LogWarning("GameOver Screen não foi atribuída no inspetor!");
-        }
 
         // Henrique: Cancela o gancho, se estiver ativo, e libera o controle do movimento
         if (grapplingHook != null)
@@ -591,6 +574,17 @@ public class characterMovement : MonoBehaviour
         {
             rb.linearVelocity = Vector2.zero;
         }
+    }
+
+    public void Die(DeathCause cause)
+    {
+        // Die() pode ser chamado mais de uma vez (timer + balas): garante idempotência
+        if (isDead) return;
+        LockPlayer();
+
+        Debug.Log($"[characterMovement] - Jogador morreu: {cause}");
+
+        EventBus<PlayerDied>.Raise(new PlayerDied(cause));
     }
 
 

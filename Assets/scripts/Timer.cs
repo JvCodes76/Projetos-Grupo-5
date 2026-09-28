@@ -3,6 +3,7 @@ using TMPro;
 using System;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Roguelike.Events;
 
 public class Timer : MonoBehaviour
 {
@@ -15,10 +16,6 @@ public class Timer : MonoBehaviour
     [SerializeField] private bool autoStart = true;
     [SerializeField] private bool isCountingUp = true;
     [SerializeField] private float startTime = 60f;
-
-    // Referência ao jogador REAL da cena (spawnado pelo SceneController) — resolvida em runtime.
-    // Não use referência do Inspector aqui: nas fases o jogador só existe depois do sceneLoaded.
-    private characterMovement characterMovement;
 
     private float currentTime;
     private bool timerActive = false;
@@ -33,30 +30,32 @@ public class Timer : MonoBehaviour
 
     private void OnEnable()
     {
-        SceneController.OnPlayerSpawned += HandlePlayerSpawned;
+        EventBus<PlayerDied>.Subscribe(HandlePlayerDied);
+        EventBus<LevelGoalReached>.Subscribe(HandleLevelGoalReached);
     }
 
     private void OnDisable()
     {
-        SceneController.OnPlayerSpawned -= HandlePlayerSpawned;
+        EventBus<PlayerDied>.Unsubscribe(HandlePlayerDied);
+        EventBus<LevelGoalReached>.Unsubscribe(HandleLevelGoalReached);
     }
 
-    private void HandlePlayerSpawned(GameObject player)
+    private void HandlePlayerDied(PlayerDied evt)
     {
-        if (player != null)
-        {
-            characterMovement = player.GetComponent<characterMovement>();
-        }
+        StopTimer();
+        ShowGameOver();
+        PlayerData.Instance?.SaveData();
     }
 
-    // Busca o jogador só quando precisa (ele é spawnado depois do Awake deste script)
-    private characterMovement GetPlayerMovement()
+    private void HandleLevelGoalReached(LevelGoalReached evt)
     {
-        if (characterMovement == null)
+        StopTimer();
+
+        if (PlayerData.Instance != null)
         {
-            characterMovement = FindFirstObjectByType<characterMovement>();
+            PlayerData.Instance.totalTimePlayed += CurrentTime;
+            Debug.Log($"[Timer] - Tempo da fase ({CurrentTime}s) adicionado ao total. Total acumulado: {PlayerData.Instance.totalTimePlayed}s.");
         }
-        return characterMovement;
     }
 
     private void Start()
@@ -99,42 +98,38 @@ public class Timer : MonoBehaviour
                     timerText.color = Color.red;
                 }
 
-                // ATIVA A TELA DE GAME OVER (que é filha do timer)
-                if (gameOverScreen != null)
-                {
-                    gameOverScreen.SetActive(true);
-                }
-                else
-                {
-                    Debug.LogWarning("GameOver Screen não atribuída no Timer!");
-                }
-
-                // Opcional: Desativa o texto do timer para não ficar visível
-                if (timerText != null)
-                {
-                    timerText.gameObject.SetActive(false);
-                }
+                ShowGameOver();
 
                 if (PlayerData.Instance != null)
                 {
                     PlayerData.Instance.SaveData();
                 }
 
-                // Mata o jogador REAL da cena (não o prefab)
-                characterMovement player = GetPlayerMovement();
-                if (player != null)
-                {
-                    player.Die();
-                }
-                else
-                {
-                    Debug.LogWarning("Timer: tempo esgotado, mas o jogador não foi encontrado na cena!");
-                }
+                // Tempo esgotado: quem trava o jogador é o characterMovement, ouvindo este evento
+                EventBus<LevelTimeExpired>.Raise(new LevelTimeExpired());
                 return;
             }
         }
 
         UpdateTimerDisplay();
+    }
+
+    // Ativa a tela de game over (idempotente: pode ser chamado mais de uma vez sem efeito colateral)
+    private void ShowGameOver()
+    {
+        if (gameOverScreen != null)
+        {
+            gameOverScreen.SetActive(true);
+        }
+        else
+        {
+            Debug.LogWarning("[Timer] - GameOver Screen não atribuída no Timer!");
+        }
+
+        if (timerText != null)
+        {
+            timerText.gameObject.SetActive(false);
+        }
     }
 
     private void UpdateTimerDisplay()
