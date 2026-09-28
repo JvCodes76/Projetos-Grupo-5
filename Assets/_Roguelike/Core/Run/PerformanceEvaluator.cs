@@ -17,7 +17,19 @@ namespace Roguelike.Run
         /// </summary>
         public static float Evaluate(float elapsedSeconds, float timeLimit, float targetTime)
         {
-            throw new NotImplementedException("Tarefa 2.2 do PLANO_REFACTOR_ROGUELIKE.md");
+            if (elapsedSeconds < 0f)
+            {
+                throw new ArgumentOutOfRangeException(nameof(elapsedSeconds), elapsedSeconds, "Tempo decorrido não pode ser negativo.");
+            }
+
+            // Dado inválido (limite ≤ alvo): não dividir por zero nem por número negativo.
+            if (timeLimit <= targetTime)
+            {
+                return elapsedSeconds <= timeLimit ? 1f : 0f;
+            }
+
+            float p = (timeLimit - elapsedSeconds) / (timeLimit - targetTime);
+            return Math.Min(1f, Math.Max(0f, p));
         }
 
         /// <summary>Nota pelos limiares padrão da §3.5 (GradeThresholds.Default).</summary>
@@ -29,7 +41,10 @@ namespace Roguelike.Run
         /// <summary>Nota de <paramref name="performance"/>: p ≥ S → S; p ≥ A → A; p ≥ B → B; senão C (comparações inclusivas).</summary>
         public static PerformanceGrade GetGrade(float performance, GradeThresholds thresholds)
         {
-            throw new NotImplementedException("Tarefa 2.2 do PLANO_REFACTOR_ROGUELIKE.md");
+            if (performance >= thresholds.S) return PerformanceGrade.S;
+            if (performance >= thresholds.A) return PerformanceGrade.A;
+            if (performance >= thresholds.B) return PerformanceGrade.B;
+            return PerformanceGrade.C;
         }
     }
 }

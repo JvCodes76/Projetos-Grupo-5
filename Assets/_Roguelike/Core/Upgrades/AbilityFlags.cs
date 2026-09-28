@@ -12,7 +12,7 @@ namespace Roguelike.Upgrades
     public enum AbilityFlags
     {
         None = 0,
-        /// <summary>Deslizar na parede e pular dela (legado: PlayerData.canWallJump; hoje o deslize não depende da flag).</summary>
+        /// <summary>Deslizar na parede e pular dela (legado: PlayerData.canWallJump). Sem a flag o jogador não desliza nem pula da parede (ADR-19).</summary>
         WallGrab = 1 << 0,
         /// <summary>Gancho (legado: PlayerData.canGrapplingHook).</summary>
         GrapplingHook = 1 << 1,

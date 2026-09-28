@@ -44,7 +44,10 @@ public class Timer : MonoBehaviour
     {
         StopTimer();
         ShowGameOver();
-        PlayerData.Instance?.SaveData();
+        if (PlayerData.Instance != null)
+        {
+            PlayerData.Instance.SaveData();
+        }
     }
 
     private void HandleLevelGoalReached(LevelGoalReached evt)

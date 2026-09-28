@@ -98,7 +98,7 @@ Todos em `Roguelike.Events` (`Events/GameEvents.cs`). Tipos exatos dos payloads:
 |---|---|---|---|---|
 | `RunStarted` | `int Seed`, `RunConfig Config` | RunManager | RunUI (PlayerStats é recriado junto com o RunState) | Seguido de `PlayerStatsChanged` com o kit base |
 | `LevelStarted` | `int LevelIndex` (base 0), `LevelDefinition Level`, `float EffectiveTimeLimit` | RunManager | LevelTimer, HUD | Vem depois de `PlayerSpawned` e `PlayerStatsChanged` da mesma fase |
-| `PlayerSpawned` | `GameObject Player` | Spawner (SceneController → RunManager na 3.1) | CameraFollow, EnemyAI, LevelTimer, Minimap, RunManager | Jogador não nulo, já posicionado, `Awake`/`OnEnable` executados |
+| `PlayerSpawned` | `GameObject Player` | Spawner (SceneController → RunManager na 3.1) | CameraFollow, LevelTimer, Minimap, RunManager (o EnemyAI detecta o jogador por overlap e não precisa dele) | Jogador não nulo, já posicionado, `Awake`/`OnEnable` executados |
 | `LevelTimeChanged` | `float ElapsedSeconds`, `float EffectiveTimeLimit`, (`RemainingSeconds` calculado) | LevelTimer | HUD, RunManager | `ElapsedSeconds = floor(t×10)/10`; emitido com 0 no início e depois só quando muda; nada depois do fim da fase |
 | `LevelTimeExpired` | — | LevelTimer | RunManager, characterMovement | No máximo um por fase; não emitido se a fase já acabou |
 | `PlayerDied` | `DeathCause Cause` | characterMovement | RunManager, LevelTimer (para) | Um por vida; **nunca** por tempo esgotado (ADR-10) |
@@ -106,7 +106,7 @@ Todos em `Roguelike.Events` (`Events/GameEvents.cs`). Tipos exatos dos payloads:
 | `LevelCompleted` | `LevelResult Result` (índice, tempo, limite efetivo, alvo, desempenho 0–1, nota) | RunManager | LevelResultView, telemetria | `Result` = `IRunFlow.LastLevelResult` |
 | `UpgradeOffersGenerated` | `int LevelIndex`, `IReadOnlyList<UpgradeOffer> Offers` (cada um: `UpgradeDefinition Upgrade`, `RarityDefinition Rarity`, `RarityDefinition RolledRarity`, `bool IsEmpty`) | RunManager | UpgradeSelectionView | `Offers.Count == RunConfig.OfferCount`; ≥ 1 não vazio; lista copiada |
 | `UpgradeSelected` | `UpgradeDefinition Upgrade` | UpgradeSelectionView | RunManager | Precisa ser uma oferta não vazia; o RunFlow ignora se não for |
-| `PlayerStatsChanged` | `PlayerStatsSnapshot Stats` | RunManager (em nome do PlayerStats, ADR-02) | characterMovement, GrapplingHook, HUD | Após `RunStarted`, `UpgradeSelected` e cada `PlayerSpawned` (ADR-16); `Stats.IsValid` |
+| `PlayerStatsChanged` | `PlayerStatsSnapshot Stats` | RunManager (em nome do PlayerStats, ADR-02) | characterMovement (repassa ao GrapplingHook por chamada direta, 2.4), HUD | Após `RunStarted`, `UpgradeSelected` e cada `PlayerSpawned` (ADR-16); `Stats.IsValid` |
 | `RunEnded` | `RunSummary Summary`, (`bool IsVictory` calculado) | RunManager | RunEndView, telemetria | `Summary` não nulo |
 
 ### 4.2 Decisões do jogador na UI (extensão, ADR-14)
@@ -159,6 +159,7 @@ Parâmetros de movimento que não são upgradáveis (`deceleration`, `turnSpeed`
 - **`PlayerStats`** (classe, tarefa 2.1): `new PlayerStats(PlayerBaseStats)`; leitura `Get(StatType)`, `GetInt(StatType)` (`Mathf.RoundToInt`), `HasAbility(AbilityFlags)`, `Abilities`, `BaseStats`; escrita `ApplyUpgrade(UpgradeDefinition)` (um stack: modificadores + flags), `AddModifier`, `UnlockAbilities`, `Reset()`; `CreateSnapshot()`. Não emite eventos, não valida stacks, não chama `UpgradeEffect`.
 - **`PlayerStatsSnapshot`** (`readonly struct`, pronto): cópia imutável; `Get`, `GetInt`, `HasAbility`, `Abilities`, `IsValid` (`default` é inválido).
 - **`AbilityFlags`** (`[Flags]`): `None`, `WallGrab`, `GrapplingHook`. Pulo duplo = `MaxAirJumps ≥ 1`.
+- **`JumpPhysics`** (estático, adicionado na 2.1): `JumpSpeed(altura, tempoAteApice)` = `altura / tempo`, que é a fórmula legada e não a cinemática `2h/t`, preservada de propósito. `Gravity(altura, tempo)` = `2h / t²`. `GravityMultiplier(altura, tempo, |gravidadeDoMundo|, gravityScalePadrão)`. As fórmulas foram extraídas de `characterMovement.CalculateJumpVariables`. É a base do teste de valores de referência (`jumpSpeed` 7,027, `gravMultiplier` 3,872 com o Cyborg) e é o que o `characterMovement` passa a usar na 2.4.
 
 ### 6.2 Desempenho (`PerformanceEvaluator`, tarefa 2.2)
 - `float Evaluate(float elapsedSeconds, float timeLimit, float targetTime)` = `clamp01((limite − tempo) / (limite − alvo))`, chamado com o **limite base** (ADR-12). Limite ≤ alvo: 1 se tempo ≤ limite, senão 0. Tempo negativo: exceção.
@@ -219,12 +220,12 @@ Os structs acima são usados sem alteração. O fluxo antigo (SceneController/Ti
 
 | Hoje | Depois da 1.3 | Quem emite | Quem ouve na transição |
 |---|---|---|---|
-| `EndGoal` chama `SceneController.instance.NextLevel()` (com fallback `FindFirstObjectByType`) | `EndGoal` emite `LevelGoalReached` | EndGoal | SceneController (chama `NextLevel`), Timer (para) |
-| `Timer` zera e chama `player.Die()` | `Timer` emite `LevelTimeExpired` | Timer | characterMovement (trava e mostra game over, **sem** `PlayerDied`) |
-| `EnemyBullet` acha o jogador por `FindFirstObjectByType` e chama `Die()` | `EnemyBullet` pega o `characterMovement` do collider atingido e chama `Die(DeathCause.EnemyProjectile)`; o `characterMovement` emite `PlayerDied` | characterMovement | Timer (para), game over |
-| `SceneController.OnPlayerSpawned` (evento estático) | `PlayerSpawned` | SceneController | CameraFollow, Timer, **Minimap** (também assina hoje) |
+| `EndGoal` chama `SceneController.instance.NextLevel()` (com fallback `FindFirstObjectByType`) | `EndGoal` emite `LevelGoalReached` | EndGoal | SceneController (agenda `NextLevel` com `nextLevelDelay` = 0,5 s), Timer (para e soma o tempo) |
+| `Timer` zera e chama `player.Die()` | `Timer` mostra o game over e emite `LevelTimeExpired` | Timer | characterMovement (trava, **sem** `PlayerDied`) |
+| `EnemyBullet` acha o jogador por `FindFirstObjectByType` e chama `Die()` | `EnemyBullet` pega o `characterMovement` do collider atingido e chama `Die(DeathCause.EnemyProjectile)`; o `characterMovement` emite `PlayerDied` | characterMovement | Timer (para, mostra o game over e salva) |
+| `SceneController.OnPlayerSpawned` (evento estático) | `PlayerSpawned` | SceneController | CameraFollow, Minimap (o Timer não precisa mais do jogador) |
 
-A tela de game over hoje é ligada em três lugares (characterMovement, Timer, EnemyBullet). Sugestão: deixar só um dono, que reage a `PlayerDied` e `LevelTimeExpired`.
+**Como ficou (1.3):** a tela de game over, que antes era ligada em três lugares (characterMovement, Timer, EnemyBullet), agora tem um dono só: o Timer do `Canvas.prefab`, que a mostra no próprio tempo esgotado e ao ouvir `PlayerDied`.
 
 ## 9. Quem implementa cada arquivo
 

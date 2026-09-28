@@ -132,9 +132,6 @@ public class ShopManager : MonoBehaviour
             UpdateCoinText();
             data.SaveData();
 
-            // Aplica os upgrades imediatamente no jogador da cena
-            FindFirstObjectByType<characterMovement>()?.RefreshStats();
-
             Debug.Log("Item comprado: " + itemID);
         }
         else

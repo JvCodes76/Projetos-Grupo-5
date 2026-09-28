@@ -104,7 +104,7 @@ Tipos exatos dos payloads e invariantes: `ARQUITETURA.md` §4 (tarefa 1.1).
 |---|---|---|---|
 | `RunStarted` | seed, RunConfig | RunManager | RunUI (o PlayerStats é recriado com o RunState) |
 | `LevelStarted` | índice, LevelDefinition, limite efetivo | RunManager | LevelTimer, HUD |
-| `PlayerSpawned` | GameObject | Spawner | CameraFollow, EnemyAI, LevelTimer, Minimap, RunManager |
+| `PlayerSpawned` | GameObject | Spawner | CameraFollow, LevelTimer, Minimap, RunManager |
 | `LevelTimeChanged` | segundos (granularidade de 0,1 s), limite efetivo | LevelTimer | HUD, RunManager (tempo oficial da fase) |
 | `LevelTimeExpired` | — | LevelTimer | RunManager, characterMovement (trava, **sem** emitir `PlayerDied`) |
 | `PlayerDied` | causa (`DeathCause`) | characterMovement | RunManager, LevelTimer (para) |
@@ -112,7 +112,7 @@ Tipos exatos dos payloads e invariantes: `ARQUITETURA.md` §4 (tarefa 1.1).
 | `LevelCompleted` | `LevelResult`: índice, tempo, limite, alvo, desempenho 0–1, nota | RunManager | LevelResultView, telemetria |
 | `UpgradeOffersGenerated` | índice da fase, 3× (UpgradeDefinition, raridade sorteada) | RunManager | UpgradeSelectionView |
 | `UpgradeSelected` | UpgradeDefinition | UpgradeSelectionView | RunManager |
-| `PlayerStatsChanged` | snapshot dos stats | RunManager (em nome do PlayerStats) | characterMovement, GrapplingHook, HUD |
+| `PlayerStatsChanged` | snapshot dos stats | RunManager (em nome do PlayerStats) | characterMovement (repassa ao GrapplingHook), HUD |
 | `RunEnded` | vitória/derrota, RunSummary | RunManager | RunEndView, telemetria |
 | `NewRunRequested` | — | MainMenu ("Nova Run") | RunManager |
 | `LevelResultDismissed` | — | LevelResultView | RunManager |
@@ -253,8 +253,8 @@ Os tokens estimados são somente dos subagentes, com base na calibração de ont
 | ◐ | 1.1 | `ARQUITETURA.md` + esqueletos **compiláveis** de todos os contratos da §3: IEvent, GameEvents, StatType/StatModifier/AbilityFlags, PlayerStats, UpgradeDefinition, RarityDefinition/RarityTable, LevelDefinition, RunConfig, interfaces de RunFlow e OfferGenerator. | `arquiteto` | 0.4 | compilar | Compila; contratos revisados por você |
 | ☑ | 1.2 | `EventBus<T>` + `EventBusRegistry` + testes (inscrever/desinscrever durante `Raise`, limpeza, ordem). | `dev` | 1.1 | testes | Testes verdes |
 | ✂️ | | *Ponto de corte* | | | | |
-| ☑ | 1.3 | Migração gradual para eventos com **o jogo continuando jogável**: EndGoal → `LevelGoalReached`; `characterMovement.Die`/EnemyBullet → `PlayerDied`; Timer → `LevelTimeExpired`; `SceneController.OnPlayerSpawned` → `PlayerSpawned` (CameraFollow e Timer passam a ouvir). Remover os `FindFirstObjectByType` que viraram desnecessários. | `dev` | 1.2 | compilar | Fluxo antigo funciona; nenhum acoplamento direto entre esses sistemas |
-| ☐ | 1.4 | Revisão da etapa + 10 min de playtest humano. | `revisor` + humano | 1.3 | — | Sem achados críticos |
+| ☑ | 1.3 | Migração gradual para eventos com **o jogo continuando jogável**: EndGoal → `LevelGoalReached`; `characterMovement.Die`/EnemyBullet → `PlayerDied`; Timer → `LevelTimeExpired`; `SceneController.OnPlayerSpawned` → `PlayerSpawned` (CameraFollow e Minimap passam a ouvir; o Timer deixou de precisar do jogador). Remover os `FindFirstObjectByType` que viraram desnecessários. | `dev` | 1.2 | compilar | Fluxo antigo funciona; nenhum acoplamento direto entre esses sistemas |
+| ◐ | 1.4 | Revisão da etapa + 10 min de playtest humano. | `revisor` + humano | 1.3 | — | Sem achados críticos |
 
 **Notas da execução (28/09/2026):**
 - **1.1 (◐):** compila, sem warnings novos. `ARQUITETURA.md` tem 24 ADRs, e 51 tipos foram criados em `Roguelike.Core`. Custou 254k tokens (Opus xhigh), cerca de 22 % da janela Pro. **Falta a revisão do João**, com prioridade para 4 ADRs:
@@ -279,12 +279,47 @@ Os tokens estimados são somente dos subagentes, com base na calibração de ont
 
 | ✓ | # | Tarefa | Agente | Depende | Editor | Pronto quando |
 |---|---|---|---|---|---|---|
-| ☐ | 2.1 | `PlayerStats` (base + modificadores Add/Multiply, flags) + `PlayerBaseStats` SO com **os valores atuais do Cyborg**. Testes de "valores de referência": `jumpSpeed` e gravidade calculados iguais aos de hoje. | `dev` | 1.1 | testes | Testes verdes |
-| ☐ | 2.2 | `PerformanceEvaluator` + `RarityRoller` + `UpgradeOfferGenerator` (com seed) + testes: distribuição com seed fixa, elegibilidade, pré-requisitos, sem duplicatas, fallback de raridade. | `dev` | 1.1 | testes | Testes verdes |
-| ☐ | 2.3 | `RunFlow` (máquina de estados pura da §1) + `RunState` + testes de todas as transições, inclusive derrota e última fase. | `dev-core` | 1.1 | testes | Testes verdes |
+| ☑ | 2.1 | `PlayerStats` (base + modificadores Add/Multiply, flags) + `PlayerBaseStats` SO com **os valores atuais do Cyborg**. Testes de "valores de referência": `jumpSpeed` e gravidade calculados iguais aos de hoje. | `dev` | 1.1 | testes | Testes verdes |
+| ☑ | 2.2 | `PerformanceEvaluator` + `RarityRoller` + `UpgradeOfferGenerator` (com seed) + testes: distribuição com seed fixa, elegibilidade, pré-requisitos, sem duplicatas, fallback de raridade. | `dev` | 1.1 | testes | Testes verdes |
+| ☑ | 2.3 | `RunFlow` (máquina de estados pura da §1) + `RunState` + testes de todas as transições, inclusive derrota e última fase. | `dev-core` | 1.1 | testes | Testes verdes |
 | ✂️ | | *Ponto de corte* | | | | |
-| ☐ | 2.4 | `characterMovement` e `GrapplingHook` passam a ler `PlayerStats` e reagir a `PlayerStatsChanged`; kit base sem pulo duplo, gancho ou wall grab; `RefreshStats` e dependência de `PlayerData` removidos. | `dev-core` | 2.1 | compilar + play | Sensação do movimento base idêntica; habilidades ligam por stats |
-| ☐ | 2.5 | Revisão da etapa. | `revisor` | 2.4 | — | Sem achados críticos |
+| ☑ | 2.4 | `characterMovement` e `GrapplingHook` passam a ler `PlayerStats` e reagir a `PlayerStatsChanged`; kit base sem pulo duplo, gancho ou wall grab; `RefreshStats` e dependência de `PlayerData` removidos. | `dev-core` | 2.1 | compilar + play | Sensação do movimento base idêntica; habilidades ligam por stats |
+| ☑ | 2.5 | Revisão da etapa. | `revisor` | 2.4 | — | Sem achados críticos |
+
+**Notas da execução (28/09/2026):**
+- **Ordem real:** 2.1 ∥ 2.2 → 2.3 → 2.4. A 2.3 ficou para depois porque o `RunState`/`RunFlow` chamam `PlayerStats` e `PerformanceEvaluator` em runtime. Para rodar em paralelo sem um agente sobrescrever o resultado do outro, cada um gravou os testes num JSON próprio (`TestRunnerBridge.Run("Temp/TestResults_2_x.json", null)`).
+- **2.1:** 27 testes; todos os valores de referência bateram (10,5 / 41 / 2,6; `jumpSpeed` 7,027; `gravMultiplier` 3,872). Novo `JumpPhysics` (Core/Stats) com as fórmulas legadas do `characterMovement`, documentado no `ARQUITETURA.md` §6.1. Custou 109k tokens (Sonnet).
+- **2.2:** 49 testes; também criou o `TestFactory` dos testes. O `CombineSeed` usa a mistura `hash*31 + x`, e o fallback percorre as raridades da `RarityTable`. Custou 139k tokens (Sonnet).
+- **2.3:** 133 testes, incluindo todos os comandos × todas as fases e 2 testes de integração com o gerador real. A validação dos argumentos vem antes da fase. Exceção de comando é bug: a 3.1 não deve tratá-la como `false`. O teste do limite base fixa a ADR-12 (mudar a decisão muda esse teste). Custou 162k tokens (Opus high).
+- **✂️ Ponto de corte:** 28 % da janela de 5 h, então a etapa seguiu para a 2.4. Total verde neste ponto: 226/226.
+- **2.4:** custou 171k tokens (Opus high, com a trava do Editor). Criado `Assets/_Roguelike/Data/PlayerBaseStats.asset` (a 3.3 deve reaproveitá-lo no `RunConfig.BaseStats`) e ligado no `Cyborg.prefab`; ao salvar o prefab, os campos órfãos da 1.3 sumiram.
+  - **Como os stats chegam:** o `characterMovement` é a única entrada de stats no jogador. Ele aplica o kit base no `Awake`, ouve `PlayerStatsChanged` e repassa ao `GrapplingHook.ApplyStats`.
+  - **Smoke test em Play Mode:**
+    - kit base: 10,5 / 41 / 2,6, `jumpSpeed` 7,02702665 (idêntico), sem pulo aéreo, sem gancho, sem deslize;
+    - um `PlayerStatsChanged` com +1 pulo aéreo e `WallGrab | GrapplingHook` liga tudo, e o kit base de novo desliga.
+  - **`gravMultiplier`:** 3,87196000 contra 3,87195945 do legado, diferença de 2 ulps; imperceptível.
+  - **Mudanças de comportamento:**
+    - a loja não altera mais o movimento (legado, sai na 4.1);
+    - saves antigos com agility/strength > 1 são ignorados;
+    - o gizmo do raio do gancho fica em 0 fora do Play Mode.
+  - **Dicas para quem usar Play Mode via MCP:**
+    - o Play Mode suja o atlas dinâmico do TMP (`ModernCosmo-q25Dr SDF.asset`); o agente restaurou com `git checkout`;
+    - com o Editor fora de foco, o player loop não avança; `isPaused = true` + `EditorApplication.Step()` resolve.
+  - **Risco para playtest antes da Etapa 3 (D1):** com o kit base, fases que exijam pulo duplo, gancho ou wall jump podem ficar impossíveis. Até a 3.1 só dá para ganhar habilidades emitindo `PlayerStatsChanged` à mão.
+- **2.5:** o revisor (Opus high, 239k tokens) cobriu `git diff c006590`, ou seja, as Etapas 1 e 2, e com isso a parte de código da 1.4. Veredito: as duas etapas podem fechar com ressalvas; nada crítico ou importante. O orquestrador corrigiu os achados e ficou em 231/231, Console 0/0:
+  - **M1:** o `RarityRoller` podia sortear uma raridade de peso 0 por arredondamento (chance ~1e-8 por sorteio). Agora compara `roll × total` com a soma acumulada em double e pula as entradas de peso 0. Ganhou 2 testes de borda.
+  - **M3:** o teste de `GetInt` não exercitava o arredondamento, e os de fallback não distinguiam "tier mais próximo" de "menor tier". O primeiro foi corrigido e os outros ganharam 3 testes da ordem da ADR-07.
+  - **M4:**
+    - comentários desatualizados em `EndGoal`, `characterMovement`, `AbilityFlags` e `GameEvents`;
+    - `?.` num `UnityEngine.Object` no `Timer`;
+    - condição morta do wall slide;
+    - `ARQUITETURA.md` §4.1 e §8 e a linha 1.3 alinhados com a implementação.
+  - **Etapa 0:** o `TestRunnerBridge` agora grava `status: "error"` quando roda 0 testes, que é o sintoma de o assembly de testes não ter compilado.
+- **Pendências para a Etapa 3:**
+  - **M2:** `RunState.AcquireUpgrade` não é atômico. Se um `UpgradeEffect.OnAcquired` lançar, o stack fica aplicado e o flow continua em `UpgradeSelection`; um segundo clique aplicaria outro stack. A 3.1/3.2 deve travar a `UpgradeSelectionView` depois do primeiro `UpgradeSelected`, ou o `RunFlow` deve avançar antes dos efeitos.
+  - Logs antigos fora do formato `[Área] - mensagem` em arquivos tocados: `EndGoal`, `SceneController`, `characterMovement`, `GrapplingHook`, `CameraFollow` e `Minimap`.
+  - O fallback `CreateInstance<PlayerBaseStats>()` do `characterMovement` não é destruído. Só roda com o campo vazio, o que não é o caso do Cyborg.
+- **Continua pendente:** o playtest humano da 1.4 e da 2.4 (sensação do movimento base e fases completáveis com o kit base), e as confirmações do João sobre as ADR-12, 18 e 19.
 
 ### Etapa 3 — Integração: run, timer, UI e conteúdo (~450k)
 | ✓ | # | Tarefa | Agente | Depende | Editor | Pronto quando |
@@ -334,7 +369,7 @@ O `unity-mcp` deste projeto é o relay oficial do Unity AI Assistant. As tools �
 1. **Importar o que mudou:** depois de criar ou editar `.cs`/`.asmdef`, rode `Unity_RunCommand` com `AssetDatabase.Refresh()`. Fora de foco, o Editor não faz o refresh sozinho.
 2. **Esperar a recompilação:** enquanto a Unity recompila, o MCP responde `Unity not detected (no fresh discovery files found)`. Basta repetir a chamada.
 3. **Erros de compilação:** `Unity_GetConsoleLogs` com `logTypes: "error"` deve voltar `errorCount: 0`. O Console **não** se limpa sozinho ao recompilar, então entradas antigas confundem a contagem. Para limpar antes de medir, use `typeof(EditorWindow).Assembly.GetType("UnityEditor.LogEntries").GetMethod("Clear").Invoke(null, null)` dentro do `Unity_RunCommand`. Não dá para fazer `using System.Reflection`, porque o MCP recusa esse namespace.
-4. **Testes:** `Unity_RunCommand` chamando `Roguelike.EditorTools.TestRunnerBridge.RunEditModeTests()` (ou `Run(caminho, callback)` para receber o relatório no log do comando). Depois, leia `Temp/TestResults.json` e confira `status: "finished"`, um `startedAt` recente e `failed: 0`. A execução é síncrona: testes `[UnityTest]` ficam de fora.
+4. **Testes:** `Unity_RunCommand` chamando `Roguelike.EditorTools.TestRunnerBridge.RunEditModeTests()` (ou `Run(caminho, callback)` para receber o relatório no log do comando). Depois, leia `Temp/TestResults.json` e confira `status: "finished"`, um `startedAt` recente, `total` > 0 e `failed: 0`. Com 0 testes o bridge grava `status: "error"`. Quem roda em paralelo usa `Run("Temp/TestResults_<tarefa>.json", null)`, para ninguém sobrescrever o resultado do outro. A execução é síncrona: testes `[UnityTest]` ficam de fora.
 5. **Cenas/prefabs/assets:** C# de Editor via `Unity_RunCommand` (`EditorSceneManager`, `PrefabUtility`, `SerializedObject`, `AssetDatabase`), nunca edição de YAML como texto.
 
 ## 7. Convenções (alinhadas ao guideline da equipe)

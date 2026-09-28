@@ -90,7 +90,7 @@ namespace Roguelike.Events
 
     /// <summary>
     /// Os stats finais do jogador mudaram ou precisam ser reaplicados. Emissor: RunManager (dono do RunState/PlayerStats),
-    /// depois de RunStarted, de UpgradeSelected e de cada PlayerSpawned. Ouvintes: characterMovement, GrapplingHook, HUD.
+    /// depois de RunStarted, de UpgradeSelected e de cada PlayerSpawned. Ouvintes: characterMovement (repassa ao GrapplingHook por chamada direta), HUD.
     /// Invariante: Stats.IsValid. Quem ouve aplica o snapshot inteiro (é idempotente receber o mesmo valor de novo).
     /// </summary>
     public readonly struct PlayerStatsChanged : IEvent
@@ -131,7 +131,7 @@ namespace Roguelike.Events
 
     /// <summary>
     /// O tempo da fase chegou ao limite efetivo (Jogando → Derrota). Emissor: LevelTimer.
-    /// Ouvintes: RunManager, characterMovement (trava o jogador e toca a morte, SEM emitir PlayerDied).
+    /// Ouvintes: RunManager, characterMovement (trava o jogador, SEM emitir PlayerDied).
     /// Invariante: no máximo um por fase; não é emitido se LevelGoalReached ou PlayerDied vieram antes.
     /// </summary>
     public readonly struct LevelTimeExpired : IEvent { }

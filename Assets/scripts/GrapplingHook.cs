@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Roguelike.Stats;
+using Roguelike.Upgrades;
 
 public class GrapplingHook : MonoBehaviour
 {
@@ -7,16 +9,13 @@ public class GrapplingHook : MonoBehaviour
     private State currentState = State.Ready;
 
     [Header("Configurações de Física")]
-    [SerializeField] private float grappleRadius = 15f;
     [SerializeField] private float grapplePullSpeed = 20f;
-    [SerializeField] private float launchBoostForce = 35f;
     [SerializeField] private float hookTravelSpeed = 60f;
     [SerializeField] private float minDistanceToFinish = 1.0f;
 
     [Header("Camadas")]
     [SerializeField] private LayerMask whatIsGrappleable;
     [SerializeField] private LayerMask whatIsObstacle;
-    [SerializeField] private float grappleCooldown = 0.5f;
     [SerializeField] private float maxGrappleDuration = 3f;
     [SerializeField] private float stuckCheckInterval = 0.3f;
     [SerializeField] private float stuckDistanceThreshold = 0.05f;
@@ -26,8 +25,11 @@ public class GrapplingHook : MonoBehaviour
     [SerializeField] private Transform hookTipTransform;
     [SerializeField] private LineRenderer ropeRenderer;
 
-    [Header("Referências")]
-    [SerializeField] private PlayerData playerData; // Referência ao PlayerData
+    // Valores upgradáveis: vêm do PlayerStatsSnapshot repassado pelo characterMovement (ApplyStats)
+    private float grappleRadius;
+    private float grappleCooldown;
+    private float launchBoostForce;
+    private bool isUnlocked;
 
     private Rigidbody2D rb;
     private PlayerInput playerInput;
@@ -45,20 +47,34 @@ public class GrapplingHook : MonoBehaviour
 
     public bool IsGrappling => currentState == State.Grappling;
 
+    /// <summary>True se a habilidade GrapplingHook está liberada no último snapshot aplicado.</summary>
+    public bool IsUnlocked => isUnlocked;
+
+    /// <summary>
+    /// Aplica os stats do gancho. Chamado só pelo characterMovement (mesmo GameObject), que é o
+    /// único ponto de entrada de PlayerStatsChanged no jogador. Idempotente.
+    /// </summary>
+    public void ApplyStats(PlayerStatsSnapshot s)
+    {
+        if (!s.IsValid)
+        {
+            Debug.LogWarning("[GrapplingHook] - Snapshot de stats inválido recebido; ignorado.");
+            return;
+        }
+
+        grappleRadius = s.Get(StatType.GrappleRadius);
+        grappleCooldown = s.Get(StatType.GrappleCooldown);
+        launchBoostForce = s.Get(StatType.GrappleLaunchForce);
+        isUnlocked = s.HasAbility(AbilityFlags.GrapplingHook);
+
+        // Habilidade desligada: cancela qualquer gancho em andamento e esconde os visuais
+        if (!isUnlocked) ResetGrapplingHook();
+    }
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         playerInput = GetComponent<PlayerInput>();
-
-        // Busca automaticamente o PlayerData se não foi atribuído
-        if (playerData == null)
-        {
-            playerData = FindFirstObjectByType<PlayerData>();
-            if (playerData == null)
-            {
-                Debug.LogWarning("PlayerData não encontrado. O gancho estará desativado.");
-            }
-        }
 
         if (playerInput != null)
         {
@@ -73,10 +89,8 @@ public class GrapplingHook : MonoBehaviour
 
     void Update()
     {
-        // Verifica se o gancho está habilitado pelo PlayerData
-        bool canGrapple = playerData != null && playerData.canGrapplingHook;
-
-        if (!canGrapple)
+        // Verifica se o gancho está liberado pelos stats
+        if (!isUnlocked)
         {
             // Se estava ativo, desativa os visuais
             if (currentState != State.Ready && currentState != State.Cooldown)
@@ -151,9 +165,8 @@ public class GrapplingHook : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Verifica se o gancho está habilitado
-        bool canGrapple = playerData != null && playerData.canGrapplingHook;
-        if (!canGrapple || rb == null) return;
+        // Verifica se o gancho está liberado
+        if (!isUnlocked || rb == null) return;
 
         if (currentState == State.Grappling)
         {

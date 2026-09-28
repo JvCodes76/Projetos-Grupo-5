@@ -159,24 +159,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07cf2a0327132794e97b608e52064c88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 10
-  acceleration: 40
+  baseStats: {fileID: 11400000, guid: bbc8281b1bc088d4bbb25bb59063b883, type: 2}
   deceleration: 30
   turnSpeed: 30
-  airAcceleration: 20
   airDeceleration: 30
   airTurnSpeed: 50
-  jumpHeight: 2.5
   timeToApex: 0.37
   upwardMovementMultiplier: 1
   downwardMovementMultiplier: 0.95
-  coyoteTime: 0.1
   speedYLimit: 20
   jumpBufferTime: 0.1
   airJumpHeightMultiplier: 2
   hangTime: 0.3
   wallCheckDistance: 0.15
-  wallSlideSpeed: 2
   wallJumpForce: {x: 8, y: 14}
   wallJumpTime: 0.3
   wallLayer:
@@ -213,8 +208,6 @@ MonoBehaviour:
   isWallJumping: 0
   rb: {fileID: 3996979232881756025}
   gameController: {fileID: 0}
-  playerData: {fileID: 0}
-  gameOverScreen: {fileID: 8525063621205404531, guid: bf13c1f0438d9e54b81f85e96c514b04, type: 3}
 --- !u!114 &4080611709991361240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -339,9 +332,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca30605b75f293240beaee20d178c107, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grappleRadius: 9
   grapplePullSpeed: 20
-  launchBoostForce: 25
   hookTravelSpeed: 40
   minDistanceToFinish: 0.5
   whatIsGrappleable:
@@ -350,14 +341,12 @@ MonoBehaviour:
   whatIsObstacle:
     serializedVersion: 2
     m_Bits: 64
-  grappleCooldown: 0.5
   maxGrappleDuration: 3
   stuckCheckInterval: 0.3
   stuckDistanceThreshold: 0.05
   firePoint: {fileID: 7420803854027053290}
   hookTipTransform: {fileID: 6515608485818370963}
   ropeRenderer: {fileID: 5287622600673404836}
-  playerData: {fileID: 0}
 --- !u!1 &4882611793726292734
 GameObject:
   m_ObjectHideFlags: 0

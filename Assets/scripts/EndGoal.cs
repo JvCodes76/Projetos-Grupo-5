@@ -66,7 +66,8 @@ public class EndGoal : MonoBehaviour
         }
     }
 
-    // Método para resetar o goal (útil para testes)
+    // Reativa o goal (trigger, collider e sprite; útil para testes). Não cancela uma troca de fase que o
+    // SceneController já tenha agendado ao ouvir LevelGoalReached.
     public void ResetGoal()
     {
         alreadyTriggered = false;

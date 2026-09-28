@@ -39,7 +39,7 @@ namespace Roguelike.EditorTools
         public static void RunFromCommandLine()
         {
             string resultsPath = GetCommandLineArgument("-resultsPath") ?? DefaultResultsPath;
-            bool started = Run(resultsPath, report => EditorApplication.Exit(report.failed > 0 ? 1 : 0));
+            bool started = Run(resultsPath, report => EditorApplication.Exit(report.failed > 0 || report.total == 0 ? 1 : 0));
             if (!started)
             {
                 EditorApplication.Exit(2);
@@ -150,9 +150,20 @@ namespace Roguelike.EditorTools
 
             public void RunFinished(ITestResultAdaptor result)
             {
-                report.status = "finished";
                 report.finishedAt = DateTime.Now.ToString("o");
                 report.durationSeconds = result.Duration;
+
+                // Zero testes quase sempre é o assembly de testes que não compilou: não pode passar por verde.
+                if (report.total == 0)
+                {
+                    report.status = "error";
+                    report.error = "Nenhum teste executado (o assembly Roguelike.Tests.EditMode compilou?).";
+                }
+                else
+                {
+                    report.status = "finished";
+                }
+
                 Finished?.Invoke();
             }
         }

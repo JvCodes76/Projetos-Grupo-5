@@ -4,26 +4,27 @@ using System.Collections;
 using System.Collections.Generic;
 using Roguelike.Events;
 using Roguelike.Run;
+using Roguelike.Stats;
+using Roguelike.Upgrades;
 
 public class characterMovement : MonoBehaviour
 {
+    [Header("Stats")]
+    [Tooltip("Kit base do jogador (valores upgradáveis). Os stats finais chegam por PlayerStatsChanged.")]
+    [SerializeField] private PlayerBaseStats baseStats;
+
     [Header("Horizontal Movement (Ground)")]
-    [SerializeField] private float maxSpeed = 10f;
-    [SerializeField] private float acceleration = 50f;
     [SerializeField] private float deceleration = 70f;
     [SerializeField] private float turnSpeed = 60f;
 
     [Header("Horizontal Movement (Air)")]
-    [SerializeField] private float airAcceleration = 30f;
     [SerializeField] private float airDeceleration = 40f;
     [SerializeField] private float airTurnSpeed = 25f;
 
     [Header("Vertical Jump Settings")]
-    [SerializeField] private float jumpHeight = 4f;
     [SerializeField] private float timeToApex = 0.4f;
     [SerializeField] private float upwardMovementMultiplier = 1f;
     [SerializeField] private float downwardMovementMultiplier = 1f;
-    [SerializeField] private float coyoteTime = 0.1f;
     [SerializeField] private float speedYLimit = 20f;
     [SerializeField] private float jumpBufferTime = 0.1f;
     [SerializeField] private float airJumpHeightMultiplier = 1f;
@@ -31,16 +32,22 @@ public class characterMovement : MonoBehaviour
 
     [Header("Wall Jump Settings")]
     [SerializeField] private float wallCheckDistance = 0.1f;
-    [SerializeField] private float wallSlideSpeed = 2f;
     [SerializeField] private Vector2 wallJumpForce = new Vector2(5f, 9f);
     [SerializeField] private float wallJumpTime = 0.2f;
     [SerializeField] private LayerMask wallLayer;
 
-    // Variáveis que vêm do PlayerData
-    private bool enableWallJump;
+    // Valores upgradáveis: vêm do PlayerStatsSnapshot (ApplyStats); o valor base mora no PlayerBaseStats
+    private float maxSpeed;
+    private float acceleration;
+    private float airAcceleration;
+    private float jumpHeight;
+    private float coyoteTime;
+    private float wallSlideSpeed;
     private int maxAirJumps;
-    private float agility;
-    private float strength;
+    private bool canWallGrab;
+
+    /// <summary>Último snapshot de stats aplicado ao jogador (verificação e HUD).</summary>
+    public PlayerStatsSnapshot Stats { get; private set; }
 
     [Header("Ground Check")]
     [SerializeField] private Transform groundCheck;
@@ -83,11 +90,6 @@ public class characterMovement : MonoBehaviour
     private bool canMove = true;
     private bool isDead = false;
 
-    // Valores base (Inspector) usados para recalcular os stats sem acumular
-    private float baseJumpHeight;
-    private float baseMaxSpeed;
-    private float baseAcceleration;
-
     private float initialJumpY;
     private bool isGroundJump;
     private float hangTimer = 0f;
@@ -98,18 +100,21 @@ public class characterMovement : MonoBehaviour
     private InputAction jumpAction;
     public GameController gameController;
 
-    [Header("Referências")]
-    [SerializeField] private PlayerData playerData; // Agora é SerializeField para arrastar no Inspector
-
     // Henrique: Referência ao script do gancho
     private GrapplingHook grapplingHook;
 
     void Awake()
     {
-        // Guarda os valores base do Inspector antes de qualquer modificador ser aplicado
-        baseJumpHeight = jumpHeight;
-        baseMaxSpeed = maxSpeed;
-        baseAcceleration = acceleration;
+        // Henrique: Pega o componente do Gancho (antes do snapshot inicial, que também configura o gancho)
+        grapplingHook = GetComponent<GrapplingHook>();
+
+        // Kit base: o jogador se inicializa sozinho até o RunManager emitir PlayerStatsChanged (ADR-16)
+        if (baseStats == null)
+        {
+            Debug.LogWarning("[characterMovement] - PlayerBaseStats não atribuído; usando os valores padrão do kit base.");
+            baseStats = ScriptableObject.CreateInstance<PlayerBaseStats>();
+        }
+        ApplyStats(new PlayerStats(baseStats).CreateSnapshot());
 
         playerInput = GetComponent<PlayerInput>();
 
@@ -123,22 +128,53 @@ public class characterMovement : MonoBehaviour
         var actionMap = playerInput.actions.FindActionMap("Player");
         moveAction = actionMap.FindAction("Movement");
         jumpAction = actionMap.FindAction("Jump");
-
-        // Tenta pegar o PlayerData do mesmo GameObject
-        if (playerData == null)
-        {
-            playerData = GetComponent<PlayerData>();
-        }
     }
 
     private void OnEnable()
     {
         EventBus<LevelTimeExpired>.Subscribe(HandleLevelTimeExpired);
+        EventBus<PlayerStatsChanged>.Subscribe(HandlePlayerStatsChanged);
     }
 
     private void OnDisable()
     {
         EventBus<LevelTimeExpired>.Unsubscribe(HandleLevelTimeExpired);
+        EventBus<PlayerStatsChanged>.Unsubscribe(HandlePlayerStatsChanged);
+    }
+
+    private void HandlePlayerStatsChanged(PlayerStatsChanged evt)
+    {
+        ApplyStats(evt.Stats);
+    }
+
+    /// <summary>
+    /// Único ponto de entrada de stats no jogador: copia o snapshot para os campos de movimento,
+    /// repassa ao GrapplingHook e recalcula o pulo. Idempotente (aplica o snapshot inteiro).
+    /// </summary>
+    private void ApplyStats(PlayerStatsSnapshot s)
+    {
+        if (!s.IsValid)
+        {
+            Debug.LogWarning("[characterMovement] - Snapshot de stats inválido recebido; ignorado.");
+            return;
+        }
+
+        Stats = s;
+
+        maxSpeed = s.Get(StatType.MaxSpeed);
+        acceleration = s.Get(StatType.Acceleration);
+        airAcceleration = s.Get(StatType.AirAcceleration);
+        jumpHeight = s.Get(StatType.JumpHeight);
+        coyoteTime = s.Get(StatType.CoyoteTime);
+        wallSlideSpeed = s.Get(StatType.WallSlideSpeed);
+        maxAirJumps = s.GetInt(StatType.MaxAirJumps);
+        canWallGrab = s.HasAbility(AbilityFlags.WallGrab);
+
+        // Comando direto dentro do domínio do jogador (mesmo GameObject)
+        if (grapplingHook != null) grapplingHook.ApplyStats(s);
+
+        // Antes do Start o Rigidbody ainda não existe: o Start calcula o pulo
+        if (rb != null && defaultGravityScale > 0f) CalculateJumpVariables();
     }
 
     private void HandleLevelTimeExpired(LevelTimeExpired evt)
@@ -150,16 +186,7 @@ public class characterMovement : MonoBehaviour
 
     void Start()
     {
-        // Busca o PlayerData se ainda não foi encontrado
-        FindPlayerData();
-
-        // Carrega os dados do PlayerData
-        LoadPlayerStats();
-
         rb = GetComponent<Rigidbody2D>();
-
-        // Henrique: Pega o componente do Gancho
-        grapplingHook = GetComponent<GrapplingHook>();
 
         playerCollider = GetComponent<Collider2D>();
         playerAnimator = GetComponent<Animator>();
@@ -187,70 +214,6 @@ public class characterMovement : MonoBehaviour
 
         coyoteTimeCounter = coyoteTime;
         jumpBufferCounter = 0f;
-    }
-
-    /// <summary>
-    /// Carrega os stats do PlayerData para as variáveis locais
-    /// </summary>
-    private void LoadPlayerStats()
-    {
-        if (playerData != null)
-        {
-            enableWallJump = playerData.canWallJump;
-            maxAirJumps = playerData.maxAirJumps;
-            agility = playerData.agility;
-            strength = playerData.strength;
-
-            // Aplica modificadores baseados nos stats a partir dos valores base (sem acumular)
-            jumpHeight = baseJumpHeight + 0.1f * strength;
-            maxSpeed = baseMaxSpeed + 0.5f * agility;
-            acceleration = baseAcceleration + agility;
-        }
-        else
-        {
-            Debug.LogWarning("PlayerData não encontrado! Usando valores padrão.");
-            // Valores padrão caso PlayerData não exista
-            enableWallJump = true;
-            maxAirJumps = 1;
-            agility = 1f;
-            strength = 1f;
-            jumpHeight = baseJumpHeight;
-            maxSpeed = baseMaxSpeed;
-            acceleration = baseAcceleration;
-        }
-    }
-
-    /// <summary>
-    /// Recarrega os stats do PlayerData e recalcula o pulo, sem acumular sobre chamadas anteriores.
-    /// Chamado, por exemplo, pelo ShopManager após uma compra.
-    /// </summary>
-    public void RefreshStats()
-    {
-        FindPlayerData();
-        LoadPlayerStats();
-        CalculateJumpVariables();
-    }
-
-    /// <summary>
-    /// Encontra o PlayerData na cena
-    /// </summary>
-    private void FindPlayerData()
-    {
-        if (playerData != null) return;
-
-        // Tenta pegar do mesmo GameObject
-        playerData = GetComponent<PlayerData>();
-
-        // Se não encontrou, busca na cena
-        if (playerData == null)
-        {
-            playerData = FindFirstObjectByType<PlayerData>();
-        }
-
-        if (playerData == null)
-        {
-            Debug.LogError("PlayerData não encontrado na cena!");
-        }
     }
 
     void Update()
@@ -298,7 +261,8 @@ public class characterMovement : MonoBehaviour
             coyoteTimeCounter -= Time.deltaTime;
         }
 
-        if ((isTouchingLeftWall || isTouchingRightWall) && !onGround && rb.linearVelocity.y < 0)
+        // Sem a habilidade WallGrab o jogador não desliza na parede (ADR-19)
+        if (canWallGrab && (isTouchingLeftWall || isTouchingRightWall) && !onGround && rb.linearVelocity.y < 0)
         {
             isWallSliding = true;
         }
@@ -316,13 +280,14 @@ public class characterMovement : MonoBehaviour
             jumpBufferCounter -= Time.deltaTime;
             if (desiredJump)
             {
-                if (enableWallJump && isWallSliding)
+                if (canWallGrab && isWallSliding)
                 {
                     WallJump();
                     desiredJump = false;
                     jumpBufferCounter = 0f;
                 }
-                else if (canJumpAgain && !(isWallSliding && !enableWallJump))
+                // Sem WallGrab não há deslize (ADR-19), então não existe mais o caso "deslizando sem poder pular da parede"
+                else if (canJumpAgain)
                 {
                     Jump();
                     desiredJump = false;
@@ -498,9 +463,9 @@ public class characterMovement : MonoBehaviour
 
     private void CalculateJumpVariables()
     {
-        originalJumpSpeed = jumpHeight / timeToApex;
-        float calculatedGravity = (2f * jumpHeight) / (Mathf.Pow(timeToApex, 2));
-        gravMultiplier = calculatedGravity / Physics2D.gravity.magnitude / defaultGravityScale;
+        // Mesmas fórmulas de antes, agora centralizadas (e testadas) no JumpPhysics
+        originalJumpSpeed = JumpPhysics.JumpSpeed(jumpHeight, timeToApex);
+        gravMultiplier = JumpPhysics.GravityMultiplier(jumpHeight, timeToApex, Physics2D.gravity.magnitude, defaultGravityScale);
         jumpSpeed = originalJumpSpeed;
     }
 
@@ -529,11 +494,12 @@ public class characterMovement : MonoBehaviour
         {
             Destroy(other.gameObject);
 
-            // Usa a referência local ao PlayerData
-            if (playerData != null)
+            // Legado (D2): moedas saem na 4.1
+            PlayerData data = PlayerData.Instance;
+            if (data != null)
             {
-                playerData.coinCount++;
-                playerData.SaveData(); // Salva as alterações
+                data.coinCount++;
+                data.SaveData(); // Salva as alterações
             }
             else
             {
@@ -578,7 +544,7 @@ public class characterMovement : MonoBehaviour
 
     public void Die(DeathCause cause)
     {
-        // Die() pode ser chamado mais de uma vez (timer + balas): garante idempotência
+        // Die() pode ser chamado mais de uma vez (várias balas no mesmo frame): garante idempotência
         if (isDead) return;
         LockPlayer();
 
