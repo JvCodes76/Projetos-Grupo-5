@@ -47,6 +47,14 @@ Cada uma tem um padrão recomendado; se o time não decidir, o plano segue com e
 | **D6** | Valores de x (limite) e do tempo-alvo por fase | Placeholders: limite = timer atual (20 s / 30 s / 25 s), alvo = 60 % do limite. Ajustar em playtest (Etapa 4). |
 | **D7** | Reroll / pular oferta | Fora do MVP. A arquitetura deixa espaço para isso. |
 
+**Decisões abertas pela tabela de raridades do João (28/09/2026, ver §3.5):**
+
+| # | Decisão | Recomendação |
+|---|---------|--------------|
+| **D8** | Onde fica o **gancho**, que já está implementado e não aparece na tabela nova? | ✅ **Decidido pelo João (28/09): Raridade 3**, junto de Pulo Duplo e Wall Jump. É uma mecânica de travessia, já funciona e completa 3 candidatos no tier. |
+| **D9** | Quando entram as mecânicas da Raridade 4 (bazuca, teleporte), que exigem código novo e mudanças nas fases? | **Numa Etapa 5 nova**, depois de a run completa estar jogável (Etapas 3 e 4). Até lá a Raridade 4 existe na tabela sem candidatos, e o sorteio cai para a Raridade 3, que é a mais próxima abaixo (ADR-07). |
+| **D10** | Cada raridade tem 2 upgrades, mas a rodada oferece 3 sem repetição. | **Aceitar no MVP.** O fallback preenche o 3º slot com o tier vizinho. Se o playtest achar as ofertas repetitivas, dá para completar só com dados: Raridade 1 "Aumento leve na aceleração", Raridade 2 "+5 s no limite das fases" (o antigo Relógio de Bolso, ADR-12), Raridade 3 o Gancho (D8). |
+
 ---
 
 ## 3. Arquitetura alvo
@@ -141,26 +149,26 @@ Os três últimos (decisões do jogador na UI) e as colunas extras de payload vi
 **Upgrade como dado**: `UpgradeDefinition` = id, nome, descrição, ícone, raridade, `maxStacks`, `prerequisites[]`, `List<StatModifier>` (StatType, Add/Multiply, valor) e `AbilityFlags unlocks`. O ponto de extensão para efeitos especiais no futuro é uma lista opcional de `UpgradeEffect` (ScriptableObject abstrato).
 
 **`StatType`** (mapeia para os campos que já existem): `MaxSpeed`, `Acceleration`, `AirAcceleration`, `JumpHeight`, `CoyoteTime`, `WallSlideSpeed`, `MaxAirJumps`, `GrappleRadius`, `GrappleCooldown`, `GrappleLaunchForce`, `TimeLimitBonus`.
-**`AbilityFlags`**: `WallGrab`, `GrapplingHook`. O pulo duplo é `MaxAirJumps` ≥ 1; no kit base `MaxAirJumps = 0`.
+**`AbilityFlags`**: `WallGrab`, `GrapplingHook`. O pulo duplo é `MaxAirJumps` ≥ 1; no kit base `MaxAirJumps = 0`. Planejadas para a Etapa 5: `Bazooka` e `Teleport`, como bits novos no fim do enum (ADR-23).
 
-Conteúdo inicial (placeholder de design; nomes e raridades são ajustáveis):
+**Conteúdo** (design do João, 28/09/2026). Cada raridade tem um tipo de habilidade:
 
-| Raridade | Upgrade | Efeito | Stack | Requer |
-|---|---|---|---|---|
-| Comum | Passos Leves | +8 % velocidade máxima | 3 | — |
-| Comum | Arranque | +15 % aceleração | 3 | — |
-| Comum | Mola | +8 % altura do pulo | 2 | — |
-| Comum | Controle Aéreo | +20 % aceleração no ar | 2 | — |
-| Raro | Coyote Estendido | +0,08 s de coyote time | 1 | — |
-| Raro | Gancho Rápido | −30 % cooldown do gancho | 2 | Gancho |
-| Raro | Alcance do Gancho | +25 % raio do gancho | 2 | Gancho |
-| Raro | Deslize Lento | −40 % velocidade de deslize na parede | 1 | Wall Grab |
-| Épico | Pulo Duplo | +1 pulo aéreo | 1 | — |
-| Épico | Wall Grab | desbloqueia deslizar e pular na parede | 1 | — |
-| Épico | Gancho | desbloqueia o gancho | 1 | — |
-| Lendário | Pulo Triplo | +1 pulo aéreo | 1 | Pulo Duplo |
-| Lendário | Impulso do Gancho | +40 % força de lançamento | 1 | Gancho |
-| Lendário | Relógio de Bolso | +5 s no limite de todas as fases | 1 | — |
+| Raridade | Tipo | Upgrade | Efeito (valor placeholder) | Stack | Implementação |
+|---|---|---|---|---|---|
+| 1 · Comum | Aumento leve | Aumento leve no pulo | +8 % altura do pulo | 3 | `StatModifier` Multiply em `JumpHeight`: **já funciona** |
+| 1 · Comum | Aumento leve | Aumento leve na velocidade | +8 % velocidade máxima | 3 | `StatModifier` Multiply em `MaxSpeed`: **já funciona** |
+| 2 · Raro | Aumento grande | Aumento grande no pulo | +20 % altura do pulo | 2 | `StatModifier` Multiply em `JumpHeight`: **já funciona** |
+| 2 · Raro | Aumento grande | Aumento grande na velocidade | +20 % velocidade máxima | 2 | `StatModifier` Multiply em `MaxSpeed`: **já funciona** |
+| 3 · Épico | Mecânica simples de plataforma | Pulo Duplo Habilitado | +1 pulo aéreo | 1 | `MaxAirJumps` +1: **já funciona** |
+| 3 · Épico | Mecânica simples de plataforma | Wall Jump Habilitado | deslizar e pular na parede | 1 | flag `WallGrab` (ADR-19): **já funciona** |
+| 3 · Épico | Mecânica simples de plataforma | Gancho Habilitado *(D8)* | desbloqueia o gancho | 1 | flag `GrapplingHook`: **já funciona** |
+| 4 · Lendário | Mecânica complexa | Bazuca | tiro que destrói blocos marcados do cenário para abrir atalhos | 1 | **código novo** (Etapa 5) |
+| 4 · Lendário | Mecânica complexa | Teletransporte | deslocamento curto e instantâneo na direção do input | 1 | **código novo** (Etapa 5) |
+
+- **Raridades 1 a 3** usam só o que as Etapas 1 e 2 já entregaram (`StatModifier`, `MaxAirJumps`, `AbilityFlags`). Criar esses upgrades é criar assets na tarefa 3.3, sem código novo.
+- **Stacks se multiplicam.** Com o máximo de leve (1,08³) e de grande (1,2²), o pulo chega a ~1,8× (2,6 → ~4,7). Isso pode pular trechos inteiros das fases, então os valores são placeholders para a Etapa 4.
+- **Saíram da tabela antiga**, podendo voltar só como dados, sem código: Arranque, Controle Aéreo, Coyote Estendido, Deslize Lento, Pulo Triplo, os upgrades do gancho (rápido, alcance, impulso) e o Relógio de Bolso (ver D10).
+- **Bazuca e D1:** toda fase continua completável sem ela. Os atalhos são opcionais e só aparecem onde o level design colocar blocos destrutíveis.
 
 ### 3.6 O que sai
 `ShopManager`, `ButtonInfo`, `Item shop.prefab`, a economia de moedas (conforme D2), `PlayerData` (a run vive em memória; persistem só volume, VSync e, opcionalmente, recordes), `SaveManager`/`SaveData`/`PlayerSaveController`, `MovementDiagnostic`, `playerData.prefab`, `SceneController` (substituído pelo `RunManager`), o `Timer` regressivo (substituído pelo `LevelTimer`) e o botão "Continuar".
@@ -324,23 +332,70 @@ Os tokens estimados são somente dos subagentes, com base na calibração de ont
 ### Etapa 3 — Integração: run, timer, UI e conteúdo (~450k)
 | ✓ | # | Tarefa | Agente | Depende | Editor | Pronto quando |
 |---|---|---|---|---|---|---|
-| ☐ | 3.1 | `RunManager` (DDOL, adaptador do `RunFlow`; substitui o `SceneController`) + `SceneLoader` + `LevelTimer` (conta para cima com limite, emite eventos, respeita `TimeLimitBonus`). | `dev-core` | 2.3 | compilar | Compila; eventos emitidos na ordem da §3.4 |
-| ☐ | 3.2 | Views (código): HUD do timer, `LevelResultView` (tempo, nota), `UpgradeSelectionView` + `UpgradeCardView` (cor por raridade, teclado/gamepad via Input System, tempo não escalado com o jogo pausado), `RunEndView`. Só ouvem e emitem eventos. | `dev` | 1.1 | compilar | Compila; nenhuma referência direta ao RunManager |
-| ☐ | 3.3 | Criar os assets via MCP a partir das tabelas da §3.5: 4 raridades, `RarityTable`, 14 upgrades, 3 `LevelDefinition`, `RunConfig` + teste `DataValidationTests` (ids únicos, pré-requisitos existem, toda raridade tem candidatos). | `mecanico` | 1.1 | **sim** | Teste de validação verde |
+| ☑ | 3.1 | `RunManager` (DDOL, adaptador do `RunFlow`; substitui o `SceneController`) + `SceneLoader` + `LevelTimer` (conta para cima com limite, emite eventos, respeita `TimeLimitBonus`). | `dev-core` | 2.3 | compilar | Compila; eventos emitidos na ordem da §3.4 |
+| ☑ | 3.2 | Views (código): HUD do timer, `LevelResultView` (tempo, nota), `UpgradeSelectionView` + `UpgradeCardView` (cor por raridade, teclado/gamepad via Input System, tempo não escalado com o jogo pausado), `RunEndView`. Só ouvem e emitem eventos. | `dev` | 1.1 | compilar | Compila; nenhuma referência direta ao RunManager |
+| ☑ | 3.3 | Criar os assets via MCP a partir das tabelas da §3.5: 4 raridades, `RarityTable`, os upgrades das Raridades 1 a 3 (6 ou 7, conforme D8), 3 `LevelDefinition` e `RunConfig`, que usa o `PlayerBaseStats.asset` da 2.4. Também o teste `DataValidationTests`: ids únicos, pré-requisitos existem, e toda raridade tem candidatos, **exceto a Lendária até a Etapa 5** (D9). | `mecanico` | 1.1 | **sim** | Teste de validação verde |
 | ✂️ | | *Ponto de corte* | | | | |
-| ☐ | 3.4 | Montar prefabs e cenas via MCP: prefab `RunSystems` (RunManager, SceneLoader, canvas `RunUI` DDOL com as views); MainMenu com "Nova Run" e sem "Continuar"; fases com `LevelTimer` e referência à `LevelDefinition`, sem o Timer/GameOver antigos; EndGame → RunEnd. | `integrador-unity` | 3.1–3.3 | **sim (trava)** | Run completa jogável do menu à tela final |
+| ☑ | 3.4 | Montar prefabs e cenas via MCP: prefab `RunSystems` (RunManager, SceneLoader, canvas `RunUI` DDOL com as views); MainMenu com "Nova Run" e sem "Continuar"; fases com `LevelTimer` e referência à `LevelDefinition`, sem o Timer/GameOver antigos; EndGame → RunEnd. | `integrador-unity` | 3.1–3.3 | **sim (trava)** | Run completa jogável do menu à tela final |
 | ☐ | 3.5 | Revisão da etapa + playtest humano de uma run completa. | `revisor` + humano | 3.4 | — | Run jogável sem erros no Console |
+
+**Notas da execução (28/09/2026, Etapas 3 e 4 na mesma sessão, a pedido do João):**
+- **Unity fechado no início:** 3.1, 3.2 e 4.3 (só código) rodaram em paralelo, verificadas por uma checagem de compilação **fora do Unity**: um script sincroniza os `.csproj` gerados (gitignored) com os `.cs` em disco e compila com `dotnet build`. Pega erros de C#, mas não roda testes nem valida serialização. Os testes EditMode novos ficam para o Editor.
+- **3.1** (Opus high, 152k): `RunManager`, `SceneLoader` e `LevelTimer` em `Assets/scripts/Run/`, mais o `LevelClock` puro (Core/Run) com 48 casos de teste, que passaram fora do Unity numa réplica mínima do NUnit.
+  - **O `LevelTimer` fica no prefab `RunSystems` (DDOL), não nas cenas.** O `LevelStarted` já traz a fase e o limite efetivo, então a 3.4 não precisa pôr `LevelTimer` nem referência à `LevelDefinition` em cada fase.
+  - **Fim da fase:** pausa com `timeScale = 0` até a escolha do upgrade. A derrota não pausa: a animação de morte continua, e a `RunEndView` aparece com atraso em tempo real.
+  - **Jogador:** cada fase instancia o seu `Cyborg` no objeto com a tag `SpawnPoint`.
+  - **Menu carregado por fora do fluxo** (botões legados até a 4.1): a run é descartada com warning, sem eventos.
+- **3.2** (Sonnet high, 149k): 5 views em `Assets/scripts/UI/Run/` e o `TimeFormat` puro (Core/Run), com 8 testes.
+  - A `UpgradeSelectionView` trava as cartas antes de emitir o `UpgradeSelected`, o que resolve a M2 da Etapa 2. As teclas 1/2/3 também escolhem.
+  - O `MainMenu.PlayGame` só emite `NewRunRequested`. O "Continuar" e o F12 saíram.
+  - O orquestrador trocou `EventSystem.current?.` por checagem explícita, o mesmo padrão que o revisor apontou na Etapa 2, e deu texto à vitória na `RunEndView`.
+- **4.3 adiantada** (Sonnet high, 157k), porque é só código e assim a 3.4 já liga o componente no `RunSystems`.
+  - `RunTelemetryRecorder` puro (Core/Run, sem depender de `Roguelike.Events`), com 15 testes, e o adaptador `RunTelemetry`.
+  - Grava uma linha por fase em `persistentDataPath/telemetria_runs.csv`: CSV RFC 4180 com vírgula e decimais com ponto; `death_cause` como número (ADR-23).
+- **Com o Unity aberto:** 303/303 verdes antes da 3.3, confirmando a 3.1, a 3.2 e a 4.3 no Editor.
+- **3.3** (Haiku, 152k): 4 raridades, `RarityTable`, 7 upgrades (D8: gancho na Raridade 3), 3 `LevelDefinition` (D6: 20/12, 30/18, 25/15 s) e o `RunConfig`, mais os 8 `DataValidationTests`. Ficou em 311/311.
+  - O dump do relatório trazia um erro de digitação (`jump_small` como `MaxAirJumps`). O orquestrador conferiu o YAML: está certo, `JumpHeight` × 1,08.
+  - A exceção da Lendária no `DataValidationTests` **falha de propósito** quando a Etapa 5 adicionar candidatos (tarefa 5.5).
+  - Sem ícones: o campo é opcional e a carta o esconde. Fica para a arte.
+- **3.4** (Opus medium, 219k):
+  - `RunSystems.prefab` com `RunManager`, `SceneLoader`, `LevelTimer`, `RunTelemetry` e o canvas `RunUI` com as 4 views, mais o `UpgradeCard.prefab` (`Assets/_Roguelike/Prefabs/`). 0 referências nulas.
+  - **MainMenu:** `RunSystems` adicionado; `GameController` (o `SceneController`) e o botão "Continuar" removidos.
+  - **As 3 fases:** instância do `Canvas.prefab` (Timer e GameOver legados) removida.
+  - **Smoke test em Play Mode passou inteiro:**
+    - vitória nas 3 fases, com ofertas, escolha e trava do segundo clique;
+    - volta ao menu com um único `RunManager`;
+    - derrota por tempo e por morte;
+    - CSV de telemetria gravado;
+    - 0 erros do projeto no Console.
+  - **Ajustes do orquestrador:** o HUD mostra "Fase 2 · 2/3", e a `RunEndView` rotula a lista de upgrades.
+  - **Não testado ainda** (playtest humano da 3.5): input real (teclado, gamepad, 1/2/3), chegar ao `EndGoal` jogando, a sensação dos upgrades no movimento, a UI em Overlay no Game View e o áudio.
 
 ### Etapa 4 — Limpeza, QA e balanceamento (~350k)
 | ✓ | # | Tarefa | Agente | Depende | Editor | Pronto quando |
 |---|---|---|---|---|---|---|
 | ☐ | 4.1 | Remover o legado da §3.6. **Antes de apagar**, um script lista as referências por GUID em cenas e prefabs; só apaga o que tiver zero referências. | `mecanico` | 3.4 | **sim** | Compila; Console limpo; lista do que foi apagado |
 | ☐ | 4.2 | Smoke test automatizado via MCP: Nova Run → `LevelGoalReached` simulado → 3 ofertas → `UpgradeSelected` → próxima fase → … → `RunEnded`. | `dev` | 3.4 | sim | Teste passa |
-| ☐ | 4.3 | Telemetria de playtest: CSV em `persistentDataPath` com tempo por fase, nota, raridades oferecidas e upgrade escolhido. | `dev` | 3.1 | não | CSV gerado numa run |
+| ☑ | 4.3 | Telemetria de playtest: CSV em `persistentDataPath` com tempo por fase, nota, raridades oferecidas e upgrade escolhido. | `dev` | 3.1 | não | CSV gerado numa run |
 | ✂️ | | *Ponto de corte* | | | | |
 | ☐ | 4.4 | Playtests do time + ajuste do limite e do alvo por fase e das curvas de raridade (análise do CSV e aplicação nos assets). | Humanos + `integrador-unity` | 4.3 | sim | Valores de D6 definidos |
 | ☐ | 4.5 | Revisão final da branch (`/code-review high`) antes do PR. | `revisor` | 4.4 | — | Sem achados críticos |
 | ☐ | 4.6 | README: como adicionar upgrade, fase e evento. | `mecanico` | 4.5 | não | Doc revisada |
+
+### Etapa 5 — Habilidades da Raridade 4 (~400k, depende de D9)
+Bazuca e teletransporte são mecânicas novas: um componente no jogador ligado por flag, como o `GrapplingHook`, e mudanças nas fases no caso da bazuca. Só começa com a run completa jogável.
+
+| ✓ | # | Tarefa | Agente | Depende | Editor | Pronto quando |
+|---|---|---|---|---|---|---|
+| ☐ | 5.1 | Contrato das habilidades ativas, com ADR no `ARQUITETURA.md`: bits `Bazooka`/`Teleport` no fim de `AbilityFlags`; repasse **genérico** de stats do `characterMovement` para os componentes de habilidade (ex.: uma interface implementada por `GrapplingHook`, bazuca e teleporte), para que 5.2 e 5.3 não disputem o `characterMovement`; ações novas no Input System; como o cenário marca o que é destrutível (tilemap/layer próprio). | `arquiteto` | 3.4 | compilar | Compila; contrato revisado por você |
+| ☐ | 5.2 | Teletransporte: deslocamento curto na direção do input, com checagem de colisão para nunca terminar dentro de parede; cooldown; cancela o gancho; parâmetros em `[SerializeField]`. | `dev-core` | 5.1 | play | Teleporta sem atravessar o chão nem prender o jogador; testes da lógica pura de destino |
+| ☐ | 5.3 | Bazuca: projétil + explosão que remove tiles só do tilemap destrutível dentro de um raio; nunca apaga chão normal, EndGoal ou spawn; cooldown. | `dev-core` | 5.1 | play | Abre passagem num bloco destrutível de teste; chão normal intacto |
+| ✂️ | | *Ponto de corte* | | | | |
+| ☐ | 5.4 | Level design: blocos destrutíveis nas fases criando atalhos **opcionais**. Pela D1, toda fase continua completável sem a bazuca. | Humanos + `integrador-unity` | 5.3 | **sim (trava)** | Cada fase tem ao menos um atalho; completável sem bazuca |
+| ☐ | 5.5 | Assets dos 2 upgrades Lendários + ícones; o `DataValidationTests` passa a exigir candidatos também na Raridade 4. | `mecanico` | 5.2, 5.3 | sim | Teste de validação verde |
+| ☐ | 5.6 | Revisão + playtest de runs com as lendárias (a bazuca quebra o tempo-alvo? o teleporte atravessa paredes finas?). | `revisor` + humano | 5.4, 5.5 | — | Sem achados críticos; tempos-alvo reavaliados |
+
+5.2 e 5.3 podem rodar em paralelo no código, se a 5.1 fizer o repasse genérico. O Play Mode continua sujeito à trava do Editor, um agente por vez.
 
 ### Dependências entre etapas
 
@@ -350,6 +405,7 @@ flowchart LR
     E1 --> E2[Etapa 2<br/>núcleo puro + stats]
     E2 --> E3[Etapa 3<br/>integração + UI + dados]
     E3 --> E4[Etapa 4<br/>limpeza + QA + balanço]
+    E4 --> E5[Etapa 5<br/>Raridade 4: bazuca + teleporte]
 ```
 
 Distribuição de uso por modelo (aproximada, por número de tarefas): Opus 5.5 ≈ 45 % (arquitetura, núcleo com risco, integração no Editor, revisões), Sonnet 5 ≈ 35 % (implementação a partir de contratos), Haiku 4.5 ≈ 20 % (mecânico com verificação).

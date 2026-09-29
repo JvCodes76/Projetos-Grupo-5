@@ -66,8 +66,9 @@ public class EndGoal : MonoBehaviour
         }
     }
 
-    // Reativa o goal (trigger, collider e sprite; útil para testes). Não cancela uma troca de fase que o
-    // SceneController já tenha agendado ao ouvir LevelGoalReached.
+    // Reativa o goal (trigger, collider e sprite; útil para testes). Não cancela o fim de fase que o
+    // RunManager já tenha iniciado ao ouvir LevelGoalReached: ele carrega a próxima cena só depois do
+    // resultado e da escolha do upgrade.
     public void ResetGoal()
     {
         alreadyTriggered = false;

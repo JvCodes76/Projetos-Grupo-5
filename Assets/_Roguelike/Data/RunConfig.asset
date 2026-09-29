@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4190c9f259d8f6c47b093911d9b9f46f, type: 3}
+  m_Name: RunConfig
+  m_EditorClassIdentifier: 
+  levels:
+  - {fileID: 11400000, guid: 187633ffad096614a9d69a8c99d4626b, type: 2}
+  - {fileID: 11400000, guid: 478273b77f9d48f40acfbf4ca50b3685, type: 2}
+  - {fileID: 11400000, guid: fd2016f8d06a74c40a84b4483e526637, type: 2}
+  rarityTable: {fileID: 11400000, guid: e221c360a9a61a042951766377c030de, type: 2}
+  upgradePool:
+  - {fileID: 11400000, guid: 2b326d63ef3c27748be77bddb3eff167, type: 2}
+  - {fileID: 11400000, guid: 0c4c8abb1e37b034296a91e40a0e6a58, type: 2}
+  - {fileID: 11400000, guid: cae3563d996cf47478370e506370ca6c, type: 2}
+  - {fileID: 11400000, guid: 1618efb16ec534046a9aacf82e74c4fa, type: 2}
+  - {fileID: 11400000, guid: 09431fd1ecaebea4e991703c3e93cece, type: 2}
+  - {fileID: 11400000, guid: dc60a6ddc8e0c0348a4c0b7709587196, type: 2}
+  - {fileID: 11400000, guid: b5b2028fe0dc34e498db284c98401169, type: 2}
+  baseStats: {fileID: 11400000, guid: bbc8281b1bc088d4bbb25bb59063b883, type: 2}
+  offerCount: 3
+  gradeThresholds:
+    s: 0.9
+    a: 0.66
+    b: 0.33
+  useFixedSeed: 0
+  fixedSeed: 0

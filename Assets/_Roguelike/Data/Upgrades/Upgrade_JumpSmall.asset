@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 307b231f50b8f164bacd1301b8e75e01, type: 3}
+  m_Name: Upgrade_JumpSmall
+  m_EditorClassIdentifier: 
+  id: jump_small
+  displayName: Aumento leve no pulo
+  description: Pula 8% mais alto.
+  icon: {fileID: 0}
+  rarity: {fileID: 11400000, guid: 3f0a6e6d8ed9e6f40a09b1c1dd325fd0, type: 2}
+  maxStacks: 3
+  prerequisites: []
+  modifiers:
+  - stat: 3
+    operation: 1
+    value: 1.08
+  unlocks: 0
+  effects: []

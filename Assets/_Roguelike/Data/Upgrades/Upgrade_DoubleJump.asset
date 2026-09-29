@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 307b231f50b8f164bacd1301b8e75e01, type: 3}
+  m_Name: Upgrade_DoubleJump
+  m_EditorClassIdentifier: 
+  id: double_jump
+  displayName: Pulo Duplo Habilitado
+  description: Permite um pulo extra no ar.
+  icon: {fileID: 0}
+  rarity: {fileID: 11400000, guid: 553ddfa5339e33541af7007e15932a64, type: 2}
+  maxStacks: 1
+  prerequisites: []
+  modifiers:
+  - stat: 6
+    operation: 0
+    value: 1
+  unlocks: 0
+  effects: []

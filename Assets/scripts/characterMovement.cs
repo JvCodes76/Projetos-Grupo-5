@@ -98,7 +98,6 @@ public class characterMovement : MonoBehaviour
     private PlayerInput playerInput;
     private InputAction moveAction;
     private InputAction jumpAction;
-    public GameController gameController;
 
     // Henrique: Referência ao script do gancho
     private GrapplingHook grapplingHook;
@@ -485,26 +484,6 @@ public class characterMovement : MonoBehaviour
         {
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(ceilingCheck.position, ceilingCheckRadius);
-        }
-    }
-
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.gameObject.CompareTag("Coin"))
-        {
-            Destroy(other.gameObject);
-
-            // Legado (D2): moedas saem na 4.1
-            PlayerData data = PlayerData.Instance;
-            if (data != null)
-            {
-                data.coinCount++;
-                data.SaveData(); // Salva as alterações
-            }
-            else
-            {
-                Debug.LogWarning("Coin coletada, mas PlayerData não encontrado!");
-            }
         }
     }
 
