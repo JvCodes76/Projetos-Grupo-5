@@ -108,7 +108,7 @@ flowchart TB
     end
     SR --> PC --> PM
     SR --> CF --> CS
-    SR -. na 3.1 .-> LT
+    SR -.->|na 3.1| LT
     PIR --> IS --> PM
     PM --> ICW
     P2D -. implementa .-> ICW
@@ -154,7 +154,8 @@ Assets/_Roguelike/
                                             AudioCueSet_Cyborg.asset, MovementKit_*.asset, LevelPatch_*.asset
 Assets/scripts/Player/                   ← PlayerController, SimulationRunner, PlayerInputReader,
                                             EventBusMovementEvents, LegacyPlayerDataStatsSource,
-                                            TickTriggerScanner, characterMovement.cs (fachada, GUID 07cf…)
+                                            TickTriggerScanner
+Assets/scripts/characterMovement.cs      ← fachada; NÃO mover (mantém arquivo, .meta e GUID 07cf…, §13.2)
 Assets/scripts/Player/View/              ← PlayerView, PlayerAnimatorDriver, PlayerFeedback, AfterimagePool,
                                             ResourceIndicatorView, GrappleView, AudioCueSet
 Assets/scripts/Input/                    ← GameInput, RebindService, RebindingPanel
@@ -1379,7 +1380,7 @@ Pré-requisitos: Etapa 0 (0.4 asmdefs + `TestRunnerBridge`; 0.2 e 0.5 antes da M
 | ☐ | M.17 | UI de opções (`FeedbackOptionsPanel`) e rebinding (`RebindService`, `RebindingPanel`) na `SettingsMenu` + conferência manual de persistência | `dev` (código) → `integrador-unity` (cena) | M.10, M.3 | sim | 70k | Opções e rebinding persistem entre sessões; freeze desligado não muda o tempo |
 | ☐ | M.18 | Revisão (`/code-review high`) + playtest humano: teclado e gamepad, kit base nas 3 fases, questionário do PRD §11.1, simulador de daltonismo | `revisor` + humanos | M.16, M.17 | — | 60k | Sem achados críticos; D1 (b) medido; lista de ajustes para a 4.4 |
 
-**Total ≈ 1,72M tokens em 5 janelas** (no Pro, 5 dias, "1 etapa por dia" vira "1 janela por dia"). **Caminho mínimo P0** se faltar orçamento: M.1–M.3, M.5, M.6, M.7 (só gancho), M.8, M.9, M.10 (squash, animação, mesmo frame), M.12, M.13, M.15, M.16. Dash, UI de opções/rebinding e o resto do feedback P1 vão para antes da 4.4 (definição de P1 do PRD).
+**Total ≈ 1,78M tokens em 5 janelas** (soma das linhas) (no Pro, 5 dias, "1 etapa por dia" vira "1 janela por dia"). **Caminho mínimo P0** se faltar orçamento: M.1–M.3, M.5, M.6, M.7 (só gancho), M.8, M.9, M.10 (squash, animação, mesmo frame), M.11 (só `DevPlayBootstrap`, `MovementGymBuilder` e `CyborgPrefabValidator`, dos quais M.13 e M.15 dependem), M.12, M.13, M.15, M.16. Dash, UI de opções/rebinding e o resto do feedback P1 vão para antes da 4.4 (definição de P1 do PRD).
 
 ### 17.2 Posse de arquivos
 
@@ -1410,9 +1411,9 @@ Pré-requisitos: Etapa 0 (0.4 asmdefs + `TestRunnerBridge`; 0.2 e 0.5 antes da M
 | §5 "Dependências entre etapas" | `E1 → EM[Etapa M · movimento] → 2.4`; `EM` em paralelo com 2.1–2.3; `EM → E3` |
 | 1.1 | `StatType`/`AbilityFlags` com a lista da §8.2 (valores explícitos); `PlayerDied` com `Cause`, `Position`, `Tick`; catálogo §3.4 com os eventos da §9.1 |
 | 1.2 | `Raise` sem alocação (critério de pronto: teste de GC) |
-| 2.1 | `PlayerBaseStats` referencia o `MovementProfile` (bases e tetos de movimento vêm dele). Os testes de referência congelam o **perfil novo**: `JumpHeight 3,5 → JumpSpeed 13,49 ± 0,01`, gravidade 110 **constante** com `JumpHeight` +20 %, tetos do PRD §9.1. Depende de M.1 |
+| 2.1 | `PlayerBaseStats` referencia o `MovementProfile` (bases e tetos de movimento vêm dele). Os testes de referência congelam o **perfil novo**: `JumpHeight 3,5 → JumpSpeed 13,49 ± 0,01`, gravidade 110 **constante** com `JumpHeight` +20 %, tetos do PRD §9.1. Depende de M.1 (contratos) e M.5 (`JumpSolver`, usado no teste de `JumpSpeed`) |
 | 2.3 | `RunFlow` idempotente: `PlayerDied(Time)` + `LevelTimeExpired` no mesmo tick = uma derrota |
-| 2.4 | Novo texto: "Ligar o controlador novo ao `PlayerStats`: `PlayerStatsMovementInput : IMovementStatInput` + `PlayerStatsChanged → QueueStats`; remover `LegacyPlayerDataStatsSource` e `RefreshStats`; kit base sem aéreo/parede/gancho/dash". Pronto quando: suíte de metas verde com o snapshot base e cada habilidade ligando pelo stat/flag. Sai "sensação idêntica" |
+| 2.4 | Novo texto: "Ligar o controlador novo ao `PlayerStats`: `PlayerStatsMovementInput : IMovementStatInput` + `PlayerStatsChanged → QueueStats`; remover `LegacyPlayerDataStatsSource` e `RefreshStats` (inclusive a chamada em `ShopManager`, ou o próprio `ShopManager` se a 4.1 já o removeu); kit base sem aéreo/parede/gancho/dash". Pronto quando: suíte de metas verde com o snapshot base e cada habilidade ligando pelo stat/flag. Sai "sensação idêntica" |
 | 3.1 | `LevelTimer : ITickable` (`TickOrder 200`), conta ticks do `SimulationLoop`, expira no tick exato; freeze e pausa não contam |
 | 3.3 | Upgrades do PRD §9.4 (Embalo, Impulso, Recarga na Parede, Âncora, Dash, Dash Duplo; "Arranque" sai) |
 | 3.4 | `SimulationRunner` pode ir no `RunSystems`; o spawner instancia `Cyborg.prefab` e usa `PlayerController.Teleport` |
@@ -1498,7 +1499,7 @@ Testes: classes da §16 (`EditMode/Movement` salvo indicação). "Manual" = veri
 | Reimportar o LDtk apaga as edições de fase | Edições como `LevelPatch` (dados) reaplicáveis pelo `LevelPatcher`; proibido reimportar sem reaplicar |
 | Tempos da D6 ficam obsoletos com o pulo novo | Remedir na 4.4 com a telemetria (PRD §10.3-5) |
 | O feel novo ficar "duro" ou diferente do esperado | Gym com A/B (`Legacy`), tuning só nos SOs; os testes congelam **metas**, não constantes |
-| Orçamento (~1,7M tokens, 5 janelas) | Pontos de corte ✂️; caminho mínimo P0 (§17.1) |
+| Orçamento (~1,8M tokens, 5 janelas) | Pontos de corte ✂️; caminho mínimo P0 (§17.1) |
 | EventBus alocando por evento | Critério na 1.2 (§17.3); smoke de GC |
 | Poses de inimigos defasadas nos casts | `Physics2D.SyncTransforms()` uma vez por frame antes dos ticks |
 | `Timer` legado conta freeze até a 3.1 | Aceito (3 ticks por dash); corrigido pelo `LevelTimer` |
