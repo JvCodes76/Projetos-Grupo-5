@@ -98,7 +98,7 @@ Todos em `Roguelike.Events` (`Events/GameEvents.cs`). Tipos exatos dos payloads:
 |---|---|---|---|---|
 | `RunStarted` | `int Seed`, `RunConfig Config` | RunManager | RunUI (PlayerStats é recriado junto com o RunState) | Seguido de `PlayerStatsChanged` com o kit base |
 | `LevelStarted` | `int LevelIndex` (base 0), `LevelDefinition Level`, `float EffectiveTimeLimit` | RunManager | LevelTimer, HUD | Vem depois de `PlayerSpawned` e `PlayerStatsChanged` da mesma fase |
-| `PlayerSpawned` | `GameObject Player` | Spawner (SceneController → RunManager na 3.1) | CameraFollow, LevelTimer, Minimap, RunManager (o EnemyAI detecta o jogador por overlap e não precisa dele) | Jogador não nulo, já posicionado, `Awake`/`OnEnable` executados |
+| `PlayerSpawned` | `GameObject Player` | RunManager (o spawner desde a 3.1; antes, SceneController) | CameraFollow, LevelTimer, Minimap, RunManager (o EnemyAI detecta o jogador por overlap e não precisa dele) | Jogador não nulo, já posicionado, `Awake`/`OnEnable` executados |
 | `LevelTimeChanged` | `float ElapsedSeconds`, `float EffectiveTimeLimit`, (`RemainingSeconds` calculado) | LevelTimer | HUD, RunManager | `ElapsedSeconds = floor(t×10)/10`; emitido com 0 no início e depois só quando muda; nada depois do fim da fase |
 | `LevelTimeExpired` | — | LevelTimer | RunManager, characterMovement | No máximo um por fase; não emitido se a fase já acabou |
 | `PlayerDied` | `DeathCause Cause` | characterMovement | RunManager, LevelTimer (para) | Um por vida; **nunca** por tempo esgotado (ADR-10) |
@@ -214,6 +214,13 @@ RunEndView "Menu"          → RunEndDismissed → flow.ReturnToMenu() → carre
 
 Se o comando do RunFlow retornar `false` (evento fora de fase), o RunManager só loga `[RunManager] - …` e não faz nada.
 
+**Como ficou na Etapa 3:**
+- **Componentes:** o `RunManager`, o `SceneLoader`, o `LevelTimer` e o `RunTelemetry` ficam na raiz do prefab `RunSystems` (DDOL), em `Assets/_Roguelike/Prefabs/`. O canvas `RunUI` com as 4 views é filho dele.
+- **Onde vive:** o `RunSystems` está no `MainMenu`. Ao voltar ao menu, a cópia da cena se desliga e se destrói no `Awake` (ADR-25).
+- **Jogador:** cada fase instancia o próprio `Cyborg` no objeto com a tag `SpawnPoint`.
+- **Pausa:** ver a ADR-26.
+- **Primeiro tick da fase:** ver a ADR-27.
+
 ## 8. Guia de migração da tarefa 1.3
 
 Os structs acima são usados sem alteração. O fluxo antigo (SceneController/Timer) continua funcionando até a 3.1.
@@ -227,6 +234,8 @@ Os structs acima são usados sem alteração. O fluxo antigo (SceneController/Ti
 
 **Como ficou (1.3):** a tela de game over, que antes era ligada em três lugares (characterMovement, Timer, EnemyBullet), agora tem um dono só: o Timer do `Canvas.prefab`, que a mostra no próprio tempo esgotado e ao ouvir `PlayerDied`.
 
+**Depois da 4.1:** esta seção é histórica. O `SceneController`, o `Timer`, o `Canvas.prefab` (game over), o `PlayerData`, o save, a loja e as moedas foram removidos. Os papéis deles passaram para o `RunManager`, o `LevelTimer` e a `RunEndView`.
+
 ## 9. Quem implementa cada arquivo
 
 | Arquivo(s) | Estado depois da 1.1 | Tarefa |
@@ -237,6 +246,12 @@ Os structs acima são usados sem alteração. O fluxo antigo (SceneController/Ti
 | `Run/PerformanceEvaluator.cs`, `Upgrades/RarityRoller.cs`, `Upgrades/UpgradeOfferGenerator.cs` | Assinaturas; corpos `NotImplementedException` | 2.2 (`dev`) |
 | `Run/RunFlow.cs`, `Run/RunState.cs` | Assinaturas; corpos `NotImplementedException` | 2.3 (`dev-core`) |
 | Todo o resto (`IEvent`, `GameEvents`, enums, SOs de dados, `StatModifier`, `PlayerStatsSnapshot`, `UpgradeOffer`, `UpgradeOfferRequest`, `LevelResult`, `RunSummary`, `GradeThresholds`, interfaces) | Pronto | 1.1 (mudança de contrato passa pelo arquiteto/João) |
+| `Run/LevelClock.cs` (puro) + `Assets/scripts/Run/RunManager.cs`, `SceneLoader.cs`, `LevelTimer.cs` | Pronto | 3.1 (`dev-core`) |
+| `Run/TimeFormat.cs` (puro) + `Assets/scripts/UI/Run/*View.cs` + `MainMenu.cs` (`NewRunRequested`) | Pronto | 3.2 (`dev`) |
+| Assets de `Assets/_Roguelike/Data/` + `Tests/EditMode/DataValidationTests.cs` | Pronto | 3.3 (`mecanico`) |
+| `Assets/_Roguelike/Prefabs/RunSystems.prefab`, `UpgradeCard.prefab` e as cenas da run | Pronto | 3.4 (`integrador-unity`) |
+| `Run/RunTelemetryRecorder.cs` (puro) + `Assets/scripts/Run/RunTelemetry.cs` | Pronto | 4.3 (`dev`) |
+| `Assets/scripts/Debug/RunSmokeTestDriver.cs` + `Assets/scripts/Editor/RunSmokeTestRunner.cs` | Pronto | 4.2 (`dev`) |
 
 Os conjuntos de 2.1, 2.2 e 2.3 são disjuntos. Mas **em runtime** o RunState/RunFlow (2.3) chama `PlayerStats` (2.1) e `PerformanceEvaluator` (2.2): os testes da 2.3 que passam por `StartRun`, `CompleteLevel` ou `SelectUpgrade` só ficam verdes depois de 2.1 e 2.2. Use um `IUpgradeOfferGenerator` falso nos testes da 2.3.
 
@@ -289,3 +304,18 @@ Os conjuntos de 2.1, 2.2 e 2.3 são disjuntos. Mas **em runtime** o RunState/Run
 **ADR-23 — Enums serializados com valores explícitos, só acrescentar.** `StatType` (contíguo a partir de 0, indexa o snapshot), `ModifierOperation`, `AbilityFlags` (bits), `DeathCause`, `RunEndReason`, `PerformanceGrade`: nunca reordenar nem renumerar, porque os assets e a telemetria guardam o número.
 
 **ADR-24 — Extensões de payload em relação à §3.4.** `LevelTimeChanged` leva também `EffectiveTimeLimit` (o HUD mostra "tempo / limite" sem depender de ter recebido `LevelStarted`). `LevelCompleted` leva um `LevelResult`, que inclui o tempo-alvo, e a mesma struct é reaproveitada no `RunSummary`. `UpgradeOffersGenerated` leva o `LevelIndex` e, por oferta, a raridade sorteada (telemetria, 4.3). `UpgradeOffer` guarda a raridade sorteada e expõe a real (`Upgrade.Rarity`).
+
+**ADR-25 — Sistemas da run num prefab DDOL, e não nas cenas das fases (3.1/3.4).** O plano previa um `LevelTimer` em cada fase, com referência à `LevelDefinition`. Mas o `LevelStarted` já traz a fase e o limite efetivo, então o timer vive no `RunSystems`, junto do `RunManager`. Uma fase nova precisa só de `SpawnPoint`, `EndGoal` e `EventSystem`, e não há ligação por cena para esquecer. A cópia do `RunSystems` que vem com o `MainMenu` se desliga com `SetActive(false)` antes do `Destroy`, para que as views filhas não fiquem inscritas nem por um frame.
+
+**ADR-26 — Política de `timeScale`.**
+- **Pausa (`timeScale = 0`):** do `LevelCompleted` até a cena seguinte carregar, ou seja, durante o resultado, a escolha de upgrade e a vitória.
+- **Volta a 1:** só no callback do carregamento. Voltar antes despausaria a fase antiga durante o carregamento assíncrono.
+- **Derrota:** não pausa. A animação de morte continua, e a `RunEndView` aparece com atraso em tempo real.
+- **Views:** usam tempo não escalado.
+- **Quem mexe:** só o `RunManager`.
+
+**ADR-27 — O primeiro tick da fase é descartado.** O `LevelStarted` sai no frame em que a cena é ativada. O `deltaTime` do frame seguinte inclui os `Awake` da cena, até `Time.maximumDeltaTime` (0,33 s). O `LevelTimer` ignora os ticks desses dois frames: no máximo cerca de 2 frames a favor do jogador, dentro do erro da ADR-13.
+
+**ADR-28 — Telemetria sem depender do bus no Core (4.3).** O `RunTelemetryRecorder` (Core/Run) recebe tipos de domínio e devolve linhas de CSV. Só o adaptador `RunTelemetry` ouve eventos, o que mantém a regra da §2. O CSV segue a RFC 4180, com vírgula e decimais com ponto (cultura invariante). É uma linha por fase jogada, e a última da run leva `run_result`. `death_cause` vai como número (ADR-23). Erro de IO vira warning e nunca derruba o jogo.
+
+**ADR-29 — Abandono da run.** Se o menu for carregado por fora do fluxo, o `RunManager` descarta a run sem emitir eventos. Isso é defensivo e hoje é inalcançável: não há menu de pausa e os botões legados saíram na 4.1. Um futuro "Sair para o menu" deve entrar como evento no catálogo (ex.: `RunAbandoned`), para que as views e a telemetria fiquem sabendo.

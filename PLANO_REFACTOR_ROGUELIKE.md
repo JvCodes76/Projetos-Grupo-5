@@ -337,7 +337,7 @@ Os tokens estimados são somente dos subagentes, com base na calibração de ont
 | ☑ | 3.3 | Criar os assets via MCP a partir das tabelas da §3.5: 4 raridades, `RarityTable`, os upgrades das Raridades 1 a 3 (6 ou 7, conforme D8), 3 `LevelDefinition` e `RunConfig`, que usa o `PlayerBaseStats.asset` da 2.4. Também o teste `DataValidationTests`: ids únicos, pré-requisitos existem, e toda raridade tem candidatos, **exceto a Lendária até a Etapa 5** (D9). | `mecanico` | 1.1 | **sim** | Teste de validação verde |
 | ✂️ | | *Ponto de corte* | | | | |
 | ☑ | 3.4 | Montar prefabs e cenas via MCP: prefab `RunSystems` (RunManager, SceneLoader, canvas `RunUI` DDOL com as views); MainMenu com "Nova Run" e sem "Continuar"; fases com `LevelTimer` e referência à `LevelDefinition`, sem o Timer/GameOver antigos; EndGame → RunEnd. | `integrador-unity` | 3.1–3.3 | **sim (trava)** | Run completa jogável do menu à tela final |
-| ☐ | 3.5 | Revisão da etapa + playtest humano de uma run completa. | `revisor` + humano | 3.4 | — | Run jogável sem erros no Console |
+| ◐ | 3.5 | Revisão da etapa + playtest humano de uma run completa. | `revisor` + humano | 3.4 | — | Run jogável sem erros no Console |
 
 **Notas da execução (28/09/2026, Etapas 3 e 4 na mesma sessão, a pedido do João):**
 - **Unity fechado no início:** 3.1, 3.2 e 4.3 (só código) rodaram em paralelo, verificadas por uma checagem de compilação **fora do Unity**: um script sincroniza os `.csproj` gerados (gitignored) com os `.cs` em disco e compila com `dotnet build`. Pega erros de C#, mas não roda testes nem valida serialização. Os testes EditMode novos ficam para o Editor.
@@ -370,17 +370,49 @@ Os tokens estimados são somente dos subagentes, com base na calibração de ont
     - 0 erros do projeto no Console.
   - **Ajustes do orquestrador:** o HUD mostra "Fase 2 · 2/3", e a `RunEndView` rotula a lista de upgrades.
   - **Não testado ainda** (playtest humano da 3.5): input real (teclado, gamepad, 1/2/3), chegar ao `EndGoal` jogando, a sensação dos upgrades no movimento, a UI em Overlay no Game View e o áudio.
+- **3.5 (revisão, Opus high, 209k):** nada crítico. Fluxo, Event Bus, arquitetura e prefab conferidos.
+  - **Importante, corrigido:** o detector de ciclo de pré-requisitos do `DataValidationTests` nunca disparava, porque retornava em `visited` antes de olhar a pilha. Foi reescrito como DFS de três cores, com 3 testes sintéticos (A→B→A, auto-ciclo, diamante sem ciclo).
+  - **Menores, corrigidos pelo orquestrador:**
+    - O `DataValidationTests` só olhava a estrutura. Ganhou testes do design da §3.5 (raridade, stat, operação, stacks e flag por upgrade, e o kit base sem habilidades), sem fixar os valores numéricos, que ficam para a 4.4.
+    - O `timeScale` voltava a 1 antes de a cena seguinte existir. Agora volta no callback do carregamento.
+    - O primeiro tick da fase contava o engasgo dos `Awake`, até 0,33 s. O `LevelTimer` agora ignora os ticks do frame do `LevelStarted` e do seguinte.
+    - Os nomes dos testes do `TimeFormat` passaram para o inglês.
+    - Total: 322/322.
+  - **Menor, pendente:** o abandono da run (menu carregado por fora do fluxo) não avisa as views. Hoje é inalcançável: não há menu de pausa e os botões legados saíram. Um futuro "Sair para o menu" deve emitir um evento de abandono, e não depender do `sceneLoaded`.
+  - **Playtest humano:** o João jogou em Play Mode; o Console ficou sem erros do projeto.
 
 ### Etapa 4 — Limpeza, QA e balanceamento (~350k)
 | ✓ | # | Tarefa | Agente | Depende | Editor | Pronto quando |
 |---|---|---|---|---|---|---|
-| ☐ | 4.1 | Remover o legado da §3.6. **Antes de apagar**, um script lista as referências por GUID em cenas e prefabs; só apaga o que tiver zero referências. | `mecanico` | 3.4 | **sim** | Compila; Console limpo; lista do que foi apagado |
+| ☑ | 4.1 | Remover o legado da §3.6. **Antes de apagar**, um script lista as referências por GUID em cenas e prefabs; só apaga o que tiver zero referências. | `mecanico` | 3.4 | **sim** | Compila; Console limpo; lista do que foi apagado |
 | ☐ | 4.2 | Smoke test automatizado via MCP: Nova Run → `LevelGoalReached` simulado → 3 ofertas → `UpgradeSelected` → próxima fase → … → `RunEnded`. | `dev` | 3.4 | sim | Teste passa |
 | ☑ | 4.3 | Telemetria de playtest: CSV em `persistentDataPath` com tempo por fase, nota, raridades oferecidas e upgrade escolhido. | `dev` | 3.1 | não | CSV gerado numa run |
 | ✂️ | | *Ponto de corte* | | | | |
 | ☐ | 4.4 | Playtests do time + ajuste do limite e do alvo por fase e das curvas de raridade (análise do CSV e aplicação nos assets). | Humanos + `integrador-unity` | 4.3 | sim | Valores de D6 definidos |
 | ☐ | 4.5 | Revisão final da branch (`/code-review high`) antes do PR. | `revisor` | 4.4 | — | Sem achados críticos |
 | ☐ | 4.6 | README: como adicionar upgrade, fase e evento. | `mecanico` | 4.5 | não | Doc revisada |
+
+**Notas da execução (29/09/2026):**
+- **4.3** foi adiantada para a Etapa 3 (ver as notas de lá).
+- **4.1:** feita pelo `integrador-unity` (Opus medium, 130k) no lugar do `mecanico`, porque mexe em 6 cenas. Erro em cena é caro de achar (§4.2).
+  - **Cenas:**
+    - moedas removidas (D2): 3 na PrimeiraFase e 20 na QuintaFase;
+    - `Canvas.prefab` legado removido da SegundaFase, TerceiraFase e SextaFase, e o `Item shop` da TerceiraFase;
+    - `PlayerDataObject` removido do MainMenu;
+    - a `EndGame` saiu do Build Settings.
+  - **Código:** a coleta de moedas e o campo `gameController` saíram do `characterMovement`, e o comentário do `EndGoal` foi atualizado.
+  - **Apagados** (0 referências por GUID e por código):
+    - os scripts `ShopManager`, `ButtonInfo`, `PlayerData`, `SaveManager`, `SaveData`, `PlayerSaveController`, `MovementDiagnostic`, `SceneController`, `Timer`, `GameOver_Script`, `GameEndScreen` e `GameController`;
+    - os prefabs `Item shop`, `Canvas`, `playerData` e `Coin`;
+    - a cena `EndGame`.
+    - O MCP recusou o `AssetDatabase.DeleteAsset`, que pede confirmação na UI. O João autorizou apagar pelo shell, e os arquivos continuam recuperáveis pelo git.
+  - **Verificado:** 0 missing scripts em todas as cenas do build e nas fases fora da run, 322/322 verdes e um smoke test curto em Play Mode.
+  - **Efeito colateral:** abrir as cenas sujou o atlas da fonte `Humanidade.asset`, que foi restaurado com autorização do João. A modificação dele na ModernCosmo segue intacta, conferida por md5.
+  - **Pendências** (fases fora da run, para quando entrarem pela D4):
+    - TerceiraFase e SextaFase têm um `Cyborg` e uma `Main Camera` colocados na cena, que duplicariam o jogador;
+    - as duas também têm uma instância quebrada do prefab `GameController` (guid `a9bef88e…`, asset inexistente desde antes do refactor), que gera 2 erros ao abrir a cena;
+    - os pais vazios `COINS`/`Coins` ficaram na PrimeiraFase e na QuintaFase;
+    - `VerticalJumpController` está sem uso, e o `MenuMusicController` ficou órfão com a saída da `EndGame`. Os dois ficaram no projeto.
 
 ### Etapa 5 — Habilidades da Raridade 4 (~400k, depende de D9)
 Bazuca e teletransporte são mecânicas novas: um componente no jogador ligado por flag, como o `GrapplingHook`, e mudanças nas fases no caso da bazuca. Só começa com a run completa jogável.
