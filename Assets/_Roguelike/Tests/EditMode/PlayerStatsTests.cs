@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
+using Roguelike.Movement;
 using Roguelike.Stats;
 using Roguelike.Upgrades;
 using UnityEngine;
@@ -8,8 +9,8 @@ using UnityEngine;
 namespace Roguelike.Tests
 {
     /// <summary>
-    /// Testes de <see cref="PlayerStats"/> (tarefa 2.1), incluindo os valores de referência do movimento
-    /// (a sensação do kit base do Cyborg não pode mudar com a migração para o SO PlayerBaseStats).
+    /// Testes de <see cref="PlayerStats"/> (tarefa 2.1, revisada pelo SPEC §17.3): valores de referência do kit base
+    /// do perfil novo de movimento e os tetos por stat do PRD §9.1.
     /// </summary>
     public class PlayerStatsTests
     {
@@ -45,26 +46,78 @@ namespace Roguelike.Tests
             return upgrade;
         }
 
-        // --- Valores de referência (kit base do Cyborg) ---
+        // --- Valores de referência (kit base do perfil novo, SPEC §8.1 / §17.3) ---
 
         [Test]
-        public void Constructor_WithDefaultBaseStats_MatchesCyborgReferenceValues()
+        public void Constructor_WithDefaultBaseStats_MatchesMovementProfileBaseKit()
         {
             var baseStats = CreateDefaultBaseStats();
             var stats = new PlayerStats(baseStats);
 
-            Assert.AreEqual(10.5f, stats.Get(StatType.MaxSpeed), Tolerance);
-            Assert.AreEqual(41f, stats.Get(StatType.Acceleration), Tolerance);
-            Assert.AreEqual(20f, stats.Get(StatType.AirAcceleration), Tolerance);
-            Assert.AreEqual(2.6f, stats.Get(StatType.JumpHeight), Tolerance);
+            Assert.AreEqual(10f, stats.Get(StatType.MaxSpeed), Tolerance);
+            Assert.AreEqual(100f, stats.Get(StatType.Acceleration), Tolerance);
+            Assert.AreEqual(1f, stats.Get(StatType.AirControl), Tolerance);
+            Assert.AreEqual(3.5f, stats.Get(StatType.JumpHeight), Tolerance);
             Assert.AreEqual(0.1f, stats.Get(StatType.CoyoteTime), Tolerance);
-            Assert.AreEqual(2f, stats.Get(StatType.WallSlideSpeed), Tolerance);
+            Assert.AreEqual(2.5f, stats.Get(StatType.WallSlideSpeed), Tolerance);
             Assert.AreEqual(0, stats.GetInt(StatType.MaxAirJumps));
             Assert.AreEqual(9f, stats.Get(StatType.GrappleRadius), Tolerance);
             Assert.AreEqual(0.5f, stats.Get(StatType.GrappleCooldown), Tolerance);
-            Assert.AreEqual(25f, stats.Get(StatType.GrappleLaunchForce), Tolerance);
+            Assert.AreEqual(34f, stats.Get(StatType.GrappleLaunchSpeed), Tolerance);
             Assert.AreEqual(0f, stats.Get(StatType.TimeLimitBonus), Tolerance);
+            Assert.AreEqual(0, stats.GetInt(StatType.MaxDashes));
+            Assert.AreEqual(4f, stats.Get(StatType.JumpHorizontalBoost), Tolerance);
+            Assert.AreEqual(40f, stats.Get(StatType.OverspeedDecay), Tolerance);
             Assert.AreEqual(AbilityFlags.None, stats.Abilities);
+        }
+
+        [Test]
+        public void Constructor_WithMovementProfile_ReadsBasesFromProfile()
+        {
+            var profile = ScriptableObject.CreateInstance<MovementProfile>();
+            created.Add(profile);
+            profile.MaxSpeed = 11f;
+            profile.JumpHeight = 3f;
+            var baseStats = CreateDefaultBaseStats();
+            baseStats.SetMovementProfile(profile);
+
+            var stats = new PlayerStats(baseStats);
+
+            Assert.AreEqual(11f, stats.Get(StatType.MaxSpeed), Tolerance);
+            Assert.AreEqual(3f, stats.Get(StatType.JumpHeight), Tolerance);
+        }
+
+        // --- Tetos (PRD §9.1) ---
+
+        [TestCase(StatType.MaxSpeed, 13f)]
+        [TestCase(StatType.Acceleration, 130f)]
+        [TestCase(StatType.AirControl, 1.5f)]
+        [TestCase(StatType.JumpHeight, 4.2f)]
+        [TestCase(StatType.CoyoteTime, 0.2f)]
+        [TestCase(StatType.MaxAirJumps, 2f)]
+        [TestCase(StatType.MaxDashes, 2f)]
+        [TestCase(StatType.GrappleRadius, 13.5f)]
+        [TestCase(StatType.GrappleLaunchSpeed, 47.6f)]
+        [TestCase(StatType.JumpHorizontalBoost, 6f)]
+        public void Get_AboveCap_IsClampedToCap(StatType stat, float cap)
+        {
+            var stats = new PlayerStats(CreateDefaultBaseStats());
+
+            stats.AddModifier(new StatModifier(stat, ModifierOperation.Add, 1000f));
+
+            Assert.AreEqual(cap, stats.Get(stat), Tolerance);
+        }
+
+        [TestCase(StatType.WallSlideSpeed, 1f)]
+        [TestCase(StatType.GrappleCooldown, 0.2f)]
+        [TestCase(StatType.OverspeedDecay, 20f)]
+        public void Get_BelowFloor_IsClampedToFloor(StatType stat, float floor)
+        {
+            var stats = new PlayerStats(CreateDefaultBaseStats());
+
+            stats.AddModifier(new StatModifier(stat, ModifierOperation.Multiply, 0.01f));
+
+            Assert.AreEqual(floor, stats.Get(stat), Tolerance);
         }
 
         // --- Construtor ---
@@ -91,9 +144,9 @@ namespace Roguelike.Tests
         {
             var stats = new PlayerStats(CreateDefaultBaseStats());
 
-            stats.AddModifier(new StatModifier(StatType.MaxSpeed, ModifierOperation.Add, 5f));
+            stats.AddModifier(new StatModifier(StatType.MaxSpeed, ModifierOperation.Add, 2f));
 
-            Assert.AreEqual(15.5f, stats.Get(StatType.MaxSpeed), Tolerance);
+            Assert.AreEqual(12f, stats.Get(StatType.MaxSpeed), Tolerance);
         }
 
         [Test]
@@ -101,9 +154,9 @@ namespace Roguelike.Tests
         {
             var stats = new PlayerStats(CreateDefaultBaseStats());
 
-            stats.AddModifier(new StatModifier(StatType.MaxSpeed, ModifierOperation.Multiply, 2f));
+            stats.AddModifier(new StatModifier(StatType.MaxSpeed, ModifierOperation.Multiply, 1.2f));
 
-            Assert.AreEqual(21f, stats.Get(StatType.MaxSpeed), Tolerance);
+            Assert.AreEqual(12f, stats.Get(StatType.MaxSpeed), Tolerance);
         }
 
         [Test]
@@ -111,11 +164,11 @@ namespace Roguelike.Tests
         {
             var stats = new PlayerStats(CreateDefaultBaseStats());
 
-            stats.AddModifier(new StatModifier(StatType.MaxSpeed, ModifierOperation.Add, 1.5f));
-            stats.AddModifier(new StatModifier(StatType.MaxSpeed, ModifierOperation.Multiply, 2f));
+            stats.AddModifier(new StatModifier(StatType.MaxSpeed, ModifierOperation.Add, 1f));
+            stats.AddModifier(new StatModifier(StatType.MaxSpeed, ModifierOperation.Multiply, 1.1f));
 
-            // final = max(0, (10.5 + 1.5) * 2) = 24
-            Assert.AreEqual(24f, stats.Get(StatType.MaxSpeed), Tolerance);
+            // final = clamp((10 + 1) * 1,1) = 12,1 (abaixo do teto de 13)
+            Assert.AreEqual(12.1f, stats.Get(StatType.MaxSpeed), Tolerance);
         }
 
         [Test]
@@ -126,7 +179,7 @@ namespace Roguelike.Tests
             stats.AddModifier(new StatModifier(StatType.MaxSpeed, ModifierOperation.Multiply, 1.08f));
             stats.AddModifier(new StatModifier(StatType.MaxSpeed, ModifierOperation.Multiply, 1.08f));
 
-            float expected = 10.5f * 1.08f * 1.08f;
+            float expected = 10f * 1.08f * 1.08f;
             Assert.AreEqual(expected, stats.Get(StatType.MaxSpeed), Tolerance);
         }
 
@@ -167,13 +220,13 @@ namespace Roguelike.Tests
                     new StatModifier(StatType.MaxAirJumps, ModifierOperation.Add, 1f),
                     new StatModifier(StatType.MaxSpeed, ModifierOperation.Add, 1f),
                 },
-                unlocks: AbilityFlags.WallGrab);
+                unlocks: AbilityFlags.WallJump);
 
             stats.ApplyUpgrade(upgrade);
 
             Assert.AreEqual(1, stats.GetInt(StatType.MaxAirJumps));
-            Assert.AreEqual(11.5f, stats.Get(StatType.MaxSpeed), Tolerance);
-            Assert.IsTrue(stats.HasAbility(AbilityFlags.WallGrab));
+            Assert.AreEqual(11f, stats.Get(StatType.MaxSpeed), Tolerance);
+            Assert.IsTrue(stats.HasAbility(AbilityFlags.WallJump));
         }
 
         [Test]
@@ -187,7 +240,7 @@ namespace Roguelike.Tests
             stats.ApplyUpgrade(upgrade);
             stats.ApplyUpgrade(upgrade);
 
-            Assert.AreEqual(12.5f, stats.Get(StatType.MaxSpeed), Tolerance);
+            Assert.AreEqual(12f, stats.Get(StatType.MaxSpeed), Tolerance);
         }
 
         [Test]
@@ -203,12 +256,12 @@ namespace Roguelike.Tests
         {
             var stats = new PlayerStats(CreateDefaultBaseStats());
 
-            stats.UnlockAbilities(AbilityFlags.WallGrab);
+            stats.UnlockAbilities(AbilityFlags.WallJump);
             stats.UnlockAbilities(AbilityFlags.GrapplingHook);
 
-            Assert.IsTrue(stats.HasAbility(AbilityFlags.WallGrab));
+            Assert.IsTrue(stats.HasAbility(AbilityFlags.WallJump));
             Assert.IsTrue(stats.HasAbility(AbilityFlags.GrapplingHook));
-            Assert.IsTrue(stats.HasAbility(AbilityFlags.WallGrab | AbilityFlags.GrapplingHook));
+            Assert.IsTrue(stats.HasAbility(AbilityFlags.WallJump | AbilityFlags.GrapplingHook));
         }
 
         [Test]
@@ -216,7 +269,7 @@ namespace Roguelike.Tests
         {
             var stats = new PlayerStats(CreateDefaultBaseStats());
 
-            stats.UnlockAbilities(AbilityFlags.WallGrab);
+            stats.UnlockAbilities(AbilityFlags.WallJump);
 
             Assert.IsFalse(stats.HasAbility(AbilityFlags.None));
         }
@@ -226,13 +279,13 @@ namespace Roguelike.Tests
         {
             var stats = new PlayerStats(CreateDefaultBaseStats());
 
-            stats.UnlockAbilities(AbilityFlags.WallGrab);
+            stats.UnlockAbilities(AbilityFlags.WallJump);
 
-            Assert.IsFalse(stats.HasAbility(AbilityFlags.WallGrab | AbilityFlags.GrapplingHook));
+            Assert.IsFalse(stats.HasAbility(AbilityFlags.WallJump | AbilityFlags.GrapplingHook));
 
             stats.UnlockAbilities(AbilityFlags.GrapplingHook);
 
-            Assert.IsTrue(stats.HasAbility(AbilityFlags.WallGrab | AbilityFlags.GrapplingHook));
+            Assert.IsTrue(stats.HasAbility(AbilityFlags.WallJump | AbilityFlags.GrapplingHook));
         }
 
         // --- Reset ---
@@ -243,15 +296,15 @@ namespace Roguelike.Tests
             var baseStats = CreateDefaultBaseStats();
             var stats = new PlayerStats(baseStats);
 
-            stats.AddModifier(new StatModifier(StatType.MaxSpeed, ModifierOperation.Add, 5f));
-            stats.AddModifier(new StatModifier(StatType.MaxSpeed, ModifierOperation.Multiply, 2f));
-            stats.UnlockAbilities(AbilityFlags.WallGrab);
+            stats.AddModifier(new StatModifier(StatType.MaxSpeed, ModifierOperation.Add, 1f));
+            stats.AddModifier(new StatModifier(StatType.MaxSpeed, ModifierOperation.Multiply, 1.1f));
+            stats.UnlockAbilities(AbilityFlags.WallJump);
 
             stats.Reset();
 
-            Assert.AreEqual(10.5f, stats.Get(StatType.MaxSpeed), Tolerance);
+            Assert.AreEqual(10f, stats.Get(StatType.MaxSpeed), Tolerance);
             Assert.AreEqual(baseStats.BaseAbilities, stats.Abilities);
-            Assert.IsFalse(stats.HasAbility(AbilityFlags.WallGrab));
+            Assert.IsFalse(stats.HasAbility(AbilityFlags.WallJump));
         }
 
         // --- CreateSnapshot ---
@@ -260,7 +313,7 @@ namespace Roguelike.Tests
         public void CreateSnapshot_MatchesGetForAllStatTypesAndAbilities()
         {
             var stats = new PlayerStats(CreateDefaultBaseStats());
-            stats.AddModifier(new StatModifier(StatType.MaxSpeed, ModifierOperation.Add, 3f));
+            stats.AddModifier(new StatModifier(StatType.MaxSpeed, ModifierOperation.Add, 2f));
             stats.UnlockAbilities(AbilityFlags.GrapplingHook);
 
             var snapshot = stats.CreateSnapshot();
@@ -289,7 +342,7 @@ namespace Roguelike.Tests
             var snapshot = stats.CreateSnapshot();
             float originalMaxSpeed = snapshot.Get(StatType.MaxSpeed);
 
-            stats.AddModifier(new StatModifier(StatType.MaxSpeed, ModifierOperation.Add, 100f));
+            stats.AddModifier(new StatModifier(StatType.MaxSpeed, ModifierOperation.Add, 1f));
 
             Assert.AreEqual(originalMaxSpeed, snapshot.Get(StatType.MaxSpeed), Tolerance);
             Assert.AreNotEqual(originalMaxSpeed, stats.Get(StatType.MaxSpeed));

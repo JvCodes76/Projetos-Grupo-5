@@ -25,6 +25,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 09431fd1ecaebea4e991703c3e93cece, type: 2}
   - {fileID: 11400000, guid: dc60a6ddc8e0c0348a4c0b7709587196, type: 2}
   - {fileID: 11400000, guid: b5b2028fe0dc34e498db284c98401169, type: 2}
+  - {fileID: 11400000, guid: dd20d53f8aba80844a503f88ecb0fa7f, type: 2}
   baseStats: {fileID: 11400000, guid: bbc8281b1bc088d4bbb25bb59063b883, type: 2}
   offerCount: 3
   gradeThresholds:

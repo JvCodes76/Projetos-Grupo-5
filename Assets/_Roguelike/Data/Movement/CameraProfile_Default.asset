@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38faf9a9f85144ec95ece99e34ba294a, type: 3}
+  m_Name: CameraProfile_Default
+  m_EditorClassIdentifier: 
+  MinVisibleWidth: 20
+  MinVisibleHeight: 11.25
+  FocusOffsetY: 1.5
+  CameraZ: -10
+  HalfLifeX: 0.1
+  HalfLifeYUp: 0.2
+  HalfLifeYDown: 0.15
+  DeadZoneX: 0.5
+  LookAheadTime: 0.45
+  LookAheadMax: 4.5
+  LookAheadRate: 8
+  LookAheadMinSpeed: 1
+  RiseWindow: 4
+  FallFollowDistance: 2.8
+  FastFallFollowDistance: 0.5
+  LookDownGain: 0.9
+  LookDownMax: 6.5
+  FeetMargin: 1
+  HeadMargin: 1

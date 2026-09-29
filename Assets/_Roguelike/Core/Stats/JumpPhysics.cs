@@ -3,9 +3,9 @@ using System;
 namespace Roguelike.Stats
 {
     /// <summary>
-    /// Fórmulas de física do pulo extraídas de characterMovement.CalculateJumpVariables
-    /// (Assets/scripts/characterMovement.cs ~linha 500), sem alteração de comportamento.
-    /// Responsabilidade: só o cálculo puro; a tarefa 2.4 faz o characterMovement usar isto no lugar do código duplicado.
+    /// Fórmulas de física do pulo do controlador ANTIGO (characterMovement.CalculateJumpVariables, antes da Etapa M).
+    /// LEGADO: o controlador novo deriva o pulo pelo JumpSolver (SPEC §8.3) e nenhum código de jogo usa mais estas
+    /// fórmulas. Mantido com os testes de referência antigos até a limpeza da 4.1.
     /// </summary>
     public static class JumpPhysics
     {

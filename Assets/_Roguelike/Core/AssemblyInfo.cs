@@ -1,7 +1,9 @@
 using System.Runtime.CompilerServices;
 
-// Os testes EditMode precisam de membros internal (ex.: EventBus<T>.Clear()).
+// Os testes precisam de membros internal (ex.: EventBus<T>.Clear(), PlayerMotor.DebugSetBody).
 [assembly: InternalsVisibleTo("Roguelike.Tests.EditMode")]
+[assembly: InternalsVisibleTo("Roguelike.Tests.Levels")]
+[assembly: InternalsVisibleTo("Roguelike.Tests.PlayMode")]
 
 namespace Roguelike
 {

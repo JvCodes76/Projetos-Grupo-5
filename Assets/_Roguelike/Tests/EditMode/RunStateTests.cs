@@ -38,7 +38,7 @@ namespace Roguelike.Tests
             level2 = TestFactory.CreateLevel("Fase2", 25f, 15f);
             speed = TestFactory.CreateConfiguredUpgrade("speed", common, maxStacks: 2,
                 modifiers: new[] { new StatModifier(StatType.MaxSpeed, ModifierOperation.Add, 1f) });
-            wallGrab = TestFactory.CreateConfiguredUpgrade("wall_grab", common, unlocks: AbilityFlags.WallGrab);
+            wallGrab = TestFactory.CreateConfiguredUpgrade("wall_grab", common, unlocks: AbilityFlags.WallJump);
             config = TestFactory.CreateRunConfig(
                 new[] { level0, level1, level2 }, table, new[] { speed, wallGrab }, baseStats);
         }
@@ -153,7 +153,7 @@ namespace Roguelike.Tests
             Assert.AreEqual(1, state.GetStacks(wallGrab));
             CollectionAssert.AreEqual(new[] { speed, wallGrab, speed }, state.AcquiredUpgrades);
             Assert.AreEqual(baseStats.Get(StatType.MaxSpeed) + 2f, state.Stats.Get(StatType.MaxSpeed), Tolerance);
-            Assert.IsTrue(state.Stats.HasAbility(AbilityFlags.WallGrab));
+            Assert.IsTrue(state.Stats.HasAbility(AbilityFlags.WallJump));
         }
 
         [Test]

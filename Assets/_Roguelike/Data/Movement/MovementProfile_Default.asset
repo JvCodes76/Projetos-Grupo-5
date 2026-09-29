@@ -1,0 +1,86 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 415e222953119814dba5d124ca42be61, type: 3}
+  m_Name: MovementProfile_Default
+  m_EditorClassIdentifier: 
+  BodySize: {x: 0.51, y: 1.26}
+  Skin: 0.01
+  GroundProbeDistance: 0.02
+  MaxSpeed: 10
+  MaxSpeedCap: 13
+  GroundAccel: 100
+  GroundAccelCap: 130
+  AirMultBase: 0.65
+  AirControlCap: 1.5
+  OverspeedDecay: 40
+  OverspeedDecayMin: 20
+  GlobalSpeedCap: 48
+  JumpHeight: 3.5
+  JumpHeightCap: 4.2
+  VarJumpTime: 0.2
+  CeilingVarJumpGrace: 0.05
+  Gravity: 50
+  HalfGravThreshold: 5
+  HalfGravMult: 0.5
+  JumpHBoost: 4
+  JumpHBoostCap: 6
+  AirJumpHeightRatio: 0.85
+  MaxFall: 17
+  FastMaxFall: 24
+  FastFallCapAccel: 35
+  CoyoteTime: 0.1
+  CoyoteTimeCap: 0.2
+  JumpBufferTime: 0.1
+  DashBufferTime: 0.1
+  GrappleBufferTime: 0.1
+  WallSpeedRetentionTime: 0.06
+  WallCoyoteTime: 0.1
+  CornerCorrection: 0.25
+  DashCornerCorrection: 0.25
+  CornerCorrectionStep: 0.03125
+  WallJumpDistance: 0.3
+  WallCheckInset: 0.1
+  WallJumpHSpeed: 14
+  WallJumpForceTime: 0.16
+  WallSlideSpeed: 2.5
+  WallSlideSpeedMin: 1
+  WallSlideBrake: 150
+  MaxAirJumpsBase: 0
+  MaxAirJumpsCap: 2
+  MaxDashesBase: 0
+  MaxDashesCap: 2
+  DashSpeed: 27
+  DashTime: 0.15
+  EndDashSpeed: 17
+  EndDashUpMult: 0.75
+  DashCooldown: 0.2
+  DashRefillCooldown: 0.1
+  DashFreeze: 0.05
+  GrappleRadius: 9
+  GrappleRadiusCap: 13.5
+  GrappleCooldown: 0.5
+  GrappleCooldownMin: 0.2
+  GrappleLaunchSpeed: 34
+  GrappleLaunchSpeedCap: 47.6
+  GrapplePullSpeed: 20
+  HookTravelSpeed: 40
+  GrappleReleaseDistance: 0.5
+  GrappleMaxTime: 3
+  GrappleStuckWindow: 0.3
+  GrappleStuckDistance: 0.05
+  GrappleAimConeCos: 0.5
+  RespawnDelay: 0.3
+  ReturnToSpawnHold: 0.3
+  SafeGroundEdgeMargin: 0.25
+  StickDeadzone: 0.3
+  derivedJumpSpeed: 10.986111
+  derivedAirJumpSpeed: 9.603449

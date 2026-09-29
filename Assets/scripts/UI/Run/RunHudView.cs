@@ -122,7 +122,7 @@ public class RunHudView : MonoBehaviour
             parts.Add(totalJumps > 2 ? $"Pulo ×{totalJumps}" : "Pulo duplo");
         }
 
-        if (evt.Stats.HasAbility(AbilityFlags.WallGrab))
+        if (evt.Stats.HasAbility(AbilityFlags.WallJump))
         {
             parts.Add("Wall jump");
         }
@@ -130,6 +130,12 @@ public class RunHudView : MonoBehaviour
         if (evt.Stats.HasAbility(AbilityFlags.GrapplingHook))
         {
             parts.Add("Gancho");
+        }
+
+        int maxDashes = evt.Stats.GetInt(StatType.MaxDashes);
+        if (maxDashes >= 1)
+        {
+            parts.Add(maxDashes > 1 ? $"Dash ×{maxDashes}" : "Dash");
         }
 
         abilitiesText.text = string.Join(" · ", parts);

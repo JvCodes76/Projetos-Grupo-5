@@ -12,15 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 106fa7cf1d0e2194487d7994a06cd294, type: 3}
   m_Name: PlayerBaseStats
   m_EditorClassIdentifier: 
+  movementProfile: {fileID: 11400000, guid: abec99a175bd72b49a6b4891e7450113, type: 2}
+  timeLimitBonus: 0
+  baseAbilities: 0
   maxSpeed: 10.5
   acceleration: 41
-  airAcceleration: 20
+  airControl: 1
   jumpHeight: 2.6
   coyoteTime: 0.1
   maxAirJumps: 0
   wallSlideSpeed: 2
   grappleRadius: 9
   grappleCooldown: 0.5
-  grappleLaunchForce: 25
-  timeLimitBonus: 0
-  baseAbilities: 0
+  grappleLaunchSpeed: 34
+  maxDashes: 0
+  jumpHorizontalBoost: 4
+  overspeedDecay: 40

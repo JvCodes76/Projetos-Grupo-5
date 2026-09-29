@@ -848,11 +848,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96b3284b4de009049a4bf56a45271fce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  profile: {fileID: 11400000, guid: f1203877dae25e449961a0c1414ee9eb, type: 2}
+  feedbackTuning: {fileID: 11400000, guid: 6b5950ee63390d94da3f6eab6395c31d, type: 2}
   target: {fileID: 0}
-  offset: {x: 0, y: 1.5, z: -10}
-  smoothTime: 0.2
-  snapToTargetOnStart: 1
-  maxTeleportDistance: 20
 --- !u!114 &1192155641
 MonoBehaviour:
   m_ObjectHideFlags: 0

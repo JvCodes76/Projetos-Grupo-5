@@ -7,7 +7,7 @@ namespace Roguelike.Stats
 {
     /// <summary>
     /// Cópia imutável dos stats finais do jogador num instante. Criada por PlayerStats.CreateSnapshot; levada pelo
-    /// evento PlayerStatsChanged; lida por characterMovement, GrapplingHook, LevelTimer e HUD.
+    /// evento PlayerStatsChanged; lida pelo movimento (PlayerStatsMovementInput), LevelTimer e HUD.
     /// Invariantes: o array interno é uma cópia privada (quem criou não consegue alterá-lo depois);
     /// default(PlayerStatsSnapshot) é inválido (<see cref="IsValid"/> = false) e lança ao ler um stat.
     /// </summary>

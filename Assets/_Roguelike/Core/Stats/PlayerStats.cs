@@ -9,7 +9,8 @@ namespace Roguelike.Stats
     /// Stats do jogador numa run: valores base (<see cref="PlayerBaseStats"/>) + modificadores acumulados + habilidades.
     /// Lógica pura (tarefa 2.1). Não emite eventos: quem a possui é o RunState, e o RunManager emite
     /// PlayerStatsChanged com <see cref="CreateSnapshot"/> depois de RunStarted, de UpgradeSelected e de cada PlayerSpawned.
-    /// Fórmula por StatType: final = max(0, (base + Σ Add) × Π Multiply) — ver StatModifier.
+    /// Fórmula por StatType: final = clamp((base + Σ Add) × Π Multiply, piso, teto), com piso ≥ 0; o teto de cada stat
+    /// vem do PlayerBaseStats (MovementProfile, PRD §9.1) — ver StatModifier.
     /// Invariantes:
     /// - Não valida MaxStacks nem pré-requisitos (isso é do gerador de ofertas e do RunState).
     /// - Não chama UpgradeEffect (quem chama é o RunState.AcquireUpgrade, que conhece a run).
@@ -41,12 +42,13 @@ namespace Roguelike.Stats
         /// <summary>Habilidades liberadas (base | tudo que foi desbloqueado).</summary>
         public AbilityFlags Abilities => unlockedAbilities;
 
-        /// <summary>Valor final de <paramref name="stat"/>, já com os modificadores.</summary>
+        /// <summary>Valor final de <paramref name="stat"/>, já com os modificadores e o teto do stat (PRD §9.1).</summary>
         public float Get(StatType stat)
         {
             int index = (int)stat;
             float value = (BaseStats.Get(stat) + addTotals[index]) * multiplyProducts[index];
-            return Mathf.Max(0f, value);
+            BaseStats.GetCap(stat, out float min, out float max);
+            return Mathf.Clamp(value, Mathf.Max(0f, min), max);
         }
 
         /// <summary>Valor final arredondado com Mathf.RoundToInt (mesma regra de PlayerStatsSnapshot.GetInt).</summary>

@@ -43,7 +43,7 @@ namespace Roguelike.Tests
             level2 = TestFactory.CreateLevel("Fase2", 25f, 15f);
             speed = TestFactory.CreateConfiguredUpgrade("speed", common, maxStacks: 3,
                 modifiers: new[] { new StatModifier(StatType.MaxSpeed, ModifierOperation.Add, 1f) });
-            wallGrab = TestFactory.CreateConfiguredUpgrade("wall_grab", common, unlocks: AbilityFlags.WallGrab);
+            wallGrab = TestFactory.CreateConfiguredUpgrade("wall_grab", common, unlocks: AbilityFlags.WallJump);
             notOffered = TestFactory.CreateConfiguredUpgrade("not_offered", common);
             config = TestFactory.CreateRunConfig(
                 new[] { level0, level1, level2 }, table, new[] { speed, wallGrab, notOffered }, baseStats);
@@ -536,7 +536,7 @@ namespace Roguelike.Tests
             Assert.AreEqual(1, flow.State.GetStacks(wallGrab));
             Assert.AreEqual(0, flow.State.GetStacks(speed));
             CollectionAssert.AreEqual(new[] { wallGrab }, flow.State.AcquiredUpgrades);
-            Assert.IsTrue(flow.State.Stats.HasAbility(AbilityFlags.WallGrab));
+            Assert.IsTrue(flow.State.Stats.HasAbility(AbilityFlags.WallJump));
             Assert.AreEqual(0, flow.CurrentOffers.Count, "Ofertas limpas depois da escolha.");
         }
 
@@ -633,7 +633,7 @@ namespace Roguelike.Tests
             Assert.AreEqual(0, state.GetStacks(speed));
             Assert.AreEqual(0, state.GetStacks(wallGrab));
             AssertBaseKit(state);
-            Assert.IsFalse(state.Stats.HasAbility(AbilityFlags.WallGrab));
+            Assert.IsFalse(state.Stats.HasAbility(AbilityFlags.WallJump));
             Assert.AreEqual(20f, state.EffectiveTimeLimit, Tolerance);
             Assert.IsNull(flow.Summary);
             Assert.IsNull(flow.LastLevelResult.Level);

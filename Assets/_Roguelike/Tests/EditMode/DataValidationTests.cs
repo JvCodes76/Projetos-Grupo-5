@@ -175,7 +175,7 @@ namespace Roguelike.Tests
             }
         }
 
-        [TestCase("wall_jump", "epic", AbilityFlags.WallGrab)]
+        [TestCase("wall_jump", "epic", AbilityFlags.WallJump)]
         [TestCase("grappling_hook", "epic", AbilityFlags.GrapplingHook)]
         public void TestAbilityUpgradeMatchesDesign(string id, string rarityId, AbilityFlags unlocks)
         {

@@ -1,124 +1,201 @@
-using UnityEngine;
+using Roguelike.Cameras;
 using Roguelike.Events;
+using Roguelike.Movement;
+using Roguelike.Simulation;
+using UnityEngine;
 
-public class CameraFollow : MonoBehaviour
+/// <summary>
+/// Câmera do jogo (SPEC §11, Q7, DS-14), reescrita no mesmo arquivo/GUID: a Main Camera DDOL do MainMenu a
+/// referencia. A lógica está no <see cref="CameraSolver"/> (puro): esta classe é ITickable (TickOrder 100, depois do
+/// jogador no mesmo tick), só interpola no render, soma o shake e aplica. Parâmetros no CameraProfile; sem
+/// referência, cria um com os padrões e avisa. Alvo legado (sem PlayerController) segue o transform com a mesma
+/// suavização e sem look-ahead (removido na 4.1).
+/// </summary>
+[DefaultExecutionOrder(50)]
+public class CameraFollow : MonoBehaviour, ITickable
 {
-    [Header("Target")]
+    public const int Order = 100;
+
+    [Header("Dados")]
+    [SerializeField] private CameraProfile profile;
+    [Tooltip("Shake do dash e da morte (amplitude, duração, frequência). Vazio = padrões.")]
+    [SerializeField] private FeedbackTuning feedbackTuning;
+
+    [Header("Alvo")]
     [SerializeField] private Transform target;
 
-    [Header("Offset & Suavização")]
-    [SerializeField] private Vector3 offset = new Vector3(0f, 1.5f, -10f);
-    [SerializeField] private float smoothTime = 0.2f;
+    private Camera cam;
+    private CameraSolver solver;
+    private PlayerController player;
+    private ShakeModel shake;
+    private bool pendingSnap = true;
 
-    [Header("Configuração Inicial")]
-    [SerializeField] private bool snapToTargetOnStart = true;
-    [SerializeField] private float maxTeleportDistance = 20f;
+    public CameraSolver Solver => solver;
 
-    private float currentMinX = 0;
-    private float currentMaxX = 1000;
-    private float currentMinY = 0;
-    private float currentMaxY = 1000;
-
-    private Vector3 _velocity = Vector3.zero;
-    private bool _shouldSnap = false;
+    public int TickOrder => Order;
 
     private void Awake()
     {
-        // Garante que apenas uma câmera exista
-        CameraFollow[] existingCameras = FindObjectsByType<CameraFollow>(FindObjectsSortMode.None);
-        if (existingCameras.Length > 1)
+        // Garante que apenas uma câmera exista (a do MainMenu é DDOL).
+        CameraFollow[] existing = FindObjectsByType<CameraFollow>(FindObjectsSortMode.None);
+        if (existing.Length > 1)
         {
+            enabled = false;
             Destroy(gameObject);
             return;
         }
 
         DontDestroyOnLoad(gameObject);
+
+        if (profile == null)
+        {
+            Debug.LogWarning("[CameraFollow] - CameraProfile não atribuído; usando os valores padrão.");
+            profile = ScriptableObject.CreateInstance<CameraProfile>();
+        }
+
+        if (feedbackTuning == null) feedbackTuning = ScriptableObject.CreateInstance<FeedbackTuning>();
+
+        cam = GetComponent<Camera>();
+        solver = new CameraSolver(profile);
+        ApplyAspect();
+        SetTarget(target);
     }
 
     private void OnEnable()
     {
+        SimulationRunner.Register(this);
         EventBus<PlayerSpawned>.Subscribe(HandlePlayerSpawned);
+        EventBus<PlayerDashed>.Subscribe(HandlePlayerDashed);
+        EventBus<PlayerDied>.Subscribe(HandlePlayerDied);
+        EventBus<PlayerRespawned>.Subscribe(HandlePlayerRespawned);
     }
 
     private void OnDisable()
     {
+        SimulationRunner.Unregister(this);
         EventBus<PlayerSpawned>.Unsubscribe(HandlePlayerSpawned);
+        EventBus<PlayerDashed>.Unsubscribe(HandlePlayerDashed);
+        EventBus<PlayerDied>.Unsubscribe(HandlePlayerDied);
+        EventBus<PlayerRespawned>.Unsubscribe(HandlePlayerRespawned);
     }
 
     private void Start()
     {
-        // Garante que esta é a câmera principal
-        Camera.main.gameObject.tag = "MainCamera";
-
-        FindLevelBoundaries();
-
-        if (snapToTargetOnStart && target != null)
-        {
-            _shouldSnap = true;
-        }
+        if (Camera.main != null) Camera.main.gameObject.tag = "MainCamera";
     }
 
-    private void HandlePlayerSpawned(PlayerSpawned evt)
+    /// <summary>Troca os dados (câmera criada em código, ex.: DevPlayBootstrap).</summary>
+    public void Configure(CameraProfile cameraProfile, FeedbackTuning tuning)
     {
-        target = evt.Player.transform;
-        Debug.Log("[CameraFollow] - Câmera recebeu referência do jogador via evento");
-        FindLevelBoundaries();
-        _shouldSnap = true;
+        if (cameraProfile != null)
+        {
+            profile = cameraProfile;
+            solver = new CameraSolver(profile);
+            ApplyAspect();
+            pendingSnap = true;
+        }
+
+        if (tuning != null) feedbackTuning = tuning;
+    }
+
+    public void SetTarget(Transform newTarget)
+    {
+        target = newTarget;
+        player = target != null ? target.GetComponent<PlayerController>() : null;
+        pendingSnap = true;
+    }
+
+    // ───────────────────────────── Tick ─────────────────────────────
+
+    public void OnFrameStart()
+    {
+    }
+
+    public void OnResume()
+    {
+    }
+
+    public void Tick(in TickContext ctx)
+    {
+        if (solver == null || target == null) return;
+
+        CameraInput input = BuildInput();
+        CameraBounds bounds = CurrentBounds();
+        if (pendingSnap)
+        {
+            solver.Snap(input, bounds);
+            pendingSnap = false;
+            return;
+        }
+
+        solver.Tick(input, bounds, ctx.Dt);
     }
 
     private void LateUpdate()
     {
+        if (solver == null) return;
+        ApplyAspect();
         if (target == null) return;
 
-        if (_shouldSnap)
+        if (pendingSnap)
         {
-            SnapToTarget();
-            _shouldSnap = false;
-            return;
+            solver.Snap(BuildInput(), CurrentBounds());
+            pendingSnap = false;
         }
 
-        float distance = Vector3.Distance(transform.position, target.position + offset);
-        if (distance > maxTeleportDistance)
-        {
-            SnapToTarget();
-            return;
-        }
-
-        Vector3 desiredPosition = target.position + offset;
-        desiredPosition.x = Mathf.Clamp(desiredPosition.x, currentMinX, currentMaxX);
-        desiredPosition.y = Mathf.Clamp(desiredPosition.y, currentMinY, currentMaxY);
-
-        transform.position = Vector3.SmoothDamp(
-            transform.position,
-            desiredPosition,
-            ref _velocity,
-            smoothTime
-        );
+        Vector2 pos = Vector2.LerpUnclamped(solver.PreviousPosition, solver.Position, SimulationRunner.Alpha);
+        pos += shake.Update(Time.deltaTime);
+        transform.position = new Vector3(pos.x, pos.y, profile.CameraZ);
     }
 
-    private void FindLevelBoundaries()
+    private CameraInput BuildInput()
     {
-        CameraBoundary boundary = FindFirstObjectByType<CameraBoundary>();
-
-        if (boundary != null)
+        if (player != null)
         {
-            currentMinX = boundary.minX;
-            currentMaxX = boundary.maxX;
-            currentMinY = boundary.minY;
-            currentMaxY = boundary.maxY;
-
-            Debug.Log($"Limites da câmera atualizados para o nível atual");
+            PlayerSnapshot snap = player.Snapshot;
+            return CameraInput.FromSnapshot(snap);
         }
+
+        // Alvo legado: segue o ponto sem look-ahead nem platform snapping.
+        return CameraInput.ForLegacyTarget(target.position, false);
     }
 
-    private void SnapToTarget()
+    private static CameraBounds CurrentBounds()
     {
-        if (target == null) return;
+        CameraBoundary boundary = CameraBoundary.Current;
+        return boundary != null ? boundary.ToBounds() : CameraBounds.None;
+    }
 
-        Vector3 desiredPosition = target.position + offset;
-        desiredPosition.x = Mathf.Clamp(desiredPosition.x, currentMinX, currentMaxX);
-        desiredPosition.y = Mathf.Clamp(desiredPosition.y, currentMinY, currentMaxY);
-        transform.position = desiredPosition;
-        _velocity = Vector3.zero;
+    private void ApplyAspect()
+    {
+        if (solver == null || cam == null || !cam.orthographic) return;
+        float size = solver.SetAspect(cam.aspect);
+        if (!Mathf.Approximately(cam.orthographicSize, size)) cam.orthographicSize = size;
+    }
+
+    // ───────────────────────────── Eventos ─────────────────────────────
+
+    private void HandlePlayerSpawned(PlayerSpawned evt)
+    {
+        if (evt.Player == null) return;
+        SetTarget(evt.Player.transform);
+        Debug.Log("[CameraFollow] - Câmera recebeu referência do jogador via evento");
+    }
+
+    private void HandlePlayerRespawned(PlayerRespawned evt)
+    {
+        pendingSnap = true; // corte (RF-42)
+    }
+
+    private void HandlePlayerDashed(PlayerDashed evt)
+    {
+        shake.Start(evt.Direction, feedbackTuning.DashShakeDuration, feedbackTuning.ShakeAmplitudePixels,
+            FeedbackSettings.ShakeScale, feedbackTuning.ShakeFrequency);
+    }
+
+    private void HandlePlayerDied(PlayerDied evt)
+    {
+        shake.Start(new Vector2(1f, 1f), feedbackTuning.DeathShakeDuration, feedbackTuning.ShakeAmplitudePixels,
+            FeedbackSettings.ShakeScale, feedbackTuning.ShakeFrequency);
     }
 }

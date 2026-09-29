@@ -1,7 +1,13 @@
-﻿using UnityEngine;
 using Roguelike.Events;
+using Roguelike.Movement;
+using UnityEngine;
 
-public class EndGoal : MonoBehaviour
+/// <summary>
+/// Objetivo da fase. Detectado pela varredura de triggers do tick (DS-12: <see cref="IPlayerTickTrigger"/>), e não
+/// por OnTriggerEnter2D: o LevelGoalReached sai no tick exato em que o corpo entra, antes da checagem do LevelTimer
+/// no mesmo tick (empate favorece o jogador). Emite LevelGoalReached uma vez.
+/// </summary>
+public class EndGoal : MonoBehaviour, IPlayerTickTrigger
 {
     [Header("Configurações de Áudio")]
     [SerializeField] private AudioClip victorySound;
@@ -20,31 +26,26 @@ public class EndGoal : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    public void OnPlayerTickEnter(Component player, long tick)
     {
         if (alreadyTriggered) return;
+        if (player == null || !player.CompareTag("Player")) return;
 
-        Debug.Log("Trigger entrou: " + other.name);
-
-        if (other.CompareTag("Player"))
-        {
-            alreadyTriggered = true;
-            TriggerVictory();
-        }
+        alreadyTriggered = true;
+        TriggerVictory(tick);
     }
 
-    private void TriggerVictory()
+    private void TriggerVictory(long tick)
     {
-        Debug.Log("Vitória! Player atingiu o goal.");
+        Debug.Log($"[EndGoal] - Jogador alcançou o objetivo no tick {tick}");
 
-        // Reproduz som de vitória
         PlayVictorySound();
 
         // Desativa o colisor para evitar múltiplas chamadas
-        Collider2D collider = GetComponent<Collider2D>();
-        if (collider != null)
+        Collider2D goalCollider = GetComponent<Collider2D>();
+        if (goalCollider != null)
         {
-            collider.enabled = false;
+            goalCollider.enabled = false;
         }
 
         // Desativa outros componentes visuais opcionais
@@ -73,10 +74,10 @@ public class EndGoal : MonoBehaviour
     {
         alreadyTriggered = false;
 
-        Collider2D collider = GetComponent<Collider2D>();
-        if (collider != null)
+        Collider2D goalCollider = GetComponent<Collider2D>();
+        if (goalCollider != null)
         {
-            collider.enabled = true;
+            goalCollider.enabled = true;
         }
 
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();

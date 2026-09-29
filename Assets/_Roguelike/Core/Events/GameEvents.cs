@@ -73,24 +73,33 @@ namespace Roguelike.Events
     }
 
     /// <summary>
-    /// O jogador morreu por algo do cenário/inimigo. Emissor: characterMovement (após receber o dano por chamada
-    /// direta, ex.: EnemyBullet → Die(DeathCause.EnemyProjectile)). Ouvintes: RunManager, LevelTimer (para).
-    /// Invariantes: no máximo um por vida do jogador (Die é idempotente); NUNCA emitido por causa de tempo
-    /// esgotado (isso é LevelTimeExpired, ADR-10).
+    /// O jogador morreu por algo do cenário/inimigo. Emissor: PlayerController (movimento, no tick em que o comando
+    /// Die é aplicado; ex.: EnemyBullet → characterMovement.Die(DeathCause.EnemyProjectile)). Ouvintes: RunManager,
+    /// LevelTimer (para), feedback, RumbleService.
+    /// Invariantes: no máximo um por vida do jogador (Die é idempotente, RF-41); NUNCA emitido por causa de tempo
+    /// esgotado (isso é LevelTimeExpired, ADR-10). Payload estendido pelo SPEC §9.1: posição dos pés e tick.
     /// </summary>
     public readonly struct PlayerDied : IEvent
     {
-        public PlayerDied(DeathCause cause)
+        public PlayerDied(DeathCause cause, Vector2 position = default, long tick = -1)
         {
             Cause = cause;
+            Position = position;
+            Tick = tick;
         }
 
         public DeathCause Cause { get; }
+
+        /// <summary>Pés do jogador na morte.</summary>
+        public Vector2 Position { get; }
+
+        /// <summary>Tick de simulação da morte (−1 quando não há relógio de simulação).</summary>
+        public long Tick { get; }
     }
 
     /// <summary>
     /// Os stats finais do jogador mudaram ou precisam ser reaplicados. Emissor: RunManager (dono do RunState/PlayerStats),
-    /// depois de RunStarted, de UpgradeSelected e de cada PlayerSpawned. Ouvintes: characterMovement (repassa ao GrapplingHook por chamada direta), HUD.
+    /// depois de RunStarted, de UpgradeSelected e de cada PlayerSpawned. Ouvintes: PlayerController (movimento: QueueStats, vale no tick seguinte), HUD.
     /// Invariante: Stats.IsValid. Quem ouve aplica o snapshot inteiro (é idempotente receber o mesmo valor de novo).
     /// </summary>
     public readonly struct PlayerStatsChanged : IEvent
@@ -131,7 +140,7 @@ namespace Roguelike.Events
 
     /// <summary>
     /// O tempo da fase chegou ao limite efetivo (Jogando → Derrota). Emissor: LevelTimer.
-    /// Ouvintes: RunManager, characterMovement (trava o jogador, SEM emitir PlayerDied).
+    /// Ouvintes: RunManager, PlayerController (trava o jogador, SEM emitir PlayerDied, ADR-10).
     /// Invariante: no máximo um por fase; não é emitido se LevelGoalReached ou PlayerDied vieram antes.
     /// </summary>
     public readonly struct LevelTimeExpired : IEvent { }
