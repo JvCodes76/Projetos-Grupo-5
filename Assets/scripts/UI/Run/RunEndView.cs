@@ -65,16 +65,28 @@ public class RunEndView : MonoBehaviour
     private void OnEnable()
     {
         EventBus<RunEnded>.Subscribe(HandleRunEnded);
+        EventBus<RunAbandoned>.Subscribe(HandleRunAbandoned);
         EventBus<RunStarted>.Subscribe(HandleRunStarted);
     }
 
     private void OnDisable()
     {
         EventBus<RunEnded>.Unsubscribe(HandleRunEnded);
+        EventBus<RunAbandoned>.Unsubscribe(HandleRunAbandoned);
         EventBus<RunStarted>.Unsubscribe(HandleRunStarted);
     }
 
     private void HandleRunStarted(RunStarted evt)
+    {
+        Hide();
+    }
+
+    private void HandleRunAbandoned(RunAbandoned evt)
+    {
+        Hide();
+    }
+
+    private void Hide()
     {
         if (pendingShow != null)
         {

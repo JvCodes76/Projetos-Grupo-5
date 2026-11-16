@@ -55,6 +55,7 @@ public class RunHudView : MonoBehaviour
         EventBus<LevelTimeChanged>.Subscribe(HandleLevelTimeChanged);
         EventBus<PlayerStatsChanged>.Subscribe(HandlePlayerStatsChanged);
         EventBus<RunEnded>.Subscribe(HandleRunEnded);
+        EventBus<RunAbandoned>.Subscribe(HandleRunAbandoned);
         EventBus<RunEndDismissed>.Subscribe(HandleRunEndDismissed);
     }
 
@@ -65,6 +66,7 @@ public class RunHudView : MonoBehaviour
         EventBus<LevelTimeChanged>.Unsubscribe(HandleLevelTimeChanged);
         EventBus<PlayerStatsChanged>.Unsubscribe(HandlePlayerStatsChanged);
         EventBus<RunEnded>.Unsubscribe(HandleRunEnded);
+        EventBus<RunAbandoned>.Unsubscribe(HandleRunAbandoned);
         EventBus<RunEndDismissed>.Unsubscribe(HandleRunEndDismissed);
     }
 
@@ -139,6 +141,11 @@ public class RunHudView : MonoBehaviour
         }
 
         abilitiesText.text = string.Join(" · ", parts);
+    }
+
+    private void HandleRunAbandoned(RunAbandoned evt)
+    {
+        SetPanelActive(false);
     }
 
     private void HandleRunEnded(RunEnded evt)

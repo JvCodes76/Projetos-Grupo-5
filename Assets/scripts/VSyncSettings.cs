@@ -8,6 +8,16 @@ public class VSyncSettings : MonoBehaviour
     private const string VSyncPrefKey = "vsyncEnabled";
     private const string FrameLimitPrefKey = "frameLimit";
 
+    /// <summary>
+    /// Aplica a preferência salva no boot: sem isto o VSync só era reaplicado ao abrir a tela de Settings e todo
+    /// início de jogo voltava ao padrão do QualitySettings.
+    /// </summary>
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    private static void ApplySavedPreferenceOnBoot()
+    {
+        ApplyVSync(PlayerPrefs.GetInt(VSyncPrefKey, 1) == 1);
+    }
+
     private void Awake()
     {
         // Pega o Toggle que está no mesmo GameObject
@@ -50,7 +60,7 @@ public class VSyncSettings : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    private void ApplyVSync(bool enabled)
+    private static void ApplyVSync(bool enabled)
     {
         if (enabled)
         {

@@ -32,6 +32,12 @@ public class UpgradeSelectionView : MonoBehaviour
     private readonly List<UpgradeDefinition> visibleUpgrades = new List<UpgradeDefinition>();
     private bool locked;
 
+    // Ligado só durante o Raise do UpgradeSelected: o RunManager confirma a escolha emitindo PlayerStatsChanged
+    // de forma síncrona. Sem confirmação (ex.: exceção num UpgradeEffect.OnAcquired, que o bus só loga), o painel
+    // não pode sumir com o jogo pausado: as cartas são destravadas para nova tentativa.
+    private bool awaitingConfirmation;
+    private bool selectionConfirmed;
+
     private static readonly Key[] NumberKeys = { Key.Digit1, Key.Digit2, Key.Digit3 };
 
     private void Awake()
@@ -48,6 +54,8 @@ public class UpgradeSelectionView : MonoBehaviour
         EventBus<RunStarted>.Subscribe(HandleRunStarted);
         EventBus<LevelStarted>.Subscribe(HandleLevelStarted);
         EventBus<RunEnded>.Subscribe(HandleRunEnded);
+        EventBus<RunAbandoned>.Subscribe(HandleRunAbandoned);
+        EventBus<PlayerStatsChanged>.Subscribe(HandlePlayerStatsChanged);
     }
 
     private void OnDisable()
@@ -56,6 +64,8 @@ public class UpgradeSelectionView : MonoBehaviour
         EventBus<RunStarted>.Unsubscribe(HandleRunStarted);
         EventBus<LevelStarted>.Unsubscribe(HandleLevelStarted);
         EventBus<RunEnded>.Unsubscribe(HandleRunEnded);
+        EventBus<RunAbandoned>.Unsubscribe(HandleRunAbandoned);
+        EventBus<PlayerStatsChanged>.Unsubscribe(HandlePlayerStatsChanged);
     }
 
     private void Update()
@@ -136,6 +146,11 @@ public class UpgradeSelectionView : MonoBehaviour
         SetPanelActive(false);
     }
 
+    private void HandleRunAbandoned(RunAbandoned evt)
+    {
+        SetPanelActive(false);
+    }
+
     private void HandleRunEnded(RunEnded evt)
     {
         SetPanelActive(false);
@@ -154,10 +169,39 @@ public class UpgradeSelectionView : MonoBehaviour
             visibleCards[i].SetInteractable(false);
         }
 
-        SetPanelActive(false);
-
         Debug.Log($"[UpgradeSelectionView] - Upgrade escolhido: {(upgrade != null ? upgrade.DisplayName : "?")}");
+
+        awaitingConfirmation = true;
+        selectionConfirmed = false;
         EventBus<UpgradeSelected>.Raise(new UpgradeSelected(upgrade));
+        awaitingConfirmation = false;
+
+        // O painel pode ter sido fechado durante o Raise (RunAbandoned por falha ao carregar a fase).
+        if (panel == null || !panel.activeSelf)
+        {
+            return;
+        }
+
+        if (selectionConfirmed)
+        {
+            SetPanelActive(false);
+            return;
+        }
+
+        Debug.LogWarning("[UpgradeSelectionView] - Escolha não confirmada pelo RunManager; cartas liberadas de novo");
+        locked = false;
+        for (int i = 0; i < visibleCards.Count; i++)
+        {
+            visibleCards[i].SetInteractable(true);
+        }
+    }
+
+    private void HandlePlayerStatsChanged(PlayerStatsChanged evt)
+    {
+        if (awaitingConfirmation)
+        {
+            selectionConfirmed = true;
+        }
     }
 
     private void SetPanelActive(bool active)

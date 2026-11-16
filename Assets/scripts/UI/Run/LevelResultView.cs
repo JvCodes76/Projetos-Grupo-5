@@ -55,6 +55,7 @@ public class LevelResultView : MonoBehaviour
         EventBus<LevelCompleted>.Subscribe(HandleLevelCompleted);
         EventBus<LevelStarted>.Subscribe(HandleLevelStarted);
         EventBus<RunEnded>.Subscribe(HandleRunEnded);
+        EventBus<RunAbandoned>.Subscribe(HandleRunAbandoned);
     }
 
     private void OnDisable()
@@ -63,6 +64,7 @@ public class LevelResultView : MonoBehaviour
         EventBus<LevelCompleted>.Unsubscribe(HandleLevelCompleted);
         EventBus<LevelStarted>.Unsubscribe(HandleLevelStarted);
         EventBus<RunEnded>.Unsubscribe(HandleRunEnded);
+        EventBus<RunAbandoned>.Unsubscribe(HandleRunAbandoned);
     }
 
     private void HandleRunStarted(RunStarted evt)
@@ -126,6 +128,11 @@ public class LevelResultView : MonoBehaviour
     }
 
     private void HandleLevelStarted(LevelStarted evt)
+    {
+        SetPanelActive(false);
+    }
+
+    private void HandleRunAbandoned(RunAbandoned evt)
     {
         SetPanelActive(false);
     }

@@ -146,8 +146,10 @@ public class RunManager : MonoBehaviour
 
         if (!sceneLoader.Load(level.SceneName, OnLevelSceneLoaded))
         {
-            Time.timeScale = 1f;
-            Debug.LogError($"[RunManager] - Não foi possível carregar a cena '{level.SceneName}'; a run ficou em {flow.Phase}");
+            // Sem a cena da fase a run não tem como seguir: descarta e volta ao menu (senão fica presa em LoadingLevel).
+            Debug.LogError($"[RunManager] - Não foi possível carregar a cena '{level.SceneName}'; run descartada, voltando ao menu");
+            AbandonRun();
+            LoadMenu();
         }
     }
 
@@ -301,7 +303,11 @@ public class RunManager : MonoBehaviour
         }
 
         Debug.Log("[RunManager] - Voltando ao menu");
+        LoadMenu();
+    }
 
+    private void LoadMenu()
+    {
         // Como nas fases, o timeScale só volta a 1 com o menu carregado (a vitória fica pausada até lá).
         menuLoadRequested = true;
         if (!sceneLoader.Load(menuSceneName, OnMenuSceneLoaded))
@@ -331,11 +337,18 @@ public class RunManager : MonoBehaviour
 
         if (flow.Phase == RunPhase.Menu) return;
 
-        // Menu carregado por fora do fluxo (ex.: botão legado até a 4.1): a run é descartada sem eventos.
+        // Menu carregado por fora do fluxo (ex.: botão legado até a 4.1): a run é descartada e as views avisadas.
         Debug.LogWarning($"[RunManager] - Menu carregado fora do fluxo da run (fase {flow.Phase}); run descartada");
+        AbandonRun();
+    }
+
+    /// <summary>Descarta a run atual (RunFlow volta a Menu) e emite RunAbandoned para as views se esconderem.</summary>
+    private void AbandonRun()
+    {
         flow = new RunFlow(new UpgradeOfferGenerator());
         lastElapsedSeconds = 0f;
         Time.timeScale = 1f;
+        EventBus<RunAbandoned>.Raise(new RunAbandoned());
     }
 
     // ───────────────────────────── Utilitários ─────────────────────────────

@@ -227,6 +227,13 @@ namespace Roguelike.Events
         public bool IsVictory => Summary != null && Summary.IsVictory;
     }
 
+    /// <summary>
+    /// A run foi descartada sem chegar a Vitoria/Derrota (qualquer fase → Menu): menu carregado por fora do fluxo ou
+    /// falha ao carregar a cena da fase. Emissor: RunManager. Ouvintes: views da RunUI (escondem os painéis),
+    /// LevelTimer (para). Não há RunSummary: a run não terminou.
+    /// </summary>
+    public readonly struct RunAbandoned : IEvent { }
+
     // ──────────── Decisões do jogador na UI (extensão da §3.4, ADR-14) ────────────
 
     /// <summary>

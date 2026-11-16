@@ -48,6 +48,7 @@ public class LevelTimer : MonoBehaviour, ITickable
         EventBus<LevelGoalReached>.Subscribe(HandleLevelGoalReached);
         EventBus<PlayerDied>.Subscribe(HandlePlayerDied);
         EventBus<RunEnded>.Subscribe(HandleRunEnded);
+        EventBus<RunAbandoned>.Subscribe(HandleRunAbandoned);
         SceneManager.sceneLoaded += HandleSceneLoaded;
     }
 
@@ -58,6 +59,7 @@ public class LevelTimer : MonoBehaviour, ITickable
         EventBus<LevelGoalReached>.Unsubscribe(HandleLevelGoalReached);
         EventBus<PlayerDied>.Unsubscribe(HandlePlayerDied);
         EventBus<RunEnded>.Unsubscribe(HandleRunEnded);
+        EventBus<RunAbandoned>.Unsubscribe(HandleRunAbandoned);
         SceneManager.sceneLoaded -= HandleSceneLoaded;
 
         // Desligado, o timer não ouve o fim da fase: parar aqui garante que ele nunca emita depois dele.
@@ -109,6 +111,11 @@ public class LevelTimer : MonoBehaviour, ITickable
     }
 
     private void HandlePlayerDied(PlayerDied evt)
+    {
+        StopClock();
+    }
+
+    private void HandleRunAbandoned(RunAbandoned evt)
     {
         StopClock();
     }

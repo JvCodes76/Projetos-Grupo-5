@@ -108,6 +108,7 @@ Todos em `Roguelike.Events` (`Events/GameEvents.cs`). Tipos exatos dos payloads:
 | `UpgradeSelected` | `UpgradeDefinition Upgrade` | UpgradeSelectionView | RunManager | Precisa ser uma oferta não vazia; o RunFlow ignora se não for |
 | `PlayerStatsChanged` | `PlayerStatsSnapshot Stats` | RunManager (em nome do PlayerStats, ADR-02) | characterMovement (repassa ao GrapplingHook por chamada direta, 2.4), HUD | Após `RunStarted`, `UpgradeSelected` e cada `PlayerSpawned` (ADR-16); `Stats.IsValid` |
 | `RunEnded` | `RunSummary Summary`, (`bool IsVictory` calculado) | RunManager | RunEndView, telemetria | `Summary` não nulo |
+| `RunAbandoned` | — | RunManager | views da RunUI, LevelTimer | Run descartada sem Vitória/Derrota (menu carregado por fora do fluxo ou falha ao carregar a fase); o RunFlow volta a Menu |
 
 ### 4.2 Decisões do jogador na UI (extensão, ADR-14)
 

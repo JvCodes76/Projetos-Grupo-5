@@ -98,5 +98,19 @@ namespace Roguelike.Tests.Movement
             h.Step(In.None);
             Assert.AreEqual(0, h.S.AirJumpsLeft);
         }
+
+        [Test]
+        public void LevelResetAndStatsSameTick_ChargesUseNewStats()
+        {
+            // Fluxo real: o PlayerController enfileira o LevelReset no Awake e o PlayerStatsChanged chega logo depois.
+            using var h = new MotorHarness();
+            h.Spawn(new Vector2(0f, 100f));
+            h.Motor.QueueLevelReset(new Vector2(0f, 100f), float.NegativeInfinity);
+            var more = new KitStatInput(h.Profile).Set(StatType.MaxAirJumps, 2f).Set(StatType.MaxDashes, 1f);
+            h.Motor.QueueStats(MovementStatsResolver.Resolve(h.Profile, more));
+            h.Step(In.None);
+            Assert.AreEqual(2, h.S.AirJumpsLeft);
+            Assert.AreEqual(1, h.S.DashesLeft);
+        }
     }
 }

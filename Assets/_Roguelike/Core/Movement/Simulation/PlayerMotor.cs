@@ -275,9 +275,11 @@ namespace Roguelike.Movement
                 }
             }
 
+            bool levelResetThisTick = false;
             if (pendingLevelReset)
             {
                 pendingLevelReset = false;
+                levelResetThisTick = true;
                 ResetForLevel(pendingResetSpawn, pendingResetKillPlane);
             }
 
@@ -291,8 +293,18 @@ namespace Roguelike.Movement
             {
                 pendingStats = false;
                 st = pendingStatsValue;
-                if (s.AirJumpsLeft > st.MaxAirJumps) s.AirJumpsLeft = st.MaxAirJumps;
-                if (s.DashesLeft > st.MaxDashes) s.DashesLeft = st.MaxDashes;
+                if (levelResetThisTick)
+                {
+                    // O LevelReset deste tick recarregou as cargas com os stats antigos (a ordem fixa põe Stats por
+                    // último): o início de fase precisa das cargas cheias dos stats novos (upgrade recém-adquirido).
+                    s.AirJumpsLeft = st.MaxAirJumps;
+                    s.DashesLeft = st.MaxDashes;
+                }
+                else
+                {
+                    if (s.AirJumpsLeft > st.MaxAirJumps) s.AirJumpsLeft = st.MaxAirJumps;
+                    if (s.DashesLeft > st.MaxDashes) s.DashesLeft = st.MaxDashes;
+                }
             }
         }
 

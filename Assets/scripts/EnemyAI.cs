@@ -8,6 +8,8 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundCheckDistance = 0.4f;
     [SerializeField] private LayerMask groundLayer;
+    [Tooltip("Folga à frente do colisor para detectar parede (somada ao passo do frame).")]
+    [SerializeField] private float wallCheckDistance = 0.05f;
 
     [Header("Detecção e Ataque")]
     [SerializeField] private Transform shootPoint;
@@ -18,6 +20,7 @@ public class EnemyAI : MonoBehaviour
 
     private Rigidbody2D rb;
     private Animator anim;
+    private Collider2D bodyCollider;
 
     private bool isFacingRight = true;
     private bool isDead = false;
@@ -29,6 +32,8 @@ public class EnemyAI : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
 
         anim = GetComponentInChildren<Animator>();
+        bodyCollider = GetComponent<Collider2D>();
+        if (bodyCollider == null) bodyCollider = GetComponentInChildren<Collider2D>();
 
         rb.bodyType = RigidbodyType2D.Kinematic;
     }
@@ -47,35 +52,61 @@ public class EnemyAI : MonoBehaviour
     {
         if (waitingToShoot) return;
 
+        // Checa ANTES de andar: o corpo é cinemático e movido por transform, então nada impede de entrar na parede.
+        if (!CanWalk(isFacingRight))
+        {
+            // Só vira se o outro lado tiver caminho; sem caminho dos dois lados fica parado (antes virava todo frame).
+            if (CanWalk(!isFacingRight))
+                TurnAround();
+            return;
+        }
+
         transform.position += new Vector3(
             (isFacingRight ? 1 : -1) * speed * Time.deltaTime,
             0,
             0
         );
+    }
 
-        RaycastHit2D groundHit = Physics2D.Raycast(
-            groundCheck.position,
-            Vector2.down,
-            groundCheckDistance,
-            groundLayer
-        );
+    /// <summary>Há chão à frente e nenhuma parede (groundLayer) no passo deste frame na direção pedida.</summary>
+    private bool CanWalk(bool towardsRight)
+    {
+        float dir = towardsRight ? 1f : -1f;
 
-        if (!groundHit)
-            TurnAround();
+        // O groundCheck é filho e espelha com o scale: para o lado oposto ao atual, reflete em torno do pivô.
+        Vector2 groundOrigin = groundCheck.position;
+        if (towardsRight != isFacingRight)
+            groundOrigin.x = 2f * transform.position.x - groundOrigin.x;
+
+        if (!Physics2D.Raycast(groundOrigin, Vector2.down, groundCheckDistance, groundLayer))
+            return false;
+
+        Vector2 wallOrigin = transform.position;
+        if (bodyCollider != null)
+        {
+            Bounds bounds = bodyCollider.bounds;
+            wallOrigin = new Vector2(bounds.center.x + dir * bounds.extents.x, bounds.center.y);
+        }
+
+        float wallDistance = wallCheckDistance + speed * Time.deltaTime;
+        return !Physics2D.Raycast(wallOrigin, new Vector2(dir, 0f), wallDistance, groundLayer);
     }
 
     private void DetectPlayer()
     {
         Vector2 shootDir = isFacingRight ? Vector2.right : Vector2.left;
 
+        // Chão/parede entram na máscara para bloquear a linha de visão: só atira se o PRIMEIRO acerto for o jogador.
         RaycastHit2D hit = Physics2D.Raycast(
             shootPoint.position,
             shootDir,
             shootDetectionRange,
-            playerLayer
+            playerLayer | groundLayer
         );
 
-        if (hit.collider != null && shootTimer <= 0 && !waitingToShoot)
+        bool seesPlayer = hit.collider != null && (playerLayer.value & (1 << hit.collider.gameObject.layer)) != 0;
+
+        if (seesPlayer && shootTimer <= 0 && !waitingToShoot)
         {
             anim.SetTrigger("IsShoot");
             shootTimer = shootCooldown;

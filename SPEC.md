@@ -626,7 +626,7 @@ Inspirada em IMP §2.5. **Esta ordem é contrato**: testes e replays dependem de
 0. *(fora do núcleo)* `SimulationLoop.NextStep()`: se há freeze, o passo é consumido sem tick e nada abaixo roda.
 1. `PrevPosition = Position`; zera `TickEvents`; `currentTick = tick`.
 2. `input = source.NextTick()` (sampler, gravação ou script); se a gravação estiver ligada, anexa o `TickInput`.
-3. **Comandos pendentes**, em ordem fixa: `Die` → `Disabled/Enabled` → `LevelReset` → `Teleport/Respawn` → `Stats` (novo `MovementStats`; ações em curso mantêm os valores capturados, RNF-07).
+3. **Comandos pendentes**, em ordem fixa: `Die` → `Disabled/Enabled` → `LevelReset` → `Teleport/Respawn` → `Stats` (novo `MovementStats`; ações em curso mantêm os valores capturados, RNF-07). Se houve `LevelReset` no mesmo tick, `Stats` recarrega as cargas de pulo aéreo e dash com os máximos novos (o reset as encheu com os stats antigos); fora disso, só limita ao novo máximo.
 4. **Timers e variáveis** (pula em `Dead`/`Disabled`):
    1. `if (!Grounded) TicksSinceGrounded++` (todos os contadores `TicksSince*` saturam em `TickMath.Never = 1 000 000`); se `Grounded`: `TicksSinceGrounded = 0`, `CoyoteArmed = true`, `AirJumpsLeft = MaxAirJumps` (evento de recarga se subiu); dash recarrega se `DashRefillCooldownTicks == 0`.
    2. Decrementa `VarJumpTicks`, `ForceMoveXTicks`, `DashCooldownTicks`, `DashRefillCooldownTicks`, `GrappleCooldownTicks`; `TicksSinceWallSlide++`; checagem da retenção de velocidade (§5.5).
