@@ -85,6 +85,8 @@ namespace Roguelike.Run
         /// <summary>Upgrades em ordem de aquisição; um item por stack.</summary>
         public IReadOnlyList<UpgradeDefinition> AcquiredUpgrades => acquiredUpgrades;
 
+        public AbilityFlags Abilities => Stats.Abilities;
+
         public int GetStacks(UpgradeDefinition upgrade)
         {
             if (upgrade == null) throw new ArgumentNullException(nameof(upgrade));

@@ -28,10 +28,12 @@ namespace Roguelike.Tests.Movement
             var rec = new InputRecording();
             var held = ButtonBits.None;
             sbyte x = 0, y = 0;
+            ushort aim = 0;
             for (int i = 0; i < ticks; i++)
             {
                 if (rng.NextDouble() < 0.1) x = (sbyte)(rng.Next(3) - 1);
                 if (rng.NextDouble() < 0.05) y = (sbyte)(rng.Next(3) - 1);
+                if (rng.NextDouble() < 0.1) aim = (ushort)rng.Next(0, AimCodec.Steps + 1); // 0 = sem mira
                 var pressed = ButtonBits.None;
                 foreach (var bit in new[] { ButtonBits.Jump, ButtonBits.Dash, ButtonBits.Grapple })
                 {
@@ -46,7 +48,7 @@ namespace Roguelike.Tests.Movement
                     }
                 }
 
-                rec.Append(new TickInput(x, y, pressed, held));
+                rec.Append(new TickInput(x, y, pressed, held, aim));
             }
 
             return rec;
@@ -56,7 +58,8 @@ namespace Roguelike.Tests.Movement
         {
             using var h = new MotorHarness();
             BuildWorld(h);
-            h.Abilities(AbilityFlags.WallJump | AbilityFlags.GrapplingHook, airJumps: 1, dashes: 1);
+            h.Abilities(AbilityFlags.WallJump | AbilityFlags.GrapplingHook | AbilityFlags.WebSwing, airJumps: 1, dashes: 1);
+            h.Profile.HookUsesPerLevel = 200; // exercita o gancho e a teia a gravação inteira
             h.Spawn(rec.StartFeet);
             rec.Rewind();
             for (int i = 0; i < rec.Count; i++) h.Step(rec.NextTick());

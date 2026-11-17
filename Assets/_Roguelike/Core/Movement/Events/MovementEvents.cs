@@ -144,7 +144,27 @@ namespace Roguelike.Events
         public long Tick { get; }
     }
 
-    /// <summary>A ponta do gancho prendeu: começa o puxão.</summary>
+    /// <summary>
+    /// Os usos do gancho/teia mudaram: um disparo gastou um, a fase recomeçou ou os stats mudaram (upgrade novo).
+    /// Ouvintes: HUD. Max = 0 quando o jogador não tem nem o gancho nem a teia.
+    /// </summary>
+    public readonly struct PlayerGrappleUsesChanged : IEvent
+    {
+        public PlayerGrappleUsesChanged(int usesLeft, int maxUses, long tick)
+        {
+            UsesLeft = usesLeft;
+            MaxUses = maxUses;
+            Tick = tick;
+        }
+
+        /// <summary>Usos restantes nesta fase.</summary>
+        public int UsesLeft { get; }
+        /// <summary>Usos por fase com os upgrades atuais.</summary>
+        public int MaxUses { get; }
+        public long Tick { get; }
+    }
+
+    /// <summary>A ponta do gancho prendeu: começa o puxão (ou o balanço da teia).</summary>
     public readonly struct PlayerGrappleAttached : IEvent
     {
         public PlayerGrappleAttached(Vector2 anchor, long tick)

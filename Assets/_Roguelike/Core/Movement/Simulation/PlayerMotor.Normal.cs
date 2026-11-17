@@ -48,6 +48,7 @@ namespace Roguelike.Movement
             if (s.DashCooldownTicks > 0) s.DashCooldownTicks--;
             if (s.DashRefillCooldownTicks > 0) s.DashRefillCooldownTicks--;
             if (s.GrappleCooldownTicks > 0) s.GrappleCooldownTicks--;
+            if (s.GravityFlipTicksLeft > 0) s.GravityFlipTicksLeft--;
             s.TicksSinceWallSlide = TickMath.SaturatingIncrement(s.TicksSinceWallSlide);
 
             if (s.RetentionTicks > 0 && s.State == MotorStateId.Normal)
@@ -88,7 +89,7 @@ namespace Roguelike.Movement
                 UpdateBuffer(ref s.DashBuffer, ButtonBits.Dash, st.DashBufferTicks, DeniedAction.Dash);
             }
 
-            if (input.IsPressed(ButtonBits.Grapple) && !st.Has(AbilityFlags.GrapplingHook))
+            if (input.IsPressed(ButtonBits.Grapple) && !st.HasGrappleTool)
             {
                 s.GrappleBuffer.Active = false;
                 Deny(DeniedAction.Grapple, DenyReason.Locked);
@@ -123,7 +124,7 @@ namespace Roguelike.Movement
                     Deny(DeniedAction.Dash, s.DashesLeft <= 0 ? DenyReason.NoCharge : DenyReason.Cooldown);
                     break;
                 case DeniedAction.Grapple:
-                    Deny(DeniedAction.Grapple, DenyReason.Cooldown);
+                    Deny(DeniedAction.Grapple, s.GrappleUsesLeft <= 0 ? DenyReason.NoCharge : DenyReason.Cooldown);
                     break;
             }
         }
@@ -134,10 +135,21 @@ namespace Roguelike.Movement
             moveX = s.ForceMoveXTicks > 0 ? s.ForceMoveX : input.MoveX;
             if (moveX != 0 && s.WallSlideSide == 0 && s.State != MotorStateId.Dash) s.Facing = moveX;
 
-            float capTarget = (input.MoveY == -1 && s.Velocity.y <= -p.MaxFall && !s.Grounded && s.WallSlideSide == 0)
-                ? p.FastMaxFall
-                : p.MaxFall;
-            s.MaxFallCurrent = MathUtil.Approach(s.MaxFallCurrent, capTarget, p.FastFallCapAccel * dt);
+            float maxFall = p.MaxFall * st.FallMult;
+            float capTarget = (input.MoveY == -1 && s.Velocity.y <= -maxFall && !s.Grounded && s.WallSlideSide == 0)
+                ? p.FastMaxFall * st.FallMult
+                : maxFall;
+            float capRate = p.FastFallCapAccel;
+
+            // "Asa-Delta": segurando o pulo, caindo, no ar, fora da parede e da inversão → plana.
+            if (st.Has(AbilityFlags.Glide) && input.IsHeld(ButtonBits.Jump) && !s.Grounded && s.WallSlideSide == 0
+                && s.Velocity.y <= 0f && s.GravityFlipTicksLeft == 0 && s.State == MotorStateId.Normal)
+            {
+                capTarget = p.GlideMaxFall;
+                capRate = p.GlideCapAccel;
+            }
+
+            s.MaxFallCurrent = MathUtil.Approach(s.MaxFallCurrent, capTarget, capRate * dt);
 
             if (input.IsHeld(ButtonBits.Restart))
             {
@@ -159,12 +171,19 @@ namespace Roguelike.Movement
 
             if (s.DashBuffer.Active && CanDash) return StartDash();
 
+            TryGravityFlip();
+
             TryFireGrapple();
 
             UpdateHorizontal();
 
             UpdateWallSlide();
-            if (!s.Grounded && s.WallSlideSide == 0)
+            if (s.GravityFlipTicksLeft > 0)
+            {
+                // Gravidade invertida: o mesmo integrador, espelhado (sem meia gravidade do hold).
+                s.Velocity.y = -JumpSolver.VerticalStep(-s.Velocity.y, false, s.MaxFallCurrent, p, dt);
+            }
+            else if (!s.Grounded && s.WallSlideSide == 0)
             {
                 s.Velocity.y = JumpSolver.VerticalStep(s.Velocity.y, input.IsHeld(ButtonBits.Jump), s.MaxFallCurrent, p, dt);
             }
@@ -177,6 +196,8 @@ namespace Roguelike.Movement
         }
 
         // Corrida (SPEC §7.1): acelera, freia e vira pela mesma taxa; sobrevelocidade com teto macio (RF-03).
+        // No chão, frear (sem input) e virar (input contra a velocidade) passam pelos stats BrakeRate e TurnRate
+        // (base 1 = comportamento original; ex.: upgrade "Tênis de Rodinha").
         private void UpdateHorizontal()
         {
             float mult = s.Grounded ? 1f : st.AirMult;
@@ -189,10 +210,37 @@ namespace Roguelike.Movement
             }
             else
             {
+                if (s.Grounded && vx != 0f)
+                {
+                    if (moveX == 0) mult = st.BrakeMult;
+                    else if (MathUtil.Sign(vx) == -moveX) mult = st.TurnMult;
+                }
+
                 vx = MathUtil.Approach(vx, max * moveX, st.GroundAccel * mult * dt);
             }
 
             s.Velocity.x = vx;
+        }
+
+        // "Inversor de Gravidade": apertar inverte por GravityFlipTicks (gasta 1 carga da fase); apertar de novo
+        // durante a inversão encerra antes, sem gastar carga. Sem a flag ou sem carga, o aperto é ignorado.
+        private void TryGravityFlip()
+        {
+            if (!input.IsPressed(ButtonBits.GravityFlip) || !st.Has(AbilityFlags.GravityFlip)) return;
+
+            if (s.GravityFlipTicksLeft > 0)
+            {
+                s.GravityFlipTicksLeft = 0;
+                return;
+            }
+
+            if (s.GravityFlipsLeft <= 0) return;
+
+            s.GravityFlipsLeft--;
+            s.GravityFlipTicksLeft = st.GravityFlipTicks;
+            s.VarJumpTicks = 0;
+            EndWallSlideSilently();
+            if (s.Velocity.y < p.GravityFlipKick) s.Velocity.y = p.GravityFlipKick;
         }
 
         // Hold do pulo (RF-05): segurando, vy não cai abaixo da velocidade do pulo; soltar só encerra o hold.
@@ -241,6 +289,7 @@ namespace Roguelike.Movement
             s.Velocity.y = st.JumpSpeed;
             s.VarJumpSpeed = st.JumpSpeed;
             s.VarJumpTicks = st.VarJumpTicks;
+            if (s.GravityFlipTicksLeft > 0) FlipJumpVertical();
             s.JumpStartTick = currentTick;
 
             if (kind == JumpKind.Coyote) s.CoyoteJumps++;
@@ -254,8 +303,16 @@ namespace Roguelike.Movement
             s.Velocity.y = st.AirJumpSpeed; // substitui vy, mesmo caindo rápido (RF-23)
             s.VarJumpSpeed = st.AirJumpSpeed;
             s.VarJumpTicks = st.VarJumpTicks;
+            if (s.GravityFlipTicksLeft > 0) FlipJumpVertical();
             s.JumpStartTick = currentTick;
             RaiseJumped(JumpKind.Air, fromBuffer);
+        }
+
+        // Com a gravidade invertida o pulo vai para baixo e não tem hold (o hold só sabe segurar para cima).
+        private void FlipJumpVertical()
+        {
+            s.Velocity.y = -s.Velocity.y;
+            s.VarJumpTicks = 0;
         }
 
         private bool ConsumeJumpBuffer()

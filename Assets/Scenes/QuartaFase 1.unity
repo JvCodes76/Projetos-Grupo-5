@@ -58905,6 +58905,8 @@ MonoBehaviour:
   maxX: 39
   minY: 0
   maxY: 50
+  useKillPlane: 0
+  killPlaneY: -10
   gizmoColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!4 &1352451068
 Transform:
@@ -66320,6 +66322,111 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &2050086324
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2050086326}
+  - component: {fileID: 2050086325}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2050086325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2050086324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 673a39e06232d164b94926521e27e8a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetCamera: {fileID: 0}
+  quality: 1
+  sortingLayer: Foreground
+  sortingOrder: 0
+  depthFromCamera: 10
+  margin: 1.5
+  fadeSeconds: 1.5
+  materialOverride: {fileID: 0}
+  audioSource: {fileID: 0}
+  rain:
+    enabled: 0
+    intensity: 0.5
+    wind: 0.15
+    fallSpeed: 24
+    dropLength: 0.9
+    dropWidth: 0.045
+    color: {r: 0.78, g: 0.86, b: 1, a: 0.55}
+    maxDrops: 700
+    loopClip: {fileID: 0}
+    loopVolume: 0.6
+  thunder:
+    enabled: 0
+    onlyWhileRaining: 1
+    minInterval: 6
+    maxInterval: 16
+    flashStrength: 0.55
+    flashColor: {r: 0.86, g: 0.91, b: 1, a: 1}
+    clips: []
+    volume: 0.8
+    soundDelayMin: 0.15
+    soundDelayMax: 1.2
+    onLightning:
+      m_PersistentCalls:
+        m_Calls: []
+  fog:
+    enabled: 0
+    density: 0.187
+    color: {r: 0.74, g: 0.8, b: 0.9, a: 1}
+    shape: 0
+    coverage: 0.6
+    tileSize: 14
+    scroll: {x: 0.6, y: 0.05}
+    parallax: 0.5
+    secondLayer: 1
+  snow:
+    enabled: 0
+    intensity: 0.5
+    wind: 0.1
+    fallSpeed: 2.2
+    color: {r: 1, g: 1, b: 1, a: 0.9}
+    maxFlakes: 350
+  motes:
+    enabled: 0
+    style: 2
+    amount: 0.363
+    overrideColor: 0
+    customColor: {r: 1, g: 1, b: 1, a: 1}
+    maxParticles: 120
+  tint:
+    enabled: 0
+    color: {r: 0.04, g: 0.06, b: 0.12, a: 0.3}
+--- !u!4 &2050086326
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2050086324}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 14.46849, y: 21.97723, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2129641250
 GameObject:
   m_ObjectHideFlags: 0
@@ -66482,3 +66589,4 @@ SceneRoots:
   - {fileID: 1352451068}
   - {fileID: 1170848737}
   - {fileID: 268749278}
+  - {fileID: 2050086326}

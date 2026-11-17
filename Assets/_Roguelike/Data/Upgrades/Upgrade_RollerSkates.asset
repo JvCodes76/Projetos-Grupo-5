@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 307b231f50b8f164bacd1301b8e75e01, type: 3}
+  m_Name: Upgrade_RollerSkates
+  m_EditorClassIdentifier: 
+  id: roller_skates
+  displayName: "Tênis de Rodinha"
+  description: "+15% de velocidade máxima e +25% de aceleração, mas vira bem mais devagar e quase não freia."
+  icon: {fileID: 0}
+  rarity: {fileID: 11400000, guid: 553ddfa5339e33541af7007e15932a64, type: 2}
+  maxStacks: 1
+  prerequisites: []
+  modifiers:
+  - stat: 0
+    operation: 1
+    value: 1.15
+  - stat: 1
+    operation: 1
+    value: 1.25
+  - stat: 14
+    operation: 1
+    value: 0.5
+  - stat: 15
+    operation: 1
+    value: 0.4
+  unlocks: 0
+  effects: []

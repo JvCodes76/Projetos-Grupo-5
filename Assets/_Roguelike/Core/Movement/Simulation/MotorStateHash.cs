@@ -71,6 +71,10 @@ namespace Roguelike.Movement
             Add(ref h, s.GrappleStuckTicks);
             Add(ref h, s.HasGrappleTarget);
             Add(ref h, s.GrappleTarget);
+            Add(ref h, s.GrappleUsesLeft);
+            Add(ref h, s.WebRopeLength);
+            Add(ref h, s.GravityFlipsLeft);
+            Add(ref h, s.GravityFlipTicksLeft);
 
             Add(ref h, s.SpawnFeet);
             Add(ref h, s.KillPlaneY);

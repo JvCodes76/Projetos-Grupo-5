@@ -28,6 +28,7 @@ namespace Roguelike.Movement
         Died = 1 << 16,
         Teleported = 1 << 17,
         CornerCorrected = 1 << 18,
+        GrappleUsesChanged = 1 << 19,
     }
 
     /// <summary>
@@ -70,6 +71,8 @@ namespace Roguelike.Movement
         public Vector2 GrappleAnchor;
         public Vector2 GrappleLaunchVelocity;
         public GrappleReleaseReason GrappleReleaseReason;
+        public int GrappleUsesLeft;
+        public int GrappleUsesMax;
 
         public Vector2 FellOutPosition;
         public Vector2 FellOutLastSafeGround;

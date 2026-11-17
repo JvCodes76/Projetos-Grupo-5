@@ -15,6 +15,12 @@ namespace Roguelike.Movement
         /// <summary>AirMultBase × AirControl.</summary>
         public float AirMult;
         public float OverspeedDecay;
+        /// <summary>Multiplicador da aceleração ao virar no chão (stat TurnRate).</summary>
+        public float TurnMult;
+        /// <summary>Multiplicador da aceleração ao frear no chão sem input (stat BrakeRate).</summary>
+        public float BrakeMult;
+        /// <summary>Multiplicador de MaxFall/FastMaxFall (stat FallSpeed).</summary>
+        public float FallMult;
         public float JumpHBoost;
         public float JumpHeight;
         /// <summary>Derivado de JumpHeight pelo JumpSolver (gravidade fixa, DS-07).</summary>
@@ -28,6 +34,10 @@ namespace Roguelike.Movement
         // --- Contagens ---
         public int MaxAirJumps;
         public int MaxDashes;
+        /// <summary>Inversões de gravidade por fase (0 sem a flag GravityFlip).</summary>
+        public int MaxGravityFlips;
+        /// <summary>Usos do gancho/teia por fase: HookUsesPerLevel (flag GrapplingHook) + WebUsesPerLevel (flag WebSwing).</summary>
+        public int MaxGrappleUses;
         public AbilityFlags Flags;
 
         // --- Janelas e durações (ticks) ---
@@ -47,6 +57,8 @@ namespace Roguelike.Movement
         public int DashFreezeTicks;
         public int GrappleMaxTicks;
         public int GrappleStuckWindowTicks;
+        public int WebSwingMaxTicks;
+        public int GravityFlipTicks;
         public int RespawnDelayTicks;
         public int ReturnToSpawnHoldTicks;
 
@@ -57,5 +69,8 @@ namespace Roguelike.Movement
         {
             return flag != AbilityFlags.None && (Flags & flag) == flag;
         }
+
+        /// <summary>Tem a ferramenta de gancho (mira + disparo): o gancho ou o lançador de teia.</summary>
+        public bool HasGrappleTool => (Flags & (AbilityFlags.GrapplingHook | AbilityFlags.WebSwing)) != 0;
     }
 }

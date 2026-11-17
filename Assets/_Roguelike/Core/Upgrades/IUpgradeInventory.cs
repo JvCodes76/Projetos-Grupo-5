@@ -8,5 +8,8 @@ namespace Roguelike.Upgrades
     {
         /// <summary>Quantos stacks de <paramref name="upgrade"/> já foram adquiridos (0 se nenhum).</summary>
         int GetStacks(UpgradeDefinition upgrade);
+
+        /// <summary>Habilidades que o jogador já tem (para UpgradeDefinition.RequiredAbilities).</summary>
+        AbilityFlags Abilities { get; }
     }
 }

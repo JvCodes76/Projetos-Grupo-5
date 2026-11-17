@@ -63,7 +63,7 @@ public sealed class MovementGizmos : MonoBehaviour
             Gizmos.DrawLine(new Vector3(s.Position.x - 30f, s.KillPlaneY), new Vector3(s.Position.x + 30f, s.KillPlaneY));
         }
 
-        if (motor.Stats.Has(Roguelike.Upgrades.AbilityFlags.GrapplingHook))
+        if (motor.Stats.HasGrappleTool)
         {
             Gizmos.color = new Color(0.3f, 1f, 1f, 0.35f);
             Gizmos.DrawWireSphere(center, motor.Stats.GrappleRadius);

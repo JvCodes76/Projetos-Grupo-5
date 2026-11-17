@@ -56,7 +56,7 @@ public sealed class FeedbackOptionsPanel : MonoBehaviour
         RectTransform root = window != null ? window : (RectTransform)transform;
         RectTransform column = MenuUi.Column(root, 28f, 14f);
 
-        TextMeshProUGUI title = MenuUi.Text(column, "ACESSIBILIDADE", style, style.TitleSize, style.TextColor);
+        TextMeshProUGUI title = MenuUi.Title(column, "ACESSIBILIDADE", style);
         MenuUi.Weight(title, 1f).preferredHeight = 56f;
 
         firstButton = OptionRow(column, "Tremor de tela", () => FeedbackSettings.ShakeScale = NextStep(FeedbackSettings.ShakeScale), out shakeValue);

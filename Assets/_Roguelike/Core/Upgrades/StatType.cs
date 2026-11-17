@@ -43,6 +43,14 @@ namespace Roguelike.Upgrades
         JumpHorizontalBoost = 12,
         /// <summary>Freio da sobrevelocidade segurando a direção (u/s²). Base 40, mínimo 20.</summary>
         OverspeedDecay = 13,
+        /// <summary>Multiplicador da taxa de virada no chão (input contra a velocidade) (×). Base 1, faixa 0,3–2.</summary>
+        TurnRate = 14,
+        /// <summary>Multiplicador da frenagem no chão (sem input) (×). Base 1, faixa 0,3–2.</summary>
+        BrakeRate = 15,
+        /// <summary>Multiplicador da queda máxima e da queda rápida (×). Base 1, faixa 0,5–1,5.</summary>
+        FallSpeed = 16,
+        /// <summary>Tempo depois do início do dash até o chão poder recarregá-lo (s). Base 0,1, faixa 0,05–1.</summary>
+        DashRefillDelay = 17,
     }
 
     /// <summary>Utilitários de enumeração de <see cref="StatType"/> (sem alocação por chamada).</summary>

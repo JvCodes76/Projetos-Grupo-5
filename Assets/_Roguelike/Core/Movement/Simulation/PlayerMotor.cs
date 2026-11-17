@@ -16,6 +16,7 @@ namespace Roguelike.Movement
     public sealed partial class PlayerMotor
     {
         private const int MaxGrappleCandidates = 16;
+        private const float DiagonalComponent = 0.70710678f;
 
         private readonly MovementProfile p;
         private readonly ICollisionWorld world;
@@ -249,6 +250,12 @@ namespace Roguelike.Movement
             events.Clear(0);
         }
 
+        /// <summary>Só testes: usos restantes do gancho/teia na fase.</summary>
+        internal void DebugSetGrappleUses(int uses)
+        {
+            s.GrappleUsesLeft = uses;
+        }
+
         /// <summary>Só testes: cargas de pulo aéreo e dash.</summary>
         internal void DebugSetCharges(int airJumps, int dashes)
         {
@@ -292,18 +299,22 @@ namespace Roguelike.Movement
             if (pendingStats)
             {
                 pendingStats = false;
+                int previousGrappleUses = st.MaxGrappleUses;
                 st = pendingStatsValue;
+                ApplyGrappleUsesFromStats(previousGrappleUses, levelResetThisTick);
                 if (levelResetThisTick)
                 {
                     // O LevelReset deste tick recarregou as cargas com os stats antigos (a ordem fixa põe Stats por
                     // último): o início de fase precisa das cargas cheias dos stats novos (upgrade recém-adquirido).
                     s.AirJumpsLeft = st.MaxAirJumps;
                     s.DashesLeft = st.MaxDashes;
+                    s.GravityFlipsLeft = st.MaxGravityFlips;
                 }
                 else
                 {
                     if (s.AirJumpsLeft > st.MaxAirJumps) s.AirJumpsLeft = st.MaxAirJumps;
                     if (s.DashesLeft > st.MaxDashes) s.DashesLeft = st.MaxDashes;
+                    if (s.GravityFlipsLeft > st.MaxGravityFlips) s.GravityFlipsLeft = st.MaxGravityFlips;
                 }
             }
         }

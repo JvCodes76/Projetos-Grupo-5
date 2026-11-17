@@ -145,6 +145,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""GravityFlip"",
+                    ""type"": ""Button"",
+                    ""id"": ""6b1f3c2e-8d4a-4e7b-9a51-2c7e0f4d9b13"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -447,6 +456,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""b6f1c2a4-7d3e-4f58-9a1b-2c4d6e8f0a13"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Grapple"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""8103d1e4-5ffd-44f8-a419-4781366f3879"",
                     ""path"": ""<Keyboard>/r"",
                     ""interactions"": """",
@@ -464,6 +484,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Restart"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a3d5e7f9-1b2c-4d6e-8f0a-3c5e7a9b1d24"",
+                    ""path"": ""<Keyboard>/v"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""GravityFlip"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c7e9a1b3-5d6f-4a8c-9e2b-4f6a8c0e2d35"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""GravityFlip"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -503,6 +545,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
         m_Player_Grapple = m_Player.FindAction("Grapple", throwIfNotFound: true);
         m_Player_Restart = m_Player.FindAction("Restart", throwIfNotFound: true);
+        m_Player_GravityFlip = m_Player.FindAction("GravityFlip", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
@@ -589,6 +632,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Dash;
     private readonly InputAction m_Player_Grapple;
     private readonly InputAction m_Player_Restart;
+    private readonly InputAction m_Player_GravityFlip;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -624,6 +668,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Restart".
         /// </summary>
         public InputAction @Restart => m_Wrapper.m_Player_Restart;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/GravityFlip".
+        /// </summary>
+        public InputAction @GravityFlip => m_Wrapper.m_Player_GravityFlip;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -668,6 +716,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Restart.started += instance.OnRestart;
             @Restart.performed += instance.OnRestart;
             @Restart.canceled += instance.OnRestart;
+            @GravityFlip.started += instance.OnGravityFlip;
+            @GravityFlip.performed += instance.OnGravityFlip;
+            @GravityFlip.canceled += instance.OnGravityFlip;
         }
 
         /// <summary>
@@ -697,6 +748,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Restart.started -= instance.OnRestart;
             @Restart.performed -= instance.OnRestart;
             @Restart.canceled -= instance.OnRestart;
+            @GravityFlip.started -= instance.OnGravityFlip;
+            @GravityFlip.performed -= instance.OnGravityFlip;
+            @GravityFlip.canceled -= instance.OnGravityFlip;
         }
 
         /// <summary>
@@ -805,5 +859,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnRestart(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "GravityFlip" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnGravityFlip(InputAction.CallbackContext context);
     }
 }

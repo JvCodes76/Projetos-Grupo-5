@@ -211,7 +211,7 @@ namespace Roguelike.Movement
         int FindGrappleTargets(Vector2 center, float radius, Vector2[] results);
     }
 
-    // ---- Input de um tick (determinístico, 4 bytes, gravável) ----
+    // ---- Input de um tick (determinístico, 6 bytes, gravável; inclui ushort Aim, a mira do gancho) ----
     [System.Flags] public enum ButtonBits : byte { None = 0, Jump = 1, Dash = 2, Grapple = 4, Restart = 8 }
     public struct TickInput
     {
@@ -897,8 +897,14 @@ MotorStateId GrappleUpdate()                                             // sem 
 }
 ```
 
-- **Mira (RF-32, P1)**: `FindGrappleTargets(BodyCenter, st.GrappleRadius)` → descarta sem linha de visão (`Raycast` em `GrappleObstacle`) → se `(moveX, moveY) ≠ 0`, candidatos com `dot(dirAlvo, dirInput) ≥ 0,5` (cone de 60°) têm prioridade; entre eles, o mais próximo; desempate por `x` e depois `y` (determinístico). Sem candidato no cone → o mais próximo geral.
-- **Preview/retícula**: com a flag, cooldown 0 e estado `Normal`, o mesmo cálculo roda todo tick e vai para `PlayerSnapshot.GrappleTarget` (a `GrappleView` desenha a retícula).
+> **Refactor (mira livre, usos por fase, teia)** — o pseudocódigo acima é o puxão original; o código atual (`PlayerMotor.Grapple.cs`) difere nos pontos abaixo.
+
+- **Ferramenta**: o gancho (`AbilityFlags.GrapplingHook`) e o lançador de teia (`AbilityFlags.WebSwing`) são a mesma ferramenta (`MovementStats.HasGrappleTool`): mesmo botão, mesma mira. Qualquer um dos dois upgrades liga a mira.
+- **Mira (RF-32)**: direção = `TickInput.Aim` (mouse ou analógico direito, ângulo de 16 bits do `AimCodec`; lida pelo `PlayerAimReader`) → sem mira explícita, `(moveX, moveY)` → parado, diagonal para a frente. O alvo é a **primeira parede** (`Raycast` em `GrappleObstacle` = Ground) até `st.GrappleRadius`, a pelo menos `GrappleMinDistance` (1,5 u). Alvos de gancho (drones, layer 8) dentro do cone `GrappleSnapConeCos` (15°) e com linha de visão têm prioridade sobre a parede (o mais alinhado; desempate: o mais próximo, depois `x` e `y`).
+- **Usos por fase**: `MaxGrappleUses = HookUsesPerLevel (2, flag do gancho) + WebUsesPerLevel (5, flag da teia)`. Cada disparo que sai gasta 1 (`s.GrappleUsesLeft`); disparo negado (`NoTarget`) não gasta; sem uso → `Denied(Grapple, NoCharge)`. Só o início de fase (`QueueLevelReset`) recarrega — respawn não. Mudança de stats no meio da fase soma/tira a diferença do máximo. `PlayerGrappleUsesChanged(usesLeft, maxUses)` avisa o HUD.
+- **Chegada na parede**: o puxão solta e lança quando `d ≤ GrappleReleaseDistance` **ou** a caixa do corpo fica a ≤ `GrappleArriveDistance` (0,15 u) da âncora (num teto o centro nunca chega a 0,5 u). O lançamento aponta para a âncora: a colisão come a componente contra a parede e o resto vira impulso ao longo dela.
+- **Teia (balanço)**: com `WebSwing`, segurar o botão quando a ponta prende entra em `GrapplePhase.Swing` (tocar puxa como o gancho): gravidade + `WebSwingAccel` com a direção, corda inextensível de `WebRopeLength` (cima/baixo recolhe/solta a `WebReelSpeed`), soltar o botão lança com o momento × `WebReleaseBoost` (+ `WebReleaseUpBoost` subindo); pulo e dash cancelam; limite `WebSwingMaxTime`.
+- **Preview/retícula**: no `Normal`, com a ferramenta e uso sobrando, o mesmo cálculo roda todo tick: `PlayerSnapshot.GrappleTarget` é a âncora prevista (`HasGrappleTarget`) ou o fim da mira sem alvo. A `GrappleView` desenha a linha de mira, a retícula (cheia com alvo, apagada sem) e um pip por uso restante.
 - **Travado**: a cada 18 ticks, se a distância à âncora caiu menos de 0,05 u → `Interrupted`. Timeout: 180 ticks (valores atuais, AUD §2.2).
 - **Morte/`Disabled`**: `EndGrapple(Interrupted)` no passo 3; nenhum disparo é aceito (RF-30, corrige P14).
 - **Resultado (sim.)**: lançamento vertical puro a 34 u/s sobe **4,98 u** (M30: 5 ± 0,3); com +40 % (47,6 u/s), 9,3 u. Horizontal segurando para frente: 19 u até voltar a 10 u/s (RF-31: ≥ 12 u).
@@ -943,7 +949,7 @@ Todas as constantes de feel, em u e s (RNF-05). Asset: `Assets/_Roguelike/Data/M
 | | `GrappleCooldown` | s | 0,5 | 0,2–1 | `GrappleCooldown` (piso 0,2) |
 | | `GrappleLaunchSpeed` | u/s | 34 (DS-08) | 20–50 | `GrappleLaunchSpeed` (+40 %) |
 | | `GrapplePullSpeed` · `HookTravelSpeed` · `GrappleReleaseDistance` | u/s · u/s · u | 20 · 40 · 0,5 | — | — |
-| | `GrappleMaxTime` · `GrappleStuckWindow` · `GrappleStuckDistance` · `GrappleAimConeCos` | s · s · u · — | 3 · 0,3 · 0,05 · 0,5 | — | — |
+| | `GrappleMaxTime` · `GrappleStuckWindow` · `GrappleStuckDistance` · `GrappleSnapConeCos` | s · s · u · — | 3 · 0,3 · 0,05 · 0,966 | — | — |
 | Respawn | `RespawnDelay` · `ReturnToSpawnHold` | s | 0,3 · 0,3 (inicial — calibrar) | ≤ 0,5 (M31) | — |
 | | `SafeGroundEdgeMargin` | u | 0,25 (inicial — calibrar) | 0–0,5 | — |
 | Input | `StickDeadzone` | — | 0,3 | 0,1–0,6 | — |

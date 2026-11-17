@@ -58,7 +58,10 @@ namespace Roguelike.Tests.Movement
                 using var h = new MotorHarness();
                 Geometry(h, kind);
                 var flags = (AbilityFlags)rng.Next(16);
+                if (seq % 2 == 1) flags |= AbilityFlags.WebSwing; // metade das sequências com a teia (balanço)
                 h.Abilities(flags, airJumps: rng.Next(3), dashes: rng.Next(3));
+                h.Profile.HookUsesPerLevel = 100; // o fuzz usa o gancho/teia a sequência inteira
+                h.Profile.WebUsesPerLevel = 100;
                 Vector2 shrunk = h.Profile.BodySize - new Vector2(2f * h.Profile.Skin, 2f * h.Profile.Skin);
 
                 // Spawn sempre num ponto livre (spawn dentro do cenário é erro de level design, não do motor).
@@ -85,7 +88,9 @@ namespace Roguelike.Tests.Movement
                         else if ((held & bit) != 0 && rng.NextDouble() < 0.12) held &= ~bit;
                     }
 
-                    h.Step(new TickInput(x, y, pressed, held));
+                    // Mira: metade do tempo sem mira explícita (direção do movimento), metade num ângulo qualquer.
+                    ushort aim = (t / 40) % 2 == 0 ? (ushort)0 : (ushort)(1 + (seq * 7919 + t / 40 * 6151) % AimCodec.Steps);
+                    h.Step(new TickInput(x, y, pressed, held, aim));
 
                     ref readonly var s = ref h.S;
                     Vector2 center = s.Position + new Vector2(0f, h.Profile.BodySize.y * 0.5f);

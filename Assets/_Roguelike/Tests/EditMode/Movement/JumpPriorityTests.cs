@@ -126,7 +126,7 @@ namespace Roguelike.Tests.Movement
             h.Abilities(AbilityFlags.GrapplingHook, airJumps: 1);
             h.Spawn(new Vector2(0f, 100f));
             h.Motor.DebugSetBody(new Vector2(0f, 100f), Vector2.zero, false);
-            h.Step(In.Press(ButtonBits.Grapple));
+            h.Step(In.Press(ButtonBits.Grapple, y: 1)); // mira para cima, no alvo
             h.RunUntil(() => h.S.State == MotorStateId.Grapple, In.None, 60);
             h.Step(In.None);
             h.Step(In.Press(ButtonBits.Jump));

@@ -42,6 +42,10 @@ namespace Roguelike.Stats
         [SerializeField, Min(0)] private int maxDashes = 0;
         [SerializeField, Min(0f)] private float jumpHorizontalBoost = 4f;
         [SerializeField, Min(0f)] private float overspeedDecay = 40f;
+        [SerializeField, Min(0f)] private float turnRate = 1f;
+        [SerializeField, Min(0f)] private float brakeRate = 1f;
+        [SerializeField, Min(0f)] private float fallSpeed = 1f;
+        [SerializeField, Min(0f)] private float dashRefillDelay = 0.1f;
 
         /// <summary>Habilidades liberadas desde o início da run.</summary>
         public AbilityFlags BaseAbilities => baseAbilities;
@@ -70,6 +74,10 @@ namespace Roguelike.Stats
                 case StatType.MaxDashes: return maxDashes;
                 case StatType.JumpHorizontalBoost: return jumpHorizontalBoost;
                 case StatType.OverspeedDecay: return overspeedDecay;
+                case StatType.TurnRate: return turnRate;
+                case StatType.BrakeRate: return brakeRate;
+                case StatType.FallSpeed: return fallSpeed;
+                case StatType.DashRefillDelay: return dashRefillDelay;
                 default: throw new ArgumentOutOfRangeException(nameof(stat), stat, "StatType sem campo em PlayerBaseStats");
             }
         }
@@ -103,6 +111,10 @@ namespace Roguelike.Stats
                 case StatType.MaxDashes: max = 2f; break;
                 case StatType.JumpHorizontalBoost: max = 6f; break;
                 case StatType.OverspeedDecay: min = 20f; break;
+                case StatType.TurnRate: min = 0.3f; max = 2f; break;
+                case StatType.BrakeRate: min = 0.3f; max = 2f; break;
+                case StatType.FallSpeed: min = 0.5f; max = 1.5f; break;
+                case StatType.DashRefillDelay: min = 0.05f; max = 1f; break;
             }
         }
 
@@ -135,6 +147,10 @@ namespace Roguelike.Stats
                 case StatType.MaxDashes: maxDashes = Mathf.RoundToInt(value); break;
                 case StatType.JumpHorizontalBoost: jumpHorizontalBoost = value; break;
                 case StatType.OverspeedDecay: overspeedDecay = value; break;
+                case StatType.TurnRate: turnRate = value; break;
+                case StatType.BrakeRate: brakeRate = value; break;
+                case StatType.FallSpeed: fallSpeed = value; break;
+                case StatType.DashRefillDelay: dashRefillDelay = value; break;
                 default: throw new ArgumentOutOfRangeException(nameof(stat), stat, "StatType sem campo em PlayerBaseStats");
             }
         }

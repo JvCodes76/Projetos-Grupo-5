@@ -23,6 +23,9 @@ namespace Roguelike.Movement
             s.GroundAccel = Get(profile, input, StatType.Acceleration);
             s.AirMult = profile.AirMultBase * Get(profile, input, StatType.AirControl);
             s.OverspeedDecay = Get(profile, input, StatType.OverspeedDecay);
+            s.TurnMult = Get(profile, input, StatType.TurnRate);
+            s.BrakeMult = Get(profile, input, StatType.BrakeRate);
+            s.FallMult = Get(profile, input, StatType.FallSpeed);
             s.JumpHBoost = Get(profile, input, StatType.JumpHorizontalBoost);
             s.JumpHeight = Get(profile, input, StatType.JumpHeight);
             s.JumpSpeed = JumpSolver.SolveJumpSpeed(s.JumpHeight, profile, tickRate);
@@ -39,7 +42,14 @@ namespace Roguelike.Movement
             if (input.Has(AbilityFlags.GrapplingHook)) flags |= AbilityFlags.GrapplingHook;
             if (input.Has(AbilityFlags.DashRefillOnWallJump)) flags |= AbilityFlags.DashRefillOnWallJump;
             if (input.Has(AbilityFlags.AirJumpRefillOnGrapple)) flags |= AbilityFlags.AirJumpRefillOnGrapple;
+            if (input.Has(AbilityFlags.WebSwing)) flags |= AbilityFlags.WebSwing;
+            if (input.Has(AbilityFlags.Glide)) flags |= AbilityFlags.Glide;
+            if (input.Has(AbilityFlags.GravityFlip)) flags |= AbilityFlags.GravityFlip;
             s.Flags = flags;
+            s.MaxGravityFlips = (flags & AbilityFlags.GravityFlip) != 0 ? Math.Max(0, profile.GravityFlipsPerLevel) : 0;
+            s.MaxGrappleUses =
+                ((flags & AbilityFlags.GrapplingHook) != 0 ? Math.Max(0, profile.HookUsesPerLevel) : 0)
+                + ((flags & AbilityFlags.WebSwing) != 0 ? Math.Max(0, profile.WebUsesPerLevel) : 0);
 
             s.CoyoteTicks = TickMath.ToTicks(Get(profile, input, StatType.CoyoteTime), tickRate);
             s.GrappleCooldownTicks = TickMath.ToTicks(Get(profile, input, StatType.GrappleCooldown), tickRate);
@@ -54,10 +64,12 @@ namespace Roguelike.Movement
             s.WallJumpForceTicks = TickMath.ToTicks(profile.WallJumpForceTime, tickRate);
             s.DashTicks = TickMath.ToTicks(profile.DashTime, tickRate);
             s.DashCooldownTicks = TickMath.ToTicks(profile.DashCooldown, tickRate);
-            s.DashRefillCooldownTicks = TickMath.ToTicks(profile.DashRefillCooldown, tickRate);
+            s.DashRefillCooldownTicks = TickMath.ToTicks(Get(profile, input, StatType.DashRefillDelay), tickRate);
             s.DashFreezeTicks = TickMath.ToTicks(profile.DashFreeze, tickRate);
             s.GrappleMaxTicks = TickMath.ToTicks(profile.GrappleMaxTime, tickRate);
             s.GrappleStuckWindowTicks = TickMath.ToTicks(profile.GrappleStuckWindow, tickRate);
+            s.WebSwingMaxTicks = TickMath.ToTicks(profile.WebSwingMaxTime, tickRate);
+            s.GravityFlipTicks = TickMath.ToTicks(profile.GravityFlipTime, tickRate);
             s.RespawnDelayTicks = TickMath.ToTicks(profile.RespawnDelay, tickRate);
             s.ReturnToSpawnHoldTicks = TickMath.ToTicks(profile.ReturnToSpawnHold, tickRate);
 

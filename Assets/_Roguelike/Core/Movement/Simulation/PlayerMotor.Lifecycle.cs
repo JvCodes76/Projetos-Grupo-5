@@ -52,6 +52,7 @@ namespace Roguelike.Movement
             s.DashBuffer.Active = false;
             s.GrappleBuffer.Active = false;
             s.HasGrappleTarget = false;
+            s.GravityFlipTicksLeft = 0;
             beginReturnToSpawn = false;
         }
 
@@ -64,6 +65,7 @@ namespace Roguelike.Movement
                 CancelGrapple(GrappleReleaseReason.Interrupted);
                 s.DashPhase = DashPhase.None;
                 s.DashTicksLeft = 0;
+                s.GravityFlipTicksLeft = 0;
                 EndWallSlideSilently();
                 if (s.State != MotorStateId.Disabled) s.State = MotorStateId.Normal;
             }
@@ -92,6 +94,8 @@ namespace Roguelike.Movement
             s.TicksSinceWallSlide = TickMath.Never;
             s.AirJumpsLeft = st.MaxAirJumps;
             s.DashesLeft = st.MaxDashes;
+            s.GravityFlipsLeft = st.MaxGravityFlips;
+            SetGrappleUses(st.MaxGrappleUses); // por fase: o respawn não recarrega
             beginReturnToSpawn = false;
             PlaceAt(spawnFeet);
             s.LastSafeGround = s.Position;
@@ -110,7 +114,7 @@ namespace Roguelike.Movement
             s.CoyoteArmed = false;
             s.TicksSinceGrounded = TickMath.Never;
             s.AirStartTick = currentTick;
-            s.MaxFallCurrent = p.MaxFall;
+            s.MaxFallCurrent = p.MaxFall * st.FallMult;
             s.VarJumpTicks = 0;
             s.ForceMoveXTicks = 0;
             s.RetentionTicks = 0;
@@ -144,6 +148,7 @@ namespace Roguelike.Movement
             s.DashTicksLeft = 0;
             EndWallSlideSilently();
             s.State = MotorStateId.Respawning;
+            s.GravityFlipTicksLeft = 0;
             s.RespawnTicksLeft = st.RespawnDelayTicks;
             s.RespawnTarget = target;
             s.RespawnReason = reason;

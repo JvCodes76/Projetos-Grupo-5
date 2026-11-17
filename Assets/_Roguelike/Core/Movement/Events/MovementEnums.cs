@@ -26,6 +26,8 @@ namespace Roguelike.Movement
         None = 0,
         Travel = 1,
         Pull = 2,
+        /// <summary>Balanço pendular da teia (AbilityFlags.WebSwing); também roda no estado Grapple.</summary>
+        Swing = 3,
     }
 
     /// <summary>Tipo de pulo do chão (payload de PlayerJumped).</summary>

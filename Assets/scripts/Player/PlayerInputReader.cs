@@ -8,19 +8,22 @@ using UnityEngine.InputSystem;
 /// </summary>
 public static class PlayerInputReader
 {
-    public static FrameSample Read()
+    /// <param name="aim">Direção da mira do gancho neste frame (<see cref="PlayerAimReader"/>); zero = sem mira.</param>
+    public static FrameSample Read(UnityEngine.Vector2 aim = default)
     {
         PlayerControls.PlayerActions player = GameInput.Player;
         var sample = new FrameSample
         {
             RawX = player.Movement.ReadValue<float>(),
             RawY = player.Vertical.ReadValue<float>(),
+            Aim = aim,
         };
 
         Accumulate(ref sample, player.Jump, ButtonBits.Jump);
         Accumulate(ref sample, player.Dash, ButtonBits.Dash);
         Accumulate(ref sample, player.Grapple, ButtonBits.Grapple);
         Accumulate(ref sample, player.Restart, ButtonBits.Restart);
+        Accumulate(ref sample, player.GravityFlip, ButtonBits.GravityFlip);
         return sample;
     }
 
@@ -33,6 +36,7 @@ public static class PlayerInputReader
         if (player.Dash.IsPressed()) held |= ButtonBits.Dash;
         if (player.Grapple.IsPressed()) held |= ButtonBits.Grapple;
         if (player.Restart.IsPressed()) held |= ButtonBits.Restart;
+        if (player.GravityFlip.IsPressed()) held |= ButtonBits.GravityFlip;
         return held;
     }
 

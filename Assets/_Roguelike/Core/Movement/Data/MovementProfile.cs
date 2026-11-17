@@ -40,6 +40,18 @@ namespace Roguelike.Movement
         public float OverspeedDecay = 40f;
         [Tooltip("Piso do stat OverspeedDecay (u/s²).")]
         public float OverspeedDecayMin = 20f;
+        [Tooltip("Multiplicador base da virada no chão (×). Stat TurnRate.")]
+        public float TurnRate = 1f;
+        [Tooltip("Piso do stat TurnRate (×).")]
+        public float TurnRateMin = 0.3f;
+        [Tooltip("Teto do stat TurnRate (×).")]
+        public float TurnRateCap = 2f;
+        [Tooltip("Multiplicador base da frenagem no chão, sem input (×). Stat BrakeRate.")]
+        public float BrakeRate = 1f;
+        [Tooltip("Piso do stat BrakeRate (×).")]
+        public float BrakeRateMin = 0.3f;
+        [Tooltip("Teto do stat BrakeRate (×).")]
+        public float BrakeRateCap = 2f;
         [Tooltip("Teto global de velocidade por eixo (u/s). Inicial — calibrar (DS-19).")]
         public float GlobalSpeedCap = 48f;
 
@@ -70,6 +82,10 @@ namespace Roguelike.Movement
         public float MaxFall = 17f;
         [Tooltip("Queda máxima segurando para baixo (u/s, M17).")]
         public float FastMaxFall = 24f;
+        [Tooltip("Piso do stat FallSpeed (× sobre MaxFall e FastMaxFall).")]
+        public float FallSpeedMin = 0.5f;
+        [Tooltip("Teto do stat FallSpeed (×).")]
+        public float FallSpeedCap = 1.5f;
         [Tooltip("Taxa com que o teto de queda muda entre MaxFall e FastMaxFall (u/s²).")]
         public float FastFallCapAccel = 35f;
 
@@ -135,11 +151,14 @@ namespace Roguelike.Movement
         public float DashCooldown = 0.2f;
         [Tooltip("O chão só recarrega o dash este tempo depois do início (s).")]
         public float DashRefillCooldown = 0.1f;
+        [Tooltip("Faixa do stat DashRefillDelay (s), cuja base é DashRefillCooldown.")]
+        public float DashRefillDelayMin = 0.05f;
+        public float DashRefillDelayCap = 1f;
         [Tooltip("Freeze local no início do dash (s, M29). Fora do timer.")]
         public float DashFreeze = 0.05f;
 
         [Header("Gancho")]
-        [Tooltip("Raio de busca de alvo (u). Stat GrappleRadius.")]
+        [Tooltip("Alcance da mira: distância máxima até a parede/alvo (u). Stat GrappleRadius.")]
         public float GrappleRadius = 9f;
         [Tooltip("Teto do stat GrappleRadius (u).")]
         public float GrappleRadiusCap = 13.5f;
@@ -163,8 +182,44 @@ namespace Roguelike.Movement
         public float GrappleStuckWindow = 0.3f;
         [Tooltip("Avanço mínimo na janela para não contar como travado (u).")]
         public float GrappleStuckDistance = 0.05f;
-        [Tooltip("Cosseno do cone de mira preferida (0,5 = 60°).")]
-        public float GrappleAimConeCos = 0.5f;
+        [Tooltip("Usos por fase do gancho (AbilityFlags.GrapplingHook). Respawn não recarrega.")]
+        public int HookUsesPerLevel = 2;
+        [Tooltip("Distância mínima até a parede mirada para o disparo valer (u): evita gastar um uso colado nela.")]
+        public float GrappleMinDistance = 1.5f;
+        [Tooltip("Folga entre o corpo e a âncora na parede em que o puxão conta como chegada e lança (u).")]
+        public float GrappleArriveDistance = 0.15f;
+        [Tooltip("Cosseno do cone em que a mira gruda num alvo de gancho (drone, layer 8) em vez da parede (0,966 = 15°).")]
+        public float GrappleSnapConeCos = 0.966f;
+
+        [Header("Teia (balanço, AbilityFlags.WebSwing)")]
+        [Tooltip("Usos por fase do lançador de teia (AbilityFlags.WebSwing). Soma com os do gancho. Respawn não recarrega.")]
+        public int WebUsesPerLevel = 5;
+        [Tooltip("Empurrão horizontal com a direção durante o balanço (u/s²).")]
+        public float WebSwingAccel = 28f;
+        [Tooltip("Velocidade de recolher/soltar a teia com cima/baixo (u/s).")]
+        public float WebReelSpeed = 6f;
+        [Tooltip("Comprimento mínimo da teia (u).")]
+        public float WebMinRopeLength = 1.5f;
+        [Tooltip("Multiplicador da velocidade ao soltar o botão (×).")]
+        public float WebReleaseBoost = 1.15f;
+        [Tooltip("Impulso vertical somado ao soltar subindo (u/s).")]
+        public float WebReleaseUpBoost = 3f;
+        [Tooltip("Tempo máximo pendurado na teia (s).")]
+        public float WebSwingMaxTime = 4f;
+
+        [Header("Asa-Delta (AbilityFlags.Glide)")]
+        [Tooltip("Queda máxima planando (u/s).")]
+        public float GlideMaxFall = 3.5f;
+        [Tooltip("Taxa com que o teto de queda desce até GlideMaxFall (u/s²).")]
+        public float GlideCapAccel = 150f;
+
+        [Header("Inversor de Gravidade (AbilityFlags.GravityFlip)")]
+        [Tooltip("Usos por fase (respawn não recarrega).")]
+        public int GravityFlipsPerLevel = 2;
+        [Tooltip("Duração de cada inversão (s). Apertar de novo encerra antes.")]
+        public float GravityFlipTime = 1.2f;
+        [Tooltip("Velocidade mínima \"para cima\" ao inverter (u/s), para descolar do chão.")]
+        public float GravityFlipKick = 4f;
 
         [Header("Respawn")]
         [Tooltip("Tempo entre sair da fase e voltar ao chão seguro (s, M31 ≤ 0,5). Inicial — calibrar.")]
@@ -211,6 +266,10 @@ namespace Roguelike.Movement
                 case StatType.MaxDashes: return MaxDashesBase;
                 case StatType.JumpHorizontalBoost: return JumpHBoost;
                 case StatType.OverspeedDecay: return OverspeedDecay;
+                case StatType.TurnRate: return TurnRate;
+                case StatType.BrakeRate: return BrakeRate;
+                case StatType.FallSpeed: return 1f;
+                case StatType.DashRefillDelay: return DashRefillCooldown;
                 default: return 0f;
             }
         }
@@ -237,6 +296,10 @@ namespace Roguelike.Movement
                 case StatType.MaxDashes: max = MaxDashesCap; return true;
                 case StatType.JumpHorizontalBoost: max = JumpHBoostCap; return true;
                 case StatType.OverspeedDecay: min = OverspeedDecayMin; return true;
+                case StatType.TurnRate: min = TurnRateMin; max = TurnRateCap; return true;
+                case StatType.BrakeRate: min = BrakeRateMin; max = BrakeRateCap; return true;
+                case StatType.FallSpeed: min = FallSpeedMin; max = FallSpeedCap; return true;
+                case StatType.DashRefillDelay: min = DashRefillDelayMin; max = DashRefillDelayCap; return true;
                 default: return false;
             }
         }

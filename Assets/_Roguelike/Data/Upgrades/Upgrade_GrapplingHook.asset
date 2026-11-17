@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: grappling_hook
   displayName: Gancho Habilitado
-  description: "Libera o gancho para se prender e se lan\xE7ar."
+  description: "Mire em qualquer parede e dispare o gancho para se puxar at\xE9 ela e se lan\xE7ar. 2 usos por fase."
   icon: {fileID: 0}
   rarity: {fileID: 11400000, guid: 553ddfa5339e33541af7007e15932a64, type: 2}
   maxStacks: 1

@@ -33,8 +33,16 @@ namespace Roguelike.Movement
                 : s.GrappleAnchor;
             HasGrappleTarget = s.HasGrappleTarget;
             GrappleTarget = s.GrappleTarget;
-            GrappleUnlocked = st.Has(Roguelike.Upgrades.AbilityFlags.GrapplingHook);
+            GrappleUnlocked = st.HasGrappleTool;
+            GrappleUsesLeft = s.GrappleUsesLeft;
+            MaxGrappleUses = st.MaxGrappleUses;
+            GrappleAimVisible = st.HasGrappleTool && s.GrappleUsesLeft > 0
+                && s.State == MotorStateId.Normal && s.GrapplePhase == GrapplePhase.None;
+            GrappleOnCooldown = s.GrappleCooldownTicks > 0;
             Visible = s.State != MotorStateId.Respawning;
+            GravityFlipped = s.GravityFlipTicksLeft > 0;
+            GravityFlipsLeft = s.GravityFlipsLeft;
+            MaxGravityFlips = st.MaxGravityFlips;
         }
 
         public long Tick { get; }
@@ -59,12 +67,24 @@ namespace Roguelike.Movement
         public Vector2 GrappleAnchor { get; }
         /// <summary>Posição da ponta do gancho (interpolada na viagem; a âncora no puxão).</summary>
         public Vector2 HookTip { get; }
-        /// <summary>Retícula do gancho (preview da mira).</summary>
+        /// <summary>A mira acerta uma parede/alvo válido (o disparo prenderia em <see cref="GrappleTarget"/>).</summary>
         public bool HasGrappleTarget { get; }
+        /// <summary>Ponto da mira: a âncora prevista, ou o fim do alcance na direção mirada quando não há alvo.</summary>
         public Vector2 GrappleTarget { get; }
+        /// <summary>O jogador tem o gancho ou o lançador de teia.</summary>
         public bool GrappleUnlocked { get; }
+        /// <summary>Usos do gancho/teia restantes nesta fase.</summary>
+        public int GrappleUsesLeft { get; }
+        public int MaxGrappleUses { get; }
+        /// <summary>A mira deve aparecer: tem a ferramenta, sobra uso na fase e o gancho não está em curso.</summary>
+        public bool GrappleAimVisible { get; }
+        public bool GrappleOnCooldown { get; }
         /// <summary>O sprite deve aparecer (oculto durante o respawn).</summary>
         public bool Visible { get; }
+        /// <summary>Gravidade invertida agora (o sprite fica de cabeça para baixo).</summary>
+        public bool GravityFlipped { get; }
+        public int GravityFlipsLeft { get; }
+        public int MaxGravityFlips { get; }
         public bool IsWallSliding => WallSlideSide != 0;
         public Vector2 BodyCenter => Position + new Vector2(0f, BodySize.y * 0.5f);
     }

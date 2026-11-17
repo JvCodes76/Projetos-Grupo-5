@@ -14,7 +14,7 @@ namespace Roguelike.Movement
     /// </summary>
     public sealed class InputSampler : IInputSource
     {
-        private const int ButtonCount = 4;
+        private const int ButtonCount = 5;
         private const int MaxPendingPresses = 2;
 
         private readonly byte[] pending = new byte[ButtonCount];
@@ -22,6 +22,7 @@ namespace Roguelike.Movement
         private ButtonBits needsRelease;
         private sbyte moveX;
         private sbyte moveY;
+        private ushort aim;
 
         public InputSampler(float deadzone = 0.3f)
         {
@@ -54,11 +55,12 @@ namespace Roguelike.Movement
             held = s.HeldNow & ~needsRelease;
             moveX = MathUtil.Quantize(s.RawX, Deadzone);
             moveY = MathUtil.Quantize(s.RawY, Deadzone);
+            aim = AimCodec.Encode(s.Aim);
         }
 
         public TickInput NextTick()
         {
-            var t = new TickInput { MoveX = moveX, MoveY = moveY };
+            var t = new TickInput { MoveX = moveX, MoveY = moveY, Aim = aim };
             for (int b = 0; b < ButtonCount; b++)
             {
                 var bit = (ButtonBits)(1 << b);

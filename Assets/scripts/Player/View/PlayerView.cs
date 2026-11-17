@@ -18,6 +18,7 @@ public sealed class PlayerView : MonoBehaviour
 
     private SquashModel squash = SquashModel.Identity;
     private Vector3 spriteBaseLocal;
+    private Vector3 pivotBaseLocal;
 
     public SpriteRenderer Sprite => sprite;
 
@@ -26,6 +27,7 @@ public sealed class PlayerView : MonoBehaviour
         if (controller == null) controller = GetComponent<PlayerController>();
         if (tuning == null) tuning = ScriptableObject.CreateInstance<FeedbackTuning>();
         if (sprite != null) spriteBaseLocal = sprite.transform.localPosition;
+        if (squashPivot != null) pivotBaseLocal = squashPivot.localPosition;
     }
 
     private void OnEnable()
@@ -51,7 +53,13 @@ public sealed class PlayerView : MonoBehaviour
 
         squash.Update(Time.deltaTime, tuning);
         Vector2 scale = snap.State == MotorStateId.Dash ? tuning.DashSquash : squash.Scale;
-        if (squashPivot != null) squashPivot.localScale = new Vector3(scale.x, scale.y, 1f);
+        if (squashPivot != null)
+        {
+            // Gravidade invertida: espelha em Y em torno do meio da caixa (pivô sobe a altura do corpo).
+            bool flipped = snap.GravityFlipped;
+            squashPivot.localScale = new Vector3(scale.x, flipped ? -scale.y : scale.y, 1f);
+            squashPivot.localPosition = pivotBaseLocal + (flipped ? new Vector3(0f, snap.BodySize.y, 0f) : Vector3.zero);
+        }
 
         if (sprite != null)
         {

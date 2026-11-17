@@ -23,5 +23,11 @@ namespace Roguelike.Upgrades
         AirJumpRefillOnGrapple = 1 << 3,
         /// <summary>Reservada para uma escalada com estamina futura (fora do escopo; nenhum código lê).</summary>
         WallGrab = 1 << 4,
+        /// <summary>"Lançador de Teia": segurar o botão do gancho ao prender vira balanço pendular (tocar continua puxando).</summary>
+        WebSwing = 1 << 5,
+        /// <summary>"Asa-Delta": segurar o pulo caindo plana (queda lenta).</summary>
+        Glide = 1 << 6,
+        /// <summary>"Inversor de Gravidade": botão próprio inverte a gravidade por um tempo; cargas por fase.</summary>
+        GravityFlip = 1 << 7,
     }
 }

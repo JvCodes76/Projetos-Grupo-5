@@ -26,6 +26,18 @@ MonoBehaviour:
   - {fileID: 11400000, guid: dc60a6ddc8e0c0348a4c0b7709587196, type: 2}
   - {fileID: 11400000, guid: b5b2028fe0dc34e498db284c98401169, type: 2}
   - {fileID: 11400000, guid: dd20d53f8aba80844a503f88ecb0fa7f, type: 2}
+  - {fileID: 11400000, guid: 302e1670fd744d728f4b632d37ffd988, type: 2}
+  - {fileID: 11400000, guid: 207814032a9d44c3a5af60bce30d2f5e, type: 2}
+  - {fileID: 11400000, guid: 2ca9057fe32d541862ab5c3f2f164b40, type: 2}
+  - {fileID: 11400000, guid: a0c61a26f05061d6a7f5da17ef8d5939, type: 2}
+  - {fileID: 11400000, guid: e16705449e5d40821e3e8187caaf11ed, type: 2}
+  - {fileID: 11400000, guid: 0543ef6f678d56a7787846d26bd9c886, type: 2}
+  - {fileID: 11400000, guid: 2b7783237c0d1c58aa62686a4407223a, type: 2}
+  - {fileID: 11400000, guid: e712ee89dd19e8a1a57328a6fed0eb84, type: 2}
+  - {fileID: 11400000, guid: d1b1dc37503680b901e18485b7733a94, type: 2}
+  - {fileID: 11400000, guid: f5a3d13bde2ce66e06b3d25b98811049, type: 2}
+  - {fileID: 11400000, guid: 0ad5d7266637a8ae0595de9db0ce3325, type: 2}
+  - {fileID: 11400000, guid: 506275ad0dd445d382dc67dc09ae790d, type: 2}
   baseStats: {fileID: 11400000, guid: bbc8281b1bc088d4bbb25bb59063b883, type: 2}
   offerCount: 3
   gradeThresholds:

@@ -157,6 +157,8 @@ namespace Roguelike.Tests
         {
             private readonly Dictionary<UpgradeDefinition, int> stacks = new Dictionary<UpgradeDefinition, int>();
 
+            public AbilityFlags Abilities { get; set; }
+
             public int GetStacks(UpgradeDefinition upgrade)
             {
                 return stacks.TryGetValue(upgrade, out var value) ? value : 0;

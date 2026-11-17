@@ -250,24 +250,13 @@ namespace Roguelike.Tests
         public void TestRaritiesHaveCandidates()
         {
             Assert.IsNotNull(runConfig, "RunConfig não está carregado");
-            var maxTier = runConfig.RarityTable.Entries.Max(e => e.Rarity.Tier);
-
+            // Tarefa 5.5: a Lendária ganhou upgrades (Lançador de Teia, Asa-Delta, Inversor de Gravidade), então toda
+            // raridade da tabela precisa ter ao menos um candidato.
             foreach (var entry in runConfig.RarityTable.Entries)
             {
                 var hasCandidates = runConfig.UpgradePool.Any(u => u.Rarity == entry.Rarity);
-
-                if (entry.Rarity.Tier == maxTier)
-                {
-                    // Etapa 5 (tarefa 5.5): remover esta exceção. Até lá a Lendária fica sem candidatos (D9) e o sorteio
-                    // cai para a raridade abaixo (ADR-07). A falha aqui avisa que a exceção ficou velha.
-                    Assert.IsFalse(hasCandidates,
-                        $"Raridade '{entry.Rarity.Id}': é a de maior tier e não deve ter candidatos no MVP");
-                }
-                else
-                {
-                    Assert.IsTrue(hasCandidates,
-                        $"Raridade '{entry.Rarity.Id}' (tier {entry.Rarity.Tier}) não tem nenhum upgrade no pool");
-                }
+                Assert.IsTrue(hasCandidates,
+                    $"Raridade '{entry.Rarity.Id}' (tier {entry.Rarity.Tier}) não tem nenhum upgrade no pool");
             }
         }
 

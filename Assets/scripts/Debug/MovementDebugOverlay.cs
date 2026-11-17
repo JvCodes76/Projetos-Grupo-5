@@ -92,7 +92,8 @@ public sealed class MovementDebugOverlay : MonoBehaviour
             .Append("   queda máx ").Append(s.MaxFallCurrent.ToString("0.0")).Append('\n');
         sb.Append("aéreos ").Append(s.AirJumpsLeft).Append('/').Append(st.MaxAirJumps)
             .Append("   dashes ").Append(s.DashesLeft).Append('/').Append(st.MaxDashes)
-            .Append("   cd dash ").Append(s.DashCooldownTicks).Append("  cd gancho ").Append(s.GrappleCooldownTicks).Append('\n');
+            .Append("   cd dash ").Append(s.DashCooldownTicks).Append("  cd gancho ").Append(s.GrappleCooldownTicks)
+            .Append("  usos gancho ").Append(s.GrappleUsesLeft).Append('/').Append(st.MaxGrappleUses).Append('\n');
         sb.Append("último pulo: altura ").Append(lastJumpHeight.ToString("0.00")).Append(" u, distância ")
             .Append(lastJumpDistance.ToString("0.00")).Append(" u\n");
         sb.Append("chão seguro (").Append(s.LastSafeGround.x.ToString("0.0")).Append("; ").Append(s.LastSafeGround.y.ToString("0.0"))
@@ -115,6 +116,7 @@ public sealed class MovementDebugOverlay : MonoBehaviour
         bool changed = false;
         changed |= Toggle(ref kitFlags, AbilityFlags.WallJump, "Parede");
         changed |= Toggle(ref kitFlags, AbilityFlags.GrapplingHook, "Gancho");
+        changed |= Toggle(ref kitFlags, AbilityFlags.WebSwing, "Teia");
         changed |= Toggle(ref kitFlags, AbilityFlags.DashRefillOnWallJump, "Recarga parede");
         changed |= Toggle(ref kitFlags, AbilityFlags.AirJumpRefillOnGrapple, "Âncora");
         GUILayout.EndHorizontal();

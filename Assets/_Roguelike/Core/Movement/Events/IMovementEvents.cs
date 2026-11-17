@@ -14,7 +14,7 @@ namespace Roguelike.Events
     /// <summary>
     /// Converte os fatos de um tick (<see cref="TickEvents"/>) em eventos, na ordem fixa do SPEC §9.2:
     /// Died → FellOut → Respawned → GrappleReleased → WallSlideChanged(fim) → Landed → AbilityRefilled → Jumped →
-    /// WallJumped → Dashed → GrappleFired → GrappleAttached → WallSlideChanged(início) → ActionDenied.
+    /// WallJumped → Dashed → GrappleFired → GrappleAttached → GrappleUsesChanged → WallSlideChanged(início) → ActionDenied.
     /// Síncrono: os ouvintes de feedback reagem no mesmo frame do tick (RF-53). Não aloca.
     /// </summary>
     public static class MovementEventPublisher
@@ -50,6 +50,8 @@ namespace Roguelike.Events
                 sink.Raise(new PlayerGrappleFired(ev.GrappleTarget, tick));
             if (ev.Has(MovementEventFlags.GrappleAttached))
                 sink.Raise(new PlayerGrappleAttached(ev.GrappleAnchor, tick));
+            if (ev.Has(MovementEventFlags.GrappleUsesChanged))
+                sink.Raise(new PlayerGrappleUsesChanged(ev.GrappleUsesLeft, ev.GrappleUsesMax, tick));
             if (ev.Has(MovementEventFlags.WallSlideStarted))
                 sink.Raise(new PlayerWallSlideChanged(true, (WallSide)ev.WallSlideStartSide, tick));
             if (ev.Has(MovementEventFlags.DashDenied))

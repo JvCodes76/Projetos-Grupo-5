@@ -21,6 +21,13 @@ namespace Roguelike.Tests.Movement
 
         /// <summary>Aperta e solta antes do tick (toque): Pressed sem Held.</summary>
         public static TickInput Tap(ButtonBits bits, int x = 0, int y = 0) => new TickInput((sbyte)x, (sbyte)y, bits, ButtonBits.None);
+
+        /// <summary>O mesmo input com a mira do gancho apontada para <paramref name="direction"/> (mouse/analógico).</summary>
+        public static TickInput Aim(TickInput input, Vector2 direction)
+        {
+            input.Aim = AimCodec.Encode(direction);
+            return input;
+        }
     }
 
     /// <summary>

@@ -6,11 +6,13 @@ namespace Roguelike.Upgrades
     /// <summary>
     /// Entrada do <see cref="IUpgradeOfferGenerator"/>. Montado pelo RunFlow ao sair do estado Resultado.
     /// Agrupar os parâmetros num struct deixa espaço para extensões sem quebrar a interface
-    /// (ex.: D7 reroll = um contador extra misturado à seed).
-    /// Invariantes: Pool, RarityTable e Inventory não nulos; OfferCount ≥ 1; Performance em [0, 1].
+    /// (D7 reroll = <see cref="RerollIndex"/> misturado à seed).
+    /// Invariantes: Pool, RarityTable e Inventory não nulos; OfferCount ≥ 1; RerollIndex ≥ 0; Performance em [0, 1].
     /// </summary>
     public readonly struct UpgradeOfferRequest
     {
+        private static readonly UpgradeDefinition[] NoUpgrades = Array.Empty<UpgradeDefinition>();
+
         public UpgradeOfferRequest(
             int runSeed,
             int levelIndex,
@@ -18,9 +20,13 @@ namespace Roguelike.Upgrades
             int offerCount,
             IReadOnlyList<UpgradeDefinition> pool,
             RarityTable rarityTable,
-            IUpgradeInventory inventory)
+            IUpgradeInventory inventory,
+            int rerollIndex = 0,
+            IReadOnlyList<UpgradeDefinition> avoid = null,
+            bool hasLaterOffer = true)
         {
             if (offerCount < 1) throw new ArgumentOutOfRangeException(nameof(offerCount), "offerCount deve ser ≥ 1");
+            if (rerollIndex < 0) throw new ArgumentOutOfRangeException(nameof(rerollIndex), "rerollIndex deve ser ≥ 0");
 
             RunSeed = runSeed;
             LevelIndex = levelIndex;
@@ -29,6 +35,9 @@ namespace Roguelike.Upgrades
             Pool = pool ?? throw new ArgumentNullException(nameof(pool));
             RarityTable = rarityTable != null ? rarityTable : throw new ArgumentNullException(nameof(rarityTable));
             Inventory = inventory ?? throw new ArgumentNullException(nameof(inventory));
+            RerollIndex = rerollIndex;
+            Avoid = avoid ?? NoUpgrades;
+            HasLaterOffer = hasLaterOffer;
         }
 
         /// <summary>Seed da run (RunStarted.Seed).</summary>
@@ -40,8 +49,25 @@ namespace Roguelike.Upgrades
         /// <summary>Desempenho p na fase recém-concluída (PerformanceEvaluator).</summary>
         public float Performance { get; }
 
-        /// <summary>Quantidade de slots (RunConfig.OfferCount, 3 no MVP).</summary>
+        /// <summary>Quantidade de slots (RunState.OfferCount: RunConfig.OfferCount + cartas extras de upgrades).</summary>
         public int OfferCount { get; }
+
+        /// <summary>
+        /// Quantos rerolls já foram feitos nesta rodada (0 = oferta original). Misturado à seed: cada reroll da mesma
+        /// fase gera outra sequência, ainda determinística.
+        /// </summary>
+        public int RerollIndex { get; }
+
+        /// <summary>
+        /// Upgrades a evitar (as cartas que o reroll está substituindo). É preferência, não regra: se um slot ficaria
+        /// vazio sem eles, voltam a valer. Nunca nulo.
+        /// </summary>
+        public IReadOnlyList<UpgradeDefinition> Avoid { get; }
+
+        /// <summary>
+        /// False quando esta é a última escolha de upgrade da run: upgrades com RequiresLaterOffer ficam de fora.
+        /// </summary>
+        public bool HasLaterOffer { get; }
 
         /// <summary>Todos os upgrades possíveis, na ordem do RunConfig (a ordem entra no determinismo).</summary>
         public IReadOnlyList<UpgradeDefinition> Pool { get; }

@@ -17,10 +17,10 @@ public class UpgradeCardView : MonoBehaviour
 
     [Header("Visual")]
     [Tooltip("Obrigatório. Tingida com a cor da raridade real da oferta.")]
-    [SerializeField] private Image background;
+    [SerializeField] private Graphic background;
 
     [Tooltip("Opcional. Também tingida com a cor da raridade.")]
-    [SerializeField] private Image border;
+    [SerializeField] private Graphic border;
 
     [Tooltip("Opcional. Escondido quando o upgrade não tem ícone.")]
     [SerializeField] private Image icon;

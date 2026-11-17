@@ -8,12 +8,16 @@ namespace Roguelike.Movement
 {
     /// <summary>
     /// Gravação de input por tick (SPEC §15, RNF-02): grava <see cref="TickInput"/> a partir de um estado inicial e
-    /// reproduz como <see cref="IInputSource"/>. Serializa num texto compacto (cabeçalho + 8 hex por tick) para
-    /// Temp/Replays/*.json e testes. Depois do fim da gravação, a reprodução devolve input neutro.
+    /// reproduz como <see cref="IInputSource"/>. Serializa num texto compacto (cabeçalho + 12 hex por tick: 8 dos
+    /// eixos/botões + 4 da mira) para Temp/Replays/*.json e testes. Lê também o formato antigo ("movrec1", 8 hex por
+    /// tick, sem mira). Depois do fim da gravação, a reprodução devolve input neutro.
     /// </summary>
     public sealed class InputRecording : IInputSource
     {
-        private const string FormatTag = "movrec1";
+        private const string FormatTag = "movrec2";
+        private const string LegacyFormatTag = "movrec1";
+        private const int HexPerTick = 12;
+        private const int LegacyHexPerTick = 8;
 
         private readonly List<TickInput> ticks = new List<TickInput>();
         private int cursor;
@@ -54,10 +58,10 @@ namespace Roguelike.Movement
             return ticks[cursor++];
         }
 
-        /// <summary>Texto compacto: "movrec1;x;y;hash;" + 8 dígitos hex por tick.</summary>
+        /// <summary>Texto compacto: "movrec2;x;y;hash;" + 12 dígitos hex por tick.</summary>
         public string Serialize()
         {
-            var sb = new StringBuilder(32 + ticks.Count * 8);
+            var sb = new StringBuilder(32 + ticks.Count * HexPerTick);
             sb.Append(FormatTag).Append(';');
             sb.Append(StartFeet.x.ToString("R", CultureInfo.InvariantCulture)).Append(';');
             sb.Append(StartFeet.y.ToString("R", CultureInfo.InvariantCulture)).Append(';');
@@ -67,6 +71,7 @@ namespace Roguelike.Movement
                 TickInput t = ticks[i];
                 uint packed = (uint)(byte)t.MoveX | ((uint)(byte)t.MoveY << 8) | ((uint)t.Pressed << 16) | ((uint)t.Held << 24);
                 sb.Append(packed.ToString("X8", CultureInfo.InvariantCulture));
+                sb.Append(t.Aim.ToString("X4", CultureInfo.InvariantCulture));
             }
 
             return sb.ToString();
@@ -77,7 +82,7 @@ namespace Roguelike.Movement
             if (string.IsNullOrEmpty(text)) throw new ArgumentException("Gravação vazia.", nameof(text));
 
             string[] parts = text.Split(';');
-            if (parts.Length != 5 || parts[0] != FormatTag)
+            if (parts.Length != 5 || (parts[0] != FormatTag && parts[0] != LegacyFormatTag))
             {
                 throw new FormatException("Formato de gravação desconhecido.");
             }
@@ -90,17 +95,23 @@ namespace Roguelike.Movement
                 FinalHash = ulong.Parse(parts[3], NumberStyles.HexNumber, CultureInfo.InvariantCulture),
             };
 
+            bool hasAim = parts[0] == FormatTag;
+            int stride = hasAim ? HexPerTick : LegacyHexPerTick;
             string data = parts[4];
-            if (data.Length % 8 != 0) throw new FormatException("Dados de tick truncados.");
+            if (data.Length % stride != 0) throw new FormatException("Dados de tick truncados.");
 
-            for (int i = 0; i < data.Length; i += 8)
+            for (int i = 0; i < data.Length; i += stride)
             {
                 uint packed = uint.Parse(data.Substring(i, 8), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
+                ushort aim = hasAim
+                    ? ushort.Parse(data.Substring(i + 8, 4), NumberStyles.HexNumber, CultureInfo.InvariantCulture)
+                    : (ushort)0;
                 recording.ticks.Add(new TickInput(
                     (sbyte)(byte)(packed & 0xFF),
                     (sbyte)(byte)((packed >> 8) & 0xFF),
                     (ButtonBits)((packed >> 16) & 0xFF),
-                    (ButtonBits)((packed >> 24) & 0xFF)));
+                    (ButtonBits)((packed >> 24) & 0xFF),
+                    aim));
             }
 
             return recording;

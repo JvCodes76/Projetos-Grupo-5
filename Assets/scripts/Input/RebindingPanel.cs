@@ -48,6 +48,7 @@ public sealed class RebindingPanel : MonoBehaviour
         new RowSpec { Label = "Dash", Action = () => GameInput.Player.Dash },
         new RowSpec { Label = "Gancho", Action = () => GameInput.Player.Grapple },
         new RowSpec { Label = "Voltar ao spawn", Action = () => GameInput.Player.Restart },
+        new RowSpec { Label = "Inverter gravidade", Action = () => GameInput.Player.GravityFlip },
     };
 
     private readonly List<Cell> cells = new List<Cell>();
@@ -87,7 +88,7 @@ public sealed class RebindingPanel : MonoBehaviour
         RectTransform root = window != null ? window : (RectTransform)transform;
         RectTransform column = MenuUi.Column(root, 24f, 8f);
 
-        MenuUi.Weight(MenuUi.Text(column, "CONTROLES", style, style.TitleSize, style.TextColor), 1f).preferredHeight = 48f;
+        MenuUi.Weight(MenuUi.Title(column, "CONTROLES", style), 1f).preferredHeight = 48f;
 
         RectTransform header = MenuUi.Row(column, 30f);
         MenuUi.Weight(MenuUi.Text(header, "", style, style.LabelSize, style.TextColor), 1.2f);

@@ -142,7 +142,14 @@ public sealed class PlayerController : MonoBehaviour, ITickable, IPlayerSimulati
             lastWrittenPosition = current;
         }
 
-        if (inputOverride == null) sampler.PushFrame(PlayerInputReader.Read());
+        if (inputOverride == null)
+        {
+            // A mira só é lida com o gancho/teia liberado (sem a ferramenta o motor a ignora).
+            Vector2 aim = motor.Stats.HasGrappleTool
+                ? PlayerAimReader.Read(RenderPosition + new Vector2(0f, profile.BodySize.y * 0.5f), profile.StickDeadzone)
+                : Vector2.zero;
+            sampler.PushFrame(PlayerInputReader.Read(aim));
+        }
     }
 
     public void Tick(in TickContext ctx)

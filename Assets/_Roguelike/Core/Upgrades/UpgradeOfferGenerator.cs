@@ -120,6 +120,12 @@ namespace Roguelike.Upgrades
                 return false;
             }
 
+            AbilityFlags required = upgrade.RequiredAbilities;
+            if (required != AbilityFlags.None && (inventory.Abilities & required) == 0) // qualquer uma basta
+            {
+                return false;
+            }
+
             var prerequisites = upgrade.Prerequisites;
             for (int i = 0; i < prerequisites.Count; i++)
             {

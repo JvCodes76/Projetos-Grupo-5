@@ -78,8 +78,20 @@ namespace Roguelike.Movement
         public Vector2 LastPullDir;
         public float GrappleStuckRefDistance;
         public int GrappleStuckTicks;
+        /// <summary>A mira acerta uma parede/alvo válido (o disparo prenderia em <see cref="GrappleTarget"/>).</summary>
         public bool HasGrappleTarget;
+        /// <summary>Ponto da mira: a âncora prevista, ou o fim do alcance na direção mirada quando não há alvo.</summary>
         public Vector2 GrappleTarget;
+        /// <summary>Usos do gancho/teia restantes nesta fase.</summary>
+        public int GrappleUsesLeft;
+        /// <summary>Comprimento atual da teia no balanço (u).</summary>
+        public float WebRopeLength;
+
+        // --- Inversor de gravidade ---
+        /// <summary>Inversões restantes nesta fase.</summary>
+        public int GravityFlipsLeft;
+        /// <summary>Ticks restantes da inversão ativa (0 = gravidade normal).</summary>
+        public int GravityFlipTicksLeft;
 
         // --- Ciclo de vida ---
         public Vector2 SpawnFeet;

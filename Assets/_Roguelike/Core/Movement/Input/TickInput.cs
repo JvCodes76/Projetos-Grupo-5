@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace Roguelike.Movement
 {
@@ -11,10 +12,12 @@ namespace Roguelike.Movement
         Dash = 2,
         Grapple = 4,
         Restart = 8,
+        GravityFlip = 16,
     }
 
     /// <summary>
-    /// Input de um tick (SPEC §2.3): determinístico, 4 bytes, gravável. Eixos já quantizados (−1, 0, +1; Q13).
+    /// Input de um tick (SPEC §2.3): determinístico, 6 bytes, gravável. Eixos já quantizados (−1, 0, +1; Q13) e a
+    /// mira do gancho como ângulo de 16 bits (<see cref="AimCodec"/>).
     /// </summary>
     [Serializable]
     public struct TickInput : IEquatable<TickInput>
@@ -31,12 +34,16 @@ namespace Roguelike.Movement
         /// <summary>Estado lógico do botão neste tick.</summary>
         public ButtonBits Held;
 
-        public TickInput(sbyte moveX, sbyte moveY, ButtonBits pressed, ButtonBits held)
+        /// <summary>Mira do gancho (<see cref="AimCodec"/>): 0 = sem mira explícita (mouse parado/sem analógico).</summary>
+        public ushort Aim;
+
+        public TickInput(sbyte moveX, sbyte moveY, ButtonBits pressed, ButtonBits held, ushort aim = 0)
         {
             MoveX = moveX;
             MoveY = moveY;
             Pressed = pressed;
             Held = held;
+            Aim = aim;
         }
 
         public bool IsPressed(ButtonBits bit) => (Pressed & bit) != 0;
@@ -45,14 +52,19 @@ namespace Roguelike.Movement
 
         public bool Equals(TickInput other)
         {
-            return MoveX == other.MoveX && MoveY == other.MoveY && Pressed == other.Pressed && Held == other.Held;
+            return MoveX == other.MoveX && MoveY == other.MoveY && Pressed == other.Pressed && Held == other.Held
+                && Aim == other.Aim;
         }
 
         public override bool Equals(object obj) => obj is TickInput other && Equals(other);
 
-        public override int GetHashCode() => (MoveX & 0xFF) | ((MoveY & 0xFF) << 8) | ((int)Pressed << 16) | ((int)Held << 24);
+        public override int GetHashCode()
+        {
+            int buttons = (MoveX & 0xFF) | ((MoveY & 0xFF) << 8) | ((int)Pressed << 16) | ((int)Held << 24);
+            return buttons ^ (Aim * 397);
+        }
 
-        public override string ToString() => $"({MoveX},{MoveY}) P={Pressed} H={Held}";
+        public override string ToString() => $"({MoveX},{MoveY}) P={Pressed} H={Held} A={Aim}";
     }
 
     /// <summary>
@@ -66,6 +78,9 @@ namespace Roguelike.Movement
         public ButtonBits PressedThisFrame;
         public ButtonBits ReleasedThisFrame;
         public ButtonBits HeldNow;
+
+        /// <summary>Direção da mira do gancho (mouse ou analógico direito; não normalizada). Zero = sem mira.</summary>
+        public Vector2 Aim;
     }
 
     /// <summary>Fonte de input por tick: InputSampler (jogo), InputRecording (replay) ou roteiros de teste.</summary>
